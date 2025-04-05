@@ -232,78 +232,84 @@ const Landing = () => {
 
       {/* Main Content */}
       <main className="flex-grow">
+                {/****************************************************************************************************************************************/}
+
         {/* Hero Section */}
         <section
-          ref={heroRef}
-          id="home"
-          className="relative bg-black text-white py-20 min-h-[90vh] flex items-center bg-fixed bg-center bg-cover"
-          style={{ backgroundImage: "url('/img_9.webp')" }}
-        >
-          {/* Semi-transparent overlay */}
-          <div className="absolute inset-0 bg-black bg-opacity-60" />
+  ref={heroRef}
+  id="home"
+  className="
+    relative bg-black text-white py-20 
+    min-h-[90vh] flex items-center 
+    bg-center bg-cover bg-scroll md:bg-fixed
+  "
+  style={{ backgroundImage: "url('/img_9.webp')" }}
+>
+  {/* Semi-transparent overlay */}
+  <div className="absolute inset-0 bg-black bg-opacity-60" />
 
-          {/* Content */}
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
-            {/* Headline */}
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.0, ease: "easeOut" }}
-            >
-              <div className="hero-text">
-                <SplitText
-                  text="Embark on a New Journey"
-                  className="text-5xl font-extrabold text-white text-center"
-                  delay={100}
-                  animationFrom={{
-                    opacity: 0,
-                    transform: "translate3d(0,40px,0)",
-                  }}
-                  animationTo={{ opacity: 1, transform: "translate3d(0,0,0)" }}
-                  easing="easeOutCubic"
-                  textAlign="center"
-                />
-              </div>
-            </motion.div>
+  {/* Content */}
+  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
+    {/* Headline */}
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, delay: 1.0, ease: "easeOut" }}
+    >
+      <div className="hero-text">
+        <SplitText
+          text="Embark on a New Journey"
+          className="text-5xl font-extrabold text-white text-center"
+          delay={100}
+          animationFrom={{
+            opacity: 0,
+            transform: "translate3d(0,40px,0)",
+          }}
+          animationTo={{ opacity: 1, transform: "translate3d(0,0,0)" }}
+          easing="easeOutCubic"
+          textAlign="center"
+        />
+      </div>
+    </motion.div>
 
-            {/* Interactive Text */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
-              className="mt-4 h-12"
-            >
-              <InteractiveText />
-            </motion.div>
+    {/* Interactive Text */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
+      className="mt-4 h-12"
+    >
+      <InteractiveText />
+    </motion.div>
 
-            {/* Descriptive Paragraph */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.6, ease: "easeOut" }}
-            >
-              <p className="mt-4 text-lg max-w-2xl mx-auto">
-                Crafting cutting-edge digital solutions that bring ideas to
-                life.
-              </p>
-            </motion.div>
+    {/* Descriptive Paragraph */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 1.6, ease: "easeOut" }}
+    >
+      <p className="mt-4 text-lg max-w-2xl mx-auto">
+        Crafting cutting-edge digital solutions that bring ideas to life.
+      </p>
+    </motion.div>
 
-            {/* CTA Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.8, ease: "easeOut" }}
-              className="mt-8 flex justify-center gap-4"
-            >
-              <a
-                href="#projects"
-                className="inline-block bg-indigo-500 text-white px-8 py-3 rounded-md font-medium hover:bg-indigo-600 transition"
-              >
-                Explore My Work
-              </a>
-            </motion.div>
-          </div>
-        </section>
+    {/* CTA Button */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 1.8, ease: "easeOut" }}
+      className="mt-8 flex justify-center gap-4"
+    >
+      <a
+        href="#projects"
+        className="inline-block bg-indigo-500 text-white px-8 py-3 rounded-md font-medium hover:bg-indigo-600 transition"
+      >
+        Explore My Work
+      </a>
+    </motion.div>
+  </div>
+</section>
+
         {/****************************************************************************************************************************************/}
        
         
