@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import GooeyNav from "./Effects/GooeyNav";
 import InteractiveText from "./Effects/InteractiveText";
-import ScrollVelocity from "./Effects/ScrollVelocity";
 import ShinyText from "./Effects/ShinyText";
 import SplitText from "./Effects/SplitText";
 import SpotlightCard from "./Effects/SpotlightCard";
@@ -306,20 +305,8 @@ const Landing = () => {
           </div>
         </section>
         {/****************************************************************************************************************************************/}
-        {/* Scroll Velocity Effect */}
-        <ScrollVelocity
-          texts={[
-            <ShinyText
-              text={["Rohith's", "Portfolio"]}
-              className="text-white text-5xl font-bold text-center tracking-wider py-4"
-            />,
-          ]}
-          velocity={90}
-          className="custom-scroll-text"
-        />
-        {/* Scroll Velocity Effect */}
-
-        {/****************************************************************************************************************************************/}
+       
+        
 
         {/* About Me Section with Animation */}
         <section id="about" className="py-20 bg-black relative overflow-hidden">
@@ -390,20 +377,9 @@ const Landing = () => {
         {/* About Me Section with Animation */}
 
         {/****************************************************************************************************************************************/}
-        {/* Scroll Velocity Effect */}
 
-        <ScrollVelocity
-          texts={[
-            <ShinyText
-              text={["Rohith's", "Portfolio"]}
-              className="text-white text-5xl font-bold text-center tracking-wider py-4"
-            />,
-          ]}
-          velocity={90}
-          className="custom-scroll-text"
-        />
-        {/* Scroll Velocity Effect */}
-        {/****************************************************************************************************************************************/}
+       
+        
 
         {/* Tech Stack Section  */}
         <section
