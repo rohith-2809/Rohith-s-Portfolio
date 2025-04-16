@@ -512,10 +512,11 @@ const Landing = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl  text-center font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent relative group">
-                Projects
-                <span className="absolute bottom-0 left-1/2 w-24 h-1 bg-indigo-500 transform -translate-x-1/2 translate-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-              </h2>
+             <h2 className="text-5xl md:text-6xl text-center font-extrabold mb-10 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent relative group">
+  Projects
+  <span className="absolute bottom-0 left-1/2 w-24 h-1 bg-indigo-500 transform -translate-x-1/2 translate-y-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+</h2>
+
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-stretch">
