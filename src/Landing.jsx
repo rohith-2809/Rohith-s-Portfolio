@@ -321,7 +321,7 @@ const Landing = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-500 mb-8 relative group">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent relative group">
                 About Me
                 <span className="absolute bottom-0 left-1/2 w-32 h-1 bg-cyan-500 transform -translate-x-1/2 translate-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               </h2>
@@ -402,7 +402,7 @@ const Landing = () => {
             >
               <div className="mb-20">
                 <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 mb-6">
-                  <span className="bg-gradient-to-r from-cyan-400 to-blue-500 inline-block text-transparent bg-clip-text">
+                  <span className="font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                     Powering Innovation
                   </span>
                 </h2>
@@ -512,7 +512,7 @@ const Landing = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl font-bold mb-12 text-white text-center relative group">
+              <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent relative group">
                 Projects
                 <span className="absolute bottom-0 left-1/2 w-24 h-1 bg-indigo-500 transform -translate-x-1/2 translate-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               </h2>
@@ -786,7 +786,7 @@ const Landing = () => {
         <section id="experience" className="py-20 bg-black text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             {/* Heading */}
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-6">
+            <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
               My Experience
             </h2>
 
@@ -851,7 +851,7 @@ const Landing = () => {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="mb-16 text-center"
             >
-              <h2 className="text-5xl font-bold text-white mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+              <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                 Certifications & Expertise
               </h2>
             </motion.div>
