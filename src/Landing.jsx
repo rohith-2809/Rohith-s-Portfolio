@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import GooeyNav from "./Effects/GooeyNav";
 import InteractiveText from "./Effects/InteractiveText";
-import ShinyText from "./Effects/ShinyText";
 import SplitText from "./Effects/SplitText";
 import SpotlightCard from "./Effects/SpotlightCard";
 import TiltedCard from "./Effects/TiltedCard";
@@ -232,100 +231,112 @@ const Landing = () => {
 
       {/* Main Content */}
       <main className="flex-grow">
-                {/****************************************************************************************************************************************/}
+        {/****************************************************************************************************************************************/}
 
         {/* Hero Section */}
         <section
-  ref={heroRef}
-  id="home"
-  className="
-    relative bg-black text-white py-20 
-    min-h-[90vh] flex items-center 
+          ref={heroRef}
+          id="home"
+          className="
+    relative bg-black text-white py-20
+    min-h-[90vh] flex items-center
     bg-center bg-cover bg-scroll md:bg-fixed
   "
-  style={{ backgroundImage: "url('/img_9.webp')" }}
->
-  {/* Semi-transparent overlay */}
-  <div className="absolute inset-0 bg-black bg-opacity-60" />
+          style={{ backgroundImage: "url('/img_9.webp')" }}
+        >
+          {/* Semi-transparent overlay */}
+          <div className="absolute inset-0 bg-black bg-opacity-60" />
 
-  {/* Content */}
-  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
-    {/* Headline */}
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1, delay: 1.0, ease: "easeOut" }}
-    >
-      <div className="hero-text">
-        <SplitText
-          text="Embark on a New Journey"
-          className="text-5xl font-extrabold text-white text-center"
-          delay={100}
-          animationFrom={{
-            opacity: 0,
-            transform: "translate3d(0,40px,0)",
-          }}
-          animationTo={{ opacity: 1, transform: "translate3d(0,0,0)" }}
-          easing="easeOutCubic"
-          textAlign="center"
-        />
-      </div>
-    </motion.div>
+          {/* Blurred gradient circles */}
+          <div className="absolute inset-0 opacity-20 pointer-events-none">
+            <div className="absolute w-[500px] h-[500px] bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-full blur-3xl -top-32 -left-32 animate-pulse" />
+            <div className="absolute w-[400px] h-[400px] bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-full blur-3xl -bottom-32 -right-32 animate-pulse delay-1000" />
+          </div>
 
-    {/* Interactive Text */}
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
-      className="mt-4 h-12"
-    >
-      <InteractiveText />
-    </motion.div>
+          {/* Content */}
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full z-10">
+            {/* Headline */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 1.0, ease: "easeOut" }}
+            >
+              <SplitText
+                text="Embark on a New Journey"
+                className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mx-auto"
+                delay={100}
+                animationFrom={{
+                  opacity: 0,
+                  transform: "translate3d(0,40px,0)",
+                }}
+                animationTo={{ opacity: 1, transform: "translate3d(0,0,0)" }}
+                easing="easeOutCubic"
+                textAlign="center"
+              />
+            </motion.div>
 
-    {/* Descriptive Paragraph */}
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 1.6, ease: "easeOut" }}
-    >
-      <p className="mt-4 text-lg max-w-2xl mx-auto">
-        Crafting cutting-edge digital solutions that bring ideas to life.
-      </p>
-    </motion.div>
+            {/* Interactive Text */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
+              className="mt-4 h-12 text-white"
+            >
+              <InteractiveText />
+            </motion.div>
 
-    {/* CTA Button */}
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 1.8, ease: "easeOut" }}
-      className="mt-8 flex justify-center gap-4"
-    >
-      <a
-        href="#projects"
-        className="inline-block bg-indigo-500 text-white px-8 py-3 rounded-md font-medium hover:bg-indigo-600 transition"
-      >
-        Explore My Work
-      </a>
-    </motion.div>
-  </div>
-</section>
+            {/* Descriptive Paragraph */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.6, ease: "easeOut" }}
+              className="mt-4"
+            >
+              <p className="text-lg max-w-2xl mx-auto text-gray-300">
+                Crafting cutting-edge digital solutions that bring ideas to
+                life.
+              </p>
+            </motion.div>
+
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.8, ease: "easeOut" }}
+              className="mt-8 flex justify-center"
+            >
+              <a
+                href="#projects"
+                className="relative inline-flex items-center px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white rounded-md font-medium overflow-hidden transition-all duration-300"
+              >
+                {/* 10% white overlay */}
+                <span className="absolute inset-0 bg-white/10 rounded-md pointer-events-none" />
+                <span className="relative">Explore My Work</span>
+              </a>
+            </motion.div>
+          </div>
+        </section>
 
         {/****************************************************************************************************************************************/}
-       
-        
 
         {/* About Me Section with Animation */}
         <section id="about" className="py-20 bg-black relative overflow-hidden">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          {/* Animated background elements */}
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute w-[500px] h-[500px] bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-full blur-3xl -top-32 -left-32 animate-pulse" />
+            <div className="absolute w-[400px] h-[400px] bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-full blur-3xl -bottom-32 -right-32 animate-pulse delay-1000" />
+          </div>
+
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-500 mb-8 relative group">
+              <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400 mb-8 relative group">
                 About Me
-                <span className="absolute bottom-0 left-1/2 w-32 h-1 bg-cyan-500 transform -translate-x-1/2 translate-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                <span className="absolute bottom-0 left-1/2 w-32 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform -translate-x-1/2 translate-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </h2>
             </motion.div>
 
@@ -334,14 +345,14 @@ const Landing = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
               viewport={{ once: true }}
-              className="p-8 bg-neutral-900 rounded-xl border border-neutral-800 hover:border-indigo-400/30 transition-all duration-300 mb-12"
+              className="p-8 bg-neutral-900 rounded-xl border border-neutral-800 hover:border-indigo-500/30 transition-all duration-300 mb-12"
             >
               <p className="text-xl text-gray-300 leading-relaxed">
                 I blend cutting-edge technology with creative thinking to build
                 digital experiences that solve real problems. With deep
                 expertise in <span className="text-indigo-400">MERN stack</span>
-                , <span className="text-cyan-400">AI/ML solutions</span>, and{" "}
-                <span className="text-purple-400">UI/UX design</span>, I thrive
+                ,<span className="text-purple-400"> AI/ML solutions</span>, and
+                <span className="text-pink-400"> UI/UX design</span>, I thrive
                 on pushing the boundaries of what's possible. Passionate about
                 technology’s ever-evolving landscape, I constantly explore new
                 trends, frameworks, and innovations to stay ahead of the curve.
@@ -358,23 +369,27 @@ const Landing = () => {
                 href="https://drive.google.com/file/d/1dJKCrpJTReFvzrQ3HMdBa_WO_-s52c_t/view?usp=drive_link"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-700 hover:to-cyan-700 text-white rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/30"
+                className="relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white rounded-xl font-semibold transition-all duration-300 overflow-hidden"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 mr-3"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-                View My Resume
+                {/* 10% white overlay */}
+                <span className="absolute inset-0 bg-white/10 rounded-xl pointer-events-none" />
+                <span className="relative flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 mr-3"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                  View My Resume
+                </span>
               </a>
             </motion.div>
           </div>
@@ -384,9 +399,6 @@ const Landing = () => {
 
         {/****************************************************************************************************************************************/}
 
-       
-        
-
         {/* Tech Stack Section  */}
         <section
           id="tech-stack"
@@ -394,8 +406,8 @@ const Landing = () => {
         >
           {/* Animated background elements */}
           <div className="absolute inset-0 opacity-20">
-            <div className="absolute w-[500px] h-[500px] bg-gradient-to-r from-cyan-500/30 to-blue-500/30 rounded-full blur-3xl -top-32 -left-32 animate-pulse"></div>
-            <div className="absolute w-[400px] h-[400px] bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-full blur-3xl -bottom-32 -right-32 animate-pulse delay-1000"></div>
+            <div className="absolute w-[500px] h-[500px] bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-full blur-3xl -top-32 -left-32 animate-pulse" />
+            <div className="absolute w-[400px] h-[400px] bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-full blur-3xl -bottom-32 -right-32 animate-pulse delay-1000" />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -406,21 +418,22 @@ const Landing = () => {
               viewport={{ once: true }}
             >
               <div className="mb-20">
-                <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 mb-6">
-                  <span className="bg-gradient-to-r from-cyan-400 to-blue-500 inline-block text-transparent bg-clip-text">
+                <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-6">
+                  <span className="inline-block bg-gradient-to-r from-indigo-400 to-purple-400 text-transparent bg-clip-text">
                     Powering Innovation
                   </span>
                 </h2>
-                <p className="text-gray-300/90 text-xl max-w-3xl mx-auto leading-relaxed">
+                <p className="text-gray-300 text-xl max-w-3xl mx-auto leading-relaxed">
                   Combining cutting-edge technologies with modern development
                   practices to create
-                  <span className="text-cyan-400 font-medium"> performant</span>
-                  ,<span className="text-blue-400 font-medium"> scalable</span>,
-                  and
-                  <span className="text-purple-400 font-medium">
+                  <span className="text-indigo-400 font-medium">
                     {" "}
-                    intuitive
-                  </span>{" "}
+                    performant
+                  </span>
+                  ,
+                  <span className="text-purple-400 font-medium"> scalable</span>
+                  , and
+                  <span className="text-pink-400 font-medium"> intuitive</span>
                   solutions.
                 </p>
               </div>
@@ -430,13 +443,13 @@ const Landing = () => {
               {techStack.map((tech, index) => (
                 <motion.div
                   key={tech.name}
-                  className="group relative p-6 w-full h-56 rounded-2xl bg-gradient-to-br from-black via-gray-900 to-black hover:from-gray-900 hover:via-black hover:to-gray-900 border-2 border-gray-800 hover:border-cyan-400/30 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                  className="group relative p-6 w-full h-56 rounded-2xl bg-gradient-to-br from-black via-gray-900 to-black border-2 border-gray-800 hover:border-indigo-500/30 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   whileHover={{
                     scale: 1.05,
                     rotate: Math.random() * 4 - 2,
-                    boxShadow: "0 0 40px rgba(34, 211, 238, 0.2)",
+                    boxShadow: "0 0 40px rgba(99,102,241,0.2)",
                   }}
                   transition={{
                     duration: 0.4,
@@ -447,19 +460,19 @@ const Landing = () => {
                   viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                 >
                   {/* Hover glow effect */}
-                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(400px_circle_at_var(--x)_var(--y),rgba(34,211,238,0.15),transparent)]" />
+                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(400px_circle_at_var(--x)_var(--y),rgba(99,102,241,0.15),transparent)]" />
 
                   <div className="flex flex-col items-center space-y-4 h-full justify-center">
                     <motion.img
                       src={tech.icon}
                       alt={tech.name}
-                      className="h-16 w-16 object-contain mb-4 group-hover:scale-110 group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.4)] transition-all duration-300"
+                      className="h-16 w-16 object-contain mb-4 group-hover:scale-110 group-hover:drop-shadow-[0_0_12px_rgba(99,102,241,0.4)] transition-all duration-300"
                       whileHover={{ y: -5 }}
                     />
-                    <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]">
+                    <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(99,102,241,0.4)]">
                       {tech.name}
                     </h3>
-                    <p className="text-gray-400/90 text-sm mt-2 group-hover:text-gray-200 transition-colors font-medium">
+                    <p className="text-gray-400 text-sm mt-2 group-hover:text-gray-200 transition-colors font-medium">
                       {tech.description}
                     </p>
                   </div>
@@ -469,7 +482,7 @@ const Landing = () => {
 
             {/* Animated separator */}
             <motion.div
-              className="mt-24 mx-auto w-1/2 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
+              className="mt-24 mx-auto w-1/2 h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               transition={{ duration: 1.5, delay: 0.5 }}
@@ -483,28 +496,27 @@ const Landing = () => {
               transition={{ delay: 0.5 }}
               viewport={{ once: true }}
             >
-              <p className="text-gray-300/85 text-lg max-w-3xl mx-auto leading-relaxed">
+              <p className="text-gray-300 text-lg max-w-3xl mx-auto leading-relaxed">
                 Every tool in my arsenal is carefully selected for its
                 performance, ecosystem, and maintainability. I specialize in
                 creating full-stack solutions that leverage AI capabilities
                 while maintaining{" "}
-                <span className="text-cyan-400">peak performance</span>
-                and <span className="text-blue-400">
-                  developer-friendly
-                </span>{" "}
+                <span className="text-indigo-400">peak performance</span> and{" "}
+                <span className="text-purple-400">developer-friendly</span>{" "}
                 architectures.
               </p>
               <div className="mt-8 flex justify-center gap-4">
-                <button className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold text-white hover:scale-105 transition-transform duration-300 shadow-lg shadow-cyan-500/20">
+                <button className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 rounded-lg font-semibold text-white hover:scale-105 transition-transform duration-300 shadow-lg shadow-indigo-500/20">
                   See Projects
                 </button>
-                <button className="px-6 py-3 border-2 border-cyan-400/30 text-cyan-400 rounded-lg font-semibold hover:border-cyan-400/60 hover:bg-cyan-400/10 transition-all duration-300">
+                <button className="px-6 py-3 border-2 border-indigo-500/30 text-indigo-400 rounded-lg font-semibold hover:border-indigo-500/60 hover:bg-indigo-500/10 transition-all duration-300">
                   Tech Breakdown
                 </button>
               </div>
             </motion.div>
           </div>
         </section>
+
         {/* Tech Stack Section  */}
         {/******************************************************************************************************************************************/}
 
@@ -517,22 +529,22 @@ const Landing = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl font-bold mb-12 text-white text-center relative group">
+              <h2 className="text-4xl font-bold mb-12 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent text-center relative group">
                 Projects
-                <span className="absolute bottom-0 left-1/2 w-24 h-1 bg-indigo-500 transform -translate-x-1/2 translate-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                <span className="absolute bottom-0 left-1/2 w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform -translate-x-1/2 translate-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </h2>
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-stretch">
-              {/* Project 1 - Plant Disease Detection */}
+              {/* Project 1 */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
                 viewport={{ once: true }}
-                className="h-full"
+                className="h-full relative group"
               >
-                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900 hover:bg-neutral-800 hover:shadow-xl hover:border-indigo-500/20 border border-transparent transition-all duration-300 ease-in-out group">
+                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-gradient-to-br from-gray-900 to-black rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 border-2 border-gray-800 hover:border-indigo-500">
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center">
@@ -556,7 +568,6 @@ const Landing = () => {
                       </h3>
                     </div>
 
-                    {/* Video Demo Section */}
                     <div className="mb-6 rounded-lg overflow-hidden border border-neutral-800 hover:border-indigo-500/30 transition-all duration-300">
                       <video
                         loading="lazy"
@@ -582,7 +593,7 @@ const Landing = () => {
                       href="https://github.com/rohith-2809/mern-test"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center text-gray-400 hover:text-indigo-400 transition-colors group"
+                      className="flex items-center text-gray-400 hover:text-indigo-400 transition-colors"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -598,37 +609,49 @@ const Landing = () => {
                       href="https://mern-test-client.onrender.com/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition-all hover:shadow-indigo-500/20 hover:shadow-lg"
+                      className="relative inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white rounded-md transition-all duration-300 overflow-hidden"
                     >
-                      <span className="mr-2">Live Demo</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
+                      <span className="absolute inset-0 bg-white/10 rounded-md pointer-events-none" />
+                      <span className="relative flex items-center">
+                        <span className="mr-2">Live Demo</span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
+                        </svg>
+                      </span>
                     </a>
                   </div>
+
+                  {/* Hover Glow */}
+                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-2xl blur-xl" />
+                  </div>
                 </SpotlightCard>
+                {/* Corner Accent */}
+                <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
+                  <div className="absolute -right-8 -top-8 w-32 h-32 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-20 group-hover:opacity-40 rotate-45 transition-all duration-500" />
+                </div>
               </motion.div>
 
-              {/* Project 2 - AI Model Deployment */}
+              {/* Project 2 */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
                 viewport={{ once: true }}
-                className="h-full"
+                className="h-full relative group"
               >
-                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900 hover:bg-neutral-800 hover:shadow-xl hover:border-indigo-500/20 border border-transparent transition-all duration-300 ease-in-out group">
+                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-gradient-to-br from-gray-900 to-black rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 border-2 border-gray-800 hover:border-indigo-500">
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center">
@@ -651,6 +674,7 @@ const Landing = () => {
                         AI Model Deployment
                       </h3>
                     </div>
+
                     <p className="text-gray-400 leading-relaxed mb-6">
                       End-to-end MLOps solution deploying machine learning
                       models via Hugging Face and Flask APIs. Demonstrates
@@ -663,7 +687,7 @@ const Landing = () => {
                       href="https://github.com/YourUserName/AI-Model-Deployment"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center text-gray-400 hover:text-indigo-400 transition-colors group"
+                      className="flex items-center text-gray-400 hover:text-indigo-400 transition-colors"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -679,37 +703,49 @@ const Landing = () => {
                       href="https://huggingface.co/vittamraj"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition-all hover:shadow-indigo-500/20 hover:shadow-lg"
+                      className="relative inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white rounded-md transition-all duration-300 overflow-hidden"
                     >
-                      <span className="mr-2">Live Demo</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
+                      <span className="absolute inset-0 bg-white/10 rounded-md pointer-events-none" />
+                      <span className="relative flex items-center">
+                        <span className="mr-2">Live Demo</span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
+                        </svg>
+                      </span>
                     </a>
                   </div>
+
+                  {/* Hover Glow */}
+                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-2xl blur-xl" />
+                  </div>
                 </SpotlightCard>
+                {/* Corner Accent */}
+                <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
+                  <div className="absolute -right-8 -top-8 w-32 h-32 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-20 group-hover:opacity-40 rotate-45 transition-all duration-500" />
+                </div>
               </motion.div>
 
-              {/* Project 3 - Employee Management System */}
+              {/* Project 3 */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
                 viewport={{ once: true }}
-                className="h-full"
+                className="h-full relative group"
               >
-                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900 hover:bg-neutral-800 hover:shadow-xl hover:border-indigo-500/20 border border-transparent transition-all duration-300 ease-in-out group">
+                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-gradient-to-br from-gray-900 to-black rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 border-2 border-gray-800 hover:border-indigo-500">
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center">
@@ -732,6 +768,7 @@ const Landing = () => {
                         Employee Management System
                       </h3>
                     </div>
+
                     <p className="text-gray-400 leading-relaxed mb-6">
                       A fast, responsive app built with React, Tailwind, and
                       Vite to manage employee data using local storage — no
@@ -743,7 +780,7 @@ const Landing = () => {
                       href="https://github.com/rohith-2809/Employee-Mangement-System"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center text-gray-400 hover:text-indigo-400 transition-colors group"
+                      className="flex items-center text-gray-400 hover:text-indigo-400 transition-colors"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -759,30 +796,43 @@ const Landing = () => {
                       href="https://employee-mangement-system-w79y.onrender.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition-all hover:shadow-indigo-500/20 hover:shadow-lg"
+                      className="relative inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white rounded-md transition-all duration-300 overflow-hidden"
                     >
-                      <span className="mr-2">Live Demo</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
+                      <span className="absolute inset-0 bg-white/10 rounded-md pointer-events-none" />
+                      <span className="relative flex items-center">
+                        <span className="mr-2">Live Demo</span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
+                        </svg>
+                      </span>
                     </a>
                   </div>
+
+                  {/* Hover Glow */}
+                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-2xl blur-xl" />
+                  </div>
                 </SpotlightCard>
+                {/* Corner Accent */}
+                <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
+                  <div className="absolute -right-8 -top-8 w-32 h-32 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-20 group-hover:opacity-40 rotate-45 transition-all duration-500" />
+                </div>
               </motion.div>
             </div>
           </div>
         </section>
+
         {/* Projects Section */}
         {/****************************************************************************************************************************************/}
 
@@ -856,11 +906,11 @@ const Landing = () => {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="mb-16 text-center"
             >
-              <h2 className="text-5xl font-bold text-white mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+              <h2 className="text-5xl font-bold text-white mb-6 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                 Certifications & Expertise
               </h2>
             </motion.div>
-            {/* ...  introductory text ... */}
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -876,12 +926,13 @@ const Landing = () => {
                 through Coursera's official platform.
               </p>
               <motion.div
-                className="mt-8 h-1 bg-gradient-to-r from-blue-500 to-purple-600 w-32 mx-auto rounded-full"
+                className="mt-8 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 w-32 mx-auto rounded-full"
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ delay: 0.8, duration: 0.5 }}
               />
             </motion.div>
+
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -913,45 +964,50 @@ const Landing = () => {
                     </div>
 
                     <div className="p-8 space-y-4">
-                      <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                      <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
                         {cert.text}
                       </h3>
 
                       <div className="flex items-center opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                        <span className="px-4 py-2 bg-indigo-600 rounded-full text-sm font-semibold flex items-center">
-                          <span>View Credential</span>
-                          <svg
-                            className="w-4 h-4 ml-2"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M13 7l5 5m0 0l-5 5m5-5H6"
-                            />
-                          </svg>
+                        <span className="relative inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 rounded-full text-sm font-semibold overflow-hidden">
+                          {/* white overlay at 10% */}
+                          <span className="absolute inset-0 bg-white/10 rounded-full pointer-events-none" />
+                          <span className="relative flex items-center">
+                            <span>View Credential</span>
+                            <svg
+                              className="w-4 h-4 ml-2"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </div>
                     </div>
 
                     {/* Hover Glow Effect */}
                     <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                      <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/30 to-purple-500/30 rounded-2xl blur-xl" />
+                      <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-2xl blur-xl" />
                     </div>
                   </a>
 
                   {/* Corner Accent */}
                   <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
-                    <div className="absolute -right-8 -top-8 w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-600 opacity-20 group-hover:opacity-40 rotate-45 transition-all duration-500" />
+                    <div className="absolute -right-8 -top-8 w-32 h-32 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-20 group-hover:opacity-40 rotate-45 transition-all duration-500" />
                   </div>
                 </motion.div>
               ))}
             </motion.div>
           </div>
         </section>
+
         {/* Certifications Section */}
         {/****************************************************************************************************************************************/}
         {/*Quote section */}
