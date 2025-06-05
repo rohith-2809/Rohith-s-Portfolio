@@ -20,10 +20,9 @@ const Landing = () => {
   const navItems = [
     { label: "Home", href: "#home" },
     { label: "About Me", href: "#about" },
-    { label: "Tech Stack", href: "#tech-stack"}, // Added for clarity
+ // Added for clarity
     { label: "Projects", href: "#projects" },
-    { label: "Experience", href: "#experience"}, // Added for clarity
-    { label: "Certifications", href: "#certifications"}, // Added for clarity
+ // Added for clarity
     // { label: "Get Quote", href: "#get-quote" }, // Already a button, can be removed from nav if preferred
   ];
 
