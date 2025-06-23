@@ -308,7 +308,6 @@ const Landing = () => {
                   transition={{ duration: 0.4, delay: index * 0.06, type: "spring", stiffness: 180, damping: 15 }}
                   viewport={{ once: true, amount: 0.2 }}
                 >
-                  {/* The radial gradient effect was removed from here because it was non-functional without JS logic to update CSS variables. */}
                   <motion.img src={tech.icon} alt={tech.name} className="h-12 w-12 sm:h-14 sm:w-14 object-contain mb-2.5 group-hover:scale-110 group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.45)] transition-all duration-300" />
                   <h3 className="text-base sm:text-lg font-semibold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-blue-300 transition-all duration-300">
                     {tech.name}
@@ -350,8 +349,9 @@ const Landing = () => {
                 <span className="absolute bottom-0 left-1/2 w-28 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform -translate-x-1/2 translate-y-3 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full group-hover:w-32 ease-out"></span>
               </h2>
             </motion.div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-stretch">
-              {/* Project 1 */}
+            {/* --- Project Grid --- */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 place-items-stretch">
+              {/* Project 1: Plant Disease Detection */}
               <motion.div initial={{ opacity: 0, y: 20, scale:0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }} viewport={{ once: true, amount: 0.2 }} className="h-full flex" >
                 <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-indigo-500/60 rounded-xl shadow-xl hover:shadow-indigo-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
                   <div>
@@ -364,7 +364,7 @@ const Landing = () => {
                     <div className="mb-5 rounded-lg overflow-hidden border border-neutral-700/80 group-hover:border-indigo-500/50 transition-all duration-300 shadow-md aspect-video">
                       <video loading="lazy" autoPlay loop muted playsInline className="w-full h-full object-cover" preload="metadata" > <source src="/project-demo.webm" type="video/webm" /> Your browser does not support the video tag. </video>
                     </div>
-                    <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">AI-powered web application that identifies plant diseases from images using CNN models. Provides detailed analysis and preventive measures for healthy crop maintenance.</p>
+                    <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">AI-powered web application that identifies plant diseases from images using CNN models. Provides detailed analysis and preventive measures.</p>
                   </div>
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
                     <a href="https://github.com/rohith-2809/mern-test" target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-400 hover:text-indigo-400 transition-colors duration-200 group/link" >
@@ -378,8 +378,37 @@ const Landing = () => {
                   </div>
                 </SpotlightCard>
               </motion.div>
-              {/* Project 2 (Video Added) */}
-              <motion.div initial={{ opacity: 0, y: 20, scale:0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }} viewport={{ once: true, amount: 0.2 }} className="h-full flex" >
+
+              {/* Project 2: DocuAgent AI (New) */}
+              <motion.div initial={{ opacity: 0, y: 20, scale:0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }} viewport={{ once: true, amount: 0.2 }} className="h-full flex" >
+                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-emerald-500/60 rounded-xl shadow-xl hover:shadow-emerald-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center border border-emerald-500/30">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"> <path strokeLinecap="round" strokeLinejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3M5.636 5.636l-1.414-1.414M19.778 19.778l-1.414-1.414M18.364 5.636l1.414-1.414M4.222 19.778l1.414-1.414M12 12a3 3 0 100-6 3 3 0 000 6z" /> <path strokeLinecap="round" strokeLinejoin="round" d="M12 12a6 6 0 01-6 6H4.5a2.25 2.25 0 01-2.25-2.25V15M12 12a6 6 0 006 6h1.5a2.25 2.25 0 002.25-2.25V15M12 12a6 6 0 01-6-6V4.5a2.25 2.25 0 012.25-2.25H9M12 12a6 6 0 006-6V4.5a2.25 2.25 0 00-2.25-2.25H15" /> </svg>
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-100 group-hover:text-emerald-300 transition-colors">DocuAgent AI</h3>
+                    </div>
+                    <div className="mb-5 rounded-lg overflow-hidden border border-neutral-700/80 group-hover:border-emerald-500/50 transition-all duration-300 shadow-md aspect-video">
+                      <video loading="lazy" autoPlay loop muted playsInline className="w-full h-full object-cover" preload="metadata" > <source src="/DocuAgent-demo.webm" type="video/webm" /> Your browser does not support the video tag. </video>
+                    </div>
+                    <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">An intelligent agent that automates software documentation by generating UML diagrams and code explanations directly from a given codebase.</p>
+                  </div>
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
+                    <a href="https://github.com/rohith-2809" target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-400 hover:text-emerald-400 transition-colors duration-200 group/link" >
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-1.5 transition-transform group-hover/link:scale-110"> <path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z" clipRule="evenodd" /> </svg>
+                      <span className="font-medium text-sm">Source Code</span>
+                    </a>
+                    <a href="https://docuagent-2vp4.onrender.com/" target="_blank" rel="noopener noreferrer" className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm rounded-md font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/40" >
+                      <span className="mr-2">Live Demo</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}> <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /> </svg>
+                    </a>
+                  </div>
+                </SpotlightCard>
+              </motion.div>
+
+              {/* Project 3: AI Model Deployment */}
+              <motion.div initial={{ opacity: 0, y: 20, scale:0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }} viewport={{ once: true, amount: 0.2 }} className="h-full flex" >
                  <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-teal-500/60 rounded-xl shadow-xl hover:shadow-teal-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
                     <div>
                         <div className="flex items-center gap-3 mb-4">
@@ -394,7 +423,7 @@ const Landing = () => {
                                 Your browser does not support the video tag.
                             </video>
                         </div>
-                        <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">End-to-end MLOps solution deploying machine learning models via Hugging Face and Flask APIs. Demonstrates real-time predictions with seamless integration.</p>
+                        <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">End-to-end MLOps solution deploying machine learning models via Hugging Face and Flask APIs. Demonstrates real-time predictions.</p>
                       </div>
                       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
                         <a href="https://github.com/rohith-2809" target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-400 hover:text-teal-400 transition-colors duration-200 group/link" >
@@ -408,8 +437,9 @@ const Landing = () => {
                       </div>
                  </SpotlightCard>
               </motion.div>
-              {/* Project 3 (Corrected) */}
-              <motion.div initial={{ opacity: 0, y: 20, scale:0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }} viewport={{ once: true, amount: 0.2 }} className="h-full flex" >
+
+              {/* Project 4: Employee Management */}
+              <motion.div initial={{ opacity: 0, y: 20, scale:0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }} viewport={{ once: true, amount: 0.2 }} className="h-full flex" >
                  <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-purple-500/60 rounded-xl shadow-xl hover:shadow-purple-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
                     <div>
                         <div className="flex items-center gap-3 mb-4">
@@ -428,7 +458,7 @@ const Landing = () => {
                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-1.5 transition-transform group-hover/link:scale-110"> <path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z" clipRule="evenodd" /> </svg>
                           <span className="font-medium text-sm">Source Code</span>
                         </a>
-                        <a href="https://employee-management-system-jdxe.onrender.com" target="_blank" rel="noopener noreferrer" className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-sm rounded-md font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/40" >
+                        <a href="https://employee-mangement-system-w79y.onrender.com" target="_blank" rel="noopener noreferrer" className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-sm rounded-md font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/40" >
                           <span className="mr-2">Live Demo</span>
                           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}> <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /> </svg>
                         </a>
