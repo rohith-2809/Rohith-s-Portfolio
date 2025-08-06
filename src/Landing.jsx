@@ -57,6 +57,12 @@ const Landing = () => {
       image: "/PreviewUX.webp",
       description: "User-centered design principles and interaction research methodologies",
     },
+    {
+      text: "Google Advanced Data Analytics",
+      link: "https://coursera.org/share/09e30d48b4d38a664c30b12795d8b144",
+      image: "public/Google Advanced Data Analytics Capstone.webp",
+      description: "Harnessing advanced data techniques, including statistical analysis, to drive strategic insights.",
+    },
   ];
 
   const techStack = [
@@ -592,7 +598,7 @@ const Landing = () => {
                         <p className="mt-1.5 text-gray-400/90 text-sm">Tell me about your idea, I'll respond within 24 hours.</p>
                       </div>
                       <form className="space-y-5" onSubmit={sendEmail}>
-                        {[ { name: "name", type: "text", placeholder: "Your Full Name", icon: <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /> }, { name: "email", type: "email", placeholder: "your.email@example.com", icon: <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /> }, ].map(field => (
+                        {[ { name: "name", type: "text", placeholder: "Your Full Name", icon: <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /> }, { name: "email", type: "email", placeholder: "your.email@example.com", icon: <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25-2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /> }, ].map(field => (
                           <div key={field.name}>
                             <label htmlFor={field.name} className="block text-sm font-medium text-gray-300/90 mb-1.5 text-left">{field.name.charAt(0).toUpperCase() + field.name.slice(1)}</label>
                             <div className="relative">
