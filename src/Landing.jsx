@@ -60,7 +60,7 @@ const Landing = () => {
     {
       text: "Google Advanced Data Analytics",
       link: "https://coursera.org/share/09e30d48b4d38a664c30b12795d8b144",
-      image: "public/Google Advanced Data Analytics Capstone.webp",
+      image: "/Google Advanced Data Analytics Capstone.webp",
       description: "Harnessing advanced data techniques, including statistical analysis, to drive strategic insights.",
     },
   ];
