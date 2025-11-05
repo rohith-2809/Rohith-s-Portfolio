@@ -39,31 +39,48 @@ const Landing = () => {
   ];
 
   const certifications = [
-    {
-      text: "Google Machine Learning",
-      link: "https://coursera.org/share/27665abf668c0479e649f09c01ce75b9",
-      image: "/MachineLearningPreview.webp",
-      description: "Mastering predictive algorithms and data-driven model development",
-    },
-    {
-      text: "Google AI Essentials",
-      link: "https://coursera.org/share/e76522223bd36da3f4a8feeb93d2d2f7",
-      image: "/AiPreview.webp",
-      description: "Foundational knowledge in neural networks and AI system implementation",
-    },
-    {
-      text: "Google User Experience Design",
-      link: "https://coursera.org/share/c617189e47b33926082172340be87f71",
-      image: "/PreviewUX.webp",
-      description: "User-centered design principles and interaction research methodologies",
-    },
-    {
-      text: "Google Advanced Data Analytics",
-      link: "https://coursera.org/share/09e30d48b4d38a664c30b12795d8b144",
-      image: "/Google Advanced Data Analytics Capstone.webp",
-      description: "Examine data to identify patterns and trends, build models using machine learning techniques, and create data visualizations.",
-    },
-  ];
+  {
+    text: "Google Machine Learning",
+    link: "https://coursera.org/share/27665abf668c0479e649f09c01ce75b9",
+    image: "/MachineLearningPreview.webp",
+    description: "Mastering predictive algorithms and data-driven model development",
+  },
+  {
+    text: "Google AI Essentials",
+    link: "https://coursera.org/share/e76522223bd36da3f4a8feeb93d2d2f7",
+    image: "/AiPreview.webp",
+    description: "Foundational knowledge in neural networks and AI system implementation",
+  },
+  {
+    text: "Google User Experience Design",
+    link: "https://coursera.org/share/c617189e47b33926082172340be87f71",
+    image: "/PreviewUX.webp",
+    description: "User-centered design principles and interaction research methodologies",
+  },
+  {
+    text: "Google Advanced Data Analytics",
+    link: "https://coursera.org/share/09e30d48b4d38a664c30b12795d8b144",
+    image: "/Google Advanced Data Analytics Capstone.webp",
+    description:
+      "Examine data to identify patterns and trends, build models using machine learning techniques, and create data visualizations.",
+  },
+
+  {
+    text: "Automate Cybersecurity Tasks with Python",
+    link: "https://coursera.org/share/b00ad7de4b6962060b8d47800927b352",
+    image: "/Google Python.webp",
+    description:
+      "Enhancing cybersecurity workflows through Python scripting and automated threat detection.",
+  },
+  {
+    text: "Connect and Protect: Networks and Network Security",
+    link: "https://coursera.org/share/9bd3492f4984a22b035647ca0e151226",
+    image: "/Google networking.webp",
+    description:
+      "Mastering network architecture, intrusion prevention, and system hardening for secure digital environments.",
+  },
+];
+
 
   const techStack = [
     { name: "Deep Learning", icon: "/DeepLearning.webp", description: "Neural network architectures" },
@@ -506,63 +523,158 @@ const Landing = () => {
         </section>
 
         {/* Certifications Section */}
-        <section id="certifications" className="py-20 md:py-24 bg-black">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: "easeOut" }} viewport={{ once: true, amount: 0.3 }} className="mb-12 md:mb-16 text-center" >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent relative group">
-                Certifications & Expertise
-                <span className="absolute bottom-0 left-1/2 w-44 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform -translate-x-1/2 translate-y-2.5 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full group-hover:w-48 ease-out"></span>
-              </h2>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6, ease:"easeOut" }} viewport={{ once: true, amount: 0.3 }} className="max-w-3xl mx-auto mb-12 md:mb-16 text-center" >
-              <p className="text-lg text-gray-300/90 leading-relaxed">
-                Earned through Google's rigorous professional certification
-                programs on Coursera, these credentials validate expertise in
-                cutting-edge technologies. Each represents 100+ hours of
-                coursework, hands-on projects, and industry-aligned assessments.
-              </p>
-              <motion.div className="mt-8 h-1.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-600 w-36 mx-auto rounded-full" initial={{ scaleX: 0, originX: 0.5 }} whileInView={{ scaleX: 1 }} transition={{ delay: 0.3, duration: 0.8, ease: "circOut" }} viewport={{ once: true }} />
-            </motion.div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-              {certifications.map((cert, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ scale: 0.95, opacity: 0, y: 20 }}
-                  whileInView={{ scale: 1, opacity: 1, y: 0 }}
-                  transition={{ type: "spring", stiffness: 130, damping: 18, delay: idx * 0.1 + 0.2 }}
-                  whileHover={{ scale: 1.03, y: -6, transition:{type:"spring", stiffness:300, damping:10} }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  className="relative group h-full flex" 
-                >
-                  <a href={cert.link} target="_blank" rel="noopener noreferrer" className="flex flex-col w-full bg-gradient-to-br from-neutral-900/90 to-black/95 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-indigo-500/25 transition-all duration-400 h-full border border-neutral-800/70 hover:border-indigo-500/60 cursor-pointer-interactive" >
-                    <div className="relative overflow-hidden aspect-video">
-                      <img src={cert.image} alt={`${cert.text} Certification`} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-400 ease-out" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-                    <div className="p-6 space-y-3 flex-grow flex flex-col">
-                      <h3 className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 group-hover:from-blue-300 group-hover:to-pink-300 transition-all duration-300 leading-tight">
-                        {cert.text}
-                      </h3>
-                      <p className="text-sm text-gray-400/90 group-hover:text-gray-300/95 transition-colors duration-300 flex-grow leading-relaxed">
-                        {cert.description}
-                      </p>
-                      <div className="mt-auto pt-3">
-                        <span className="inline-flex items-center px-4 py-2 bg-indigo-600 group-hover:bg-indigo-500 rounded-md text-sm font-semibold text-white transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-indigo-500/30">
-                          <span>View Credential</span>
-                          <svg className="w-4 h-4 ml-2 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" /> </svg>
-                        </span>
-                      </div>
-                    </div>
-                    <div className="absolute -inset-0.5 rounded-xl opacity-0 group-hover:opacity-40 transition-opacity duration-300 pointer-events-none bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 blur-xl" />
-                  </a>
-                  <div className="absolute top-0 right-0 w-12 h-12 overflow-hidden rounded-tr-xl">
-                    <div className="absolute -right-6 -top-6 w-24 h-24 bg-gradient-to-br from-blue-600 to-purple-700 opacity-10 group-hover:opacity-15 rotate-45 transition-all duration-500" />
-                  </div>
-                </motion.div>
-              ))}
+       {/* Certifications Section */}
+<section id="certifications" className="py-20 md:py-24 bg-black">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      viewport={{ once: true, amount: 0.3 }}
+      className="mb-12 md:mb-16 text-center"
+    >
+      <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent relative group">
+        Certifications & Expertise
+        <span className="absolute bottom-0 left-1/2 w-44 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform -translate-x-1/2 translate-y-2.5 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full group-hover:w-48 ease-out"></span>
+      </h2>
+    </motion.div>
+
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
+      viewport={{ once: true, amount: 0.3 }}
+      className="max-w-3xl mx-auto mb-12 md:mb-16 text-center"
+    >
+      <p className="text-lg text-gray-300/90 leading-relaxed">
+        Earned through Google's rigorous professional certification programs on
+        Coursera, these credentials validate expertise in cutting-edge
+        technologies. Each represents 100+ hours of coursework, hands-on
+        projects, and industry-aligned assessments.
+      </p>
+      <motion.div
+        className="mt-8 h-1.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-600 w-36 mx-auto rounded-full"
+        initial={{ scaleX: 0, originX: 0.5 }}
+        whileInView={{ scaleX: 1 }}
+        transition={{ delay: 0.3, duration: 0.8, ease: "circOut" }}
+        viewport={{ once: true }}
+      />
+    </motion.div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+      {[
+        {
+          text: "Google Machine Learning",
+          link: "https://coursera.org/share/27665abf668c0479e649f09c01ce75b9",
+          image: "/MachineLearningPreview.webp",
+          description:
+            "Mastering predictive algorithms and data-driven model development",
+        },
+        {
+          text: "Google AI Essentials",
+          link: "https://coursera.org/share/e76522223bd36da3f4a8feeb93d2d2f7",
+          image: "/AiPreview.webp",
+          description:
+            "Foundational knowledge in neural networks and AI system implementation",
+        },
+        {
+          text: "Google User Experience Design",
+          link: "https://coursera.org/share/c617189e47b33926082172340be87f71",
+          image: "/PreviewUX.webp",
+          description:
+            "User-centered design principles and interaction research methodologies",
+        },
+        {
+          text: "Google Advanced Data Analytics",
+          link: "https://coursera.org/share/09e30d48b4d38a664c30b12795d8b144",
+          image: "/Google Advanced Data Analytics Capstone.webp",
+          description:
+            "Examine data to identify patterns and trends, build models using machine learning techniques, and create data visualizations.",
+        },
+        {
+          text: "Automate Cybersecurity Tasks with Python",
+          link: "https://coursera.org/share/b00ad7de4b6962060b8d47800927b352",
+          image: "/Google Python.webp",
+          description:
+            "Enhancing cybersecurity workflows through Python scripting and automated threat detection.",
+        },
+        {
+          text: "Connect and Protect: Networks and Network Security",
+          link: "https://coursera.org/share/9bd3492f4984a22b035647ca0e151226",
+          image: "/Google networking.webp",
+          description:
+            "Mastering network architecture, intrusion prevention, and system hardening for secure digital environments.",
+        },
+      ].map((cert, idx) => (
+        <motion.div
+          key={idx}
+          initial={{ scale: 0.95, opacity: 0, y: 20 }}
+          whileInView={{ scale: 1, opacity: 1, y: 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 130,
+            damping: 18,
+            delay: idx * 0.1 + 0.2,
+          }}
+          whileHover={{
+            scale: 1.03,
+            y: -6,
+            transition: { type: "spring", stiffness: 300, damping: 10 },
+          }}
+          viewport={{ once: true, amount: 0.2 }}
+          className="relative group h-full flex"
+        >
+          <a
+            href={cert.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col w-full bg-gradient-to-br from-neutral-900/90 to-black/95 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-indigo-500/25 transition-all duration-400 h-full border border-neutral-800/70 hover:border-indigo-500/60 cursor-pointer-interactive"
+          >
+            <div className="relative overflow-hidden aspect-video">
+              <img
+                src={cert.image}
+                alt={`${cert.text} Certification`}
+                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-400 ease-out"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
+            <div className="p-6 space-y-3 flex-grow flex flex-col">
+              <h3 className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 group-hover:from-blue-300 group-hover:to-pink-300 transition-all duration-300 leading-tight">
+                {cert.text}
+              </h3>
+              <p className="text-sm text-gray-400/90 group-hover:text-gray-300/95 transition-colors duration-300 flex-grow leading-relaxed">
+                {cert.description}
+              </p>
+              <div className="mt-auto pt-3">
+                <span className="inline-flex items-center px-4 py-2 bg-indigo-600 group-hover:bg-indigo-500 rounded-md text-sm font-semibold text-white transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-indigo-500/30">
+                  <span>View Credential</span>
+                  <svg
+                    className="w-4 h-4 ml-2 transform group-hover:translate-x-0.5 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div className="absolute -inset-0.5 rounded-xl opacity-0 group-hover:opacity-40 transition-opacity duration-300 pointer-events-none bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 blur-xl" />
+          </a>
+          <div className="absolute top-0 right-0 w-12 h-12 overflow-hidden rounded-tr-xl">
+            <div className="absolute -right-6 -top-6 w-24 h-24 bg-gradient-to-br from-blue-600 to-purple-700 opacity-10 group-hover:opacity-15 rotate-45 transition-all duration-500" />
           </div>
-        </section>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
+
 
         {/* Get Quote Section */}
         <section id="get-quote" className="relative py-20 md:py-28 bg-black text-white text-center overflow-hidden" >
