@@ -12,7 +12,7 @@ import CustomCursor from "./Effects/CustomCursor";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// --- COMPONENT: Enhanced Intro Animation Loader ---
+// --- COMPONENT: Intro Animation Loader ---
 const TechStackLoader = ({ techStack, onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [phase, setPhase] = useState("shuffle"); // 'shuffle' | 'logo-reveal'
@@ -20,84 +20,64 @@ const TechStackLoader = ({ techStack, onComplete }) => {
   useEffect(() => {
     // Phase 1: Shuffle Icons
     if (currentIndex < techStack.length) {
-      // Slower interval (280ms) to ensure logos are seen clearly
       const timeout = setTimeout(() => {
         setCurrentIndex((prev) => prev + 1);
-      }, 280); 
+      }, 150);
       return () => clearTimeout(timeout);
     } else {
-      // Phase 2: All logos shown, now reveal Main Logo
-      // Small pause before showing main logo for dramatic effect
-      const endShuffleTimeout = setTimeout(() => {
-        setPhase("logo-reveal");
-        
-        // Phase 3: Hold Main Logo in center, then trigger Fly-to-Nav
-        const completeTimeout = setTimeout(() => {
-          onComplete();
-        }, 1500); // Logo stays in center for 1.5s
-        
-        return () => clearTimeout(completeTimeout);
-      }, 300);
-
-      return () => clearTimeout(endShuffleTimeout);
+      // Shuffle done, show main logo
+      setPhase("logo-reveal");
+      
+      // Keep main logo in center for 1.2s, then trigger the fly-to-nav
+      const timeout = setTimeout(() => {
+        onComplete();
+      }, 1200); 
+      return () => clearTimeout(timeout);
     }
   }, [currentIndex, techStack.length, onComplete]);
 
   return (
     <motion.div
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
-      // Fades the black background out slowly as the logo flies away
-      exit={{ opacity: 0, transition: { duration: 1.2, ease: "easeInOut" } }}
+      // We animate the background opacity out when the component unmounts
+      exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
     >
+      {/* Container for the centered content */}
       <div className="relative flex flex-col items-center justify-center w-full h-full">
+        
         <AnimatePresence mode="wait">
           {phase === "shuffle" ? (
-            // --- Phase 1: Tech Stack Shuffle (Smoother Fades) ---
+            // --- Phase 1: Tech Stack Shuffle ---
             <motion.div
-              key={`tech-${currentIndex}`} // Key change triggers animation
-              initial={{ opacity: 0, scale: 0.8, y: 10, filter: "blur(5px)" }}
-              animate={{ opacity: 1, scale: 1.1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, scale: 1.2, filter: "blur(5px)", transition: { duration: 0.2 } }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center"
+              key="shuffle"
+              initial={{ opacity: 0, scale: 0.5, filter: "blur(10px)" }}
+              animate={{ opacity: 1, scale: 1.2, filter: "blur(0px)" }}
+              exit={{ opacity: 0, scale: 0.5, filter: "blur(10px)", transition:{duration: 0.3} }}
+              className="flex flex-col items-center"
             >
               {techStack[currentIndex] && (
-                <>
-                  <img
-                    src={techStack[currentIndex].icon}
-                    alt={techStack[currentIndex].name}
-                    className="w-24 h-24 sm:w-32 sm:h-32 object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.15)]"
-                  />
-                  <motion.p 
-                    initial={{ opacity: 0 }} 
-                    animate={{ opacity: 1 }} 
-                    className="mt-6 text-indigo-400 font-medium tracking-widest text-sm uppercase"
-                  >
-                    {techStack[currentIndex].name}
-                  </motion.p>
-                </>
+                <img
+                  src={techStack[currentIndex].icon}
+                  alt="Tech Icon"
+                  className="w-24 h-24 sm:w-32 sm:h-32 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                />
               )}
             </motion.div>
           ) : (
-            // --- Phase 2: Main Logo & Text (Centered before flying) ---
-            <motion.div 
-                className="flex flex-col sm:flex-row items-center gap-4 z-50"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-            >
+            // --- Phase 2: Main Logo & Text (Centered) ---
+            // NOTICE: The layoutId props here match the ones in the Navbar
+            <motion.div className="flex items-center gap-4 z-50">
                 <motion.img
                   layoutId="main-logo-img"
                   src="/logo.webp"
                   alt="Rohith's Logo"
-                  className="w-28 h-28 sm:w-36 sm:h-36 object-contain rounded-full border-4 border-indigo-500/50 shadow-[0_0_60px_rgba(99,102,241,0.6)]"
-                  // Smooth spring physics for the fly animation
-                  transition={{ type: "spring", stiffness: 120, damping: 20, mass: 1 }}
+                  className="w-24 h-24 sm:w-32 sm:h-32 object-contain rounded-full border-4 border-indigo-500/50 shadow-[0_0_50px_rgba(99,102,241,0.5)]"
+                  transition={{ type: "spring", stiffness: 200, damping: 25 }}
                 />
                 <motion.h1
                   layoutId="main-logo-text"
-                  className="text-3xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-200 via-white to-indigo-200 whitespace-nowrap mt-4 sm:mt-0"
-                  transition={{ type: "spring", stiffness: 120, damping: 20, mass: 1 }}
+                  className="text-3xl sm:text-5xl font-bold text-gray-100 whitespace-nowrap"
+                  transition={{ type: "spring", stiffness: 200, damping: 25 }}
                 >
                   Rohith's Portfolio
                 </motion.h1>
@@ -115,6 +95,7 @@ const Landing = () => {
   const [isContactModalOpen, setContactModalOpen] = useState(false);
   const [mainMenuOpen, setMainMenuOpen] = useState(false);
   
+  // isLoading controls whether we see the Loader or the actual Page
   const [isLoading, setIsLoading] = useState(true);
 
   const navItems = [
@@ -146,10 +127,11 @@ const Landing = () => {
   };
   
   useEffect(() => {
+    // Only initialize GSAP after loading is complete and layout is settled
     if (isLoading) return;
 
     const hero = heroRef.current;
-    // Wait until logo finishes flying before attaching scroll triggers
+    // Small delay to ensure the shared element transition finishes before scroll triggers attach
     const timer = setTimeout(() => {
         if (hero) {
           gsap.fromTo( hero, { opacity: 1 }, { opacity: 0.7, ease: "power2.out",
@@ -166,7 +148,7 @@ const Landing = () => {
             );
           }
         }
-    }, 1200); 
+    }, 1000); 
 
     return () => {
       clearTimeout(timer);
@@ -190,6 +172,7 @@ const Landing = () => {
       <CustomCursor />
 
       {/* --- 1. THE LOADER --- */}
+      {/* We use AnimatePresence to allow the loader's black background to fade out */}
       <AnimatePresence>
         {isLoading && (
           <TechStackLoader 
@@ -199,13 +182,14 @@ const Landing = () => {
         )}
       </AnimatePresence>
 
-      {/* --- 2. THE NAVBAR --- */}
+      {/* --- 2. THE NAVBAR (Revealed immediately when loading stops) --- */}
+      {/* By using layoutId, the Logo and Text will 'fly' from the Loader position to here */}
       {!isLoading && (
         <motion.header 
-          // Background fades in slowly (1.5s) to allow the logo fly-in to shine first
+          // Animate the background glass effect fading in, NOT the logo (it flies in)
           initial={{ backgroundColor: "rgba(0,0,0,0)", borderBottomColor: "rgba(0,0,0,0)" }}
           animate={{ backgroundColor: "rgba(0,0,0,0.75)", borderBottomColor: "rgba(38,38,38,0.6)" }}
-          transition={{ duration: 1.5, delay: 0.8 }}
+          transition={{ duration: 1, delay: 0.5 }} // Background fades in slowly after logo arrives
           className="sticky top-0 z-[1000] backdrop-blur-lg shadow-2xl shadow-black/20 border-b border-neutral-800/60"
         >
           <div className="max-w-7xl mx-auto flex justify-between items-center py-3.5 px-4 sm:px-6 lg:px-8">
@@ -214,29 +198,29 @@ const Landing = () => {
               onClick={(e) => handleNavClick(e, "#home")}
               className="flex items-center space-x-3.5 cursor-pointer-interactive group"
             >
-              {/* TARGET: Logo lands here using layoutId */}
+              {/* TARGET: The Logo lands here */}
               <motion.img 
                 layoutId="main-logo-img"
                 src="/logo.webp" 
                 alt="Rohith's Logo"
                 className="w-10 h-10 sm:w-11 sm:h-11 object-contain rounded-full border-2 border-indigo-500/60 group-hover:border-indigo-400"
-                transition={{ type: "spring", stiffness: 120, damping: 20, mass: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 25 }}
               />
-              {/* TARGET: Text lands here using layoutId */}
+              {/* TARGET: The Text lands here */}
               <motion.h1 
                 layoutId="main-logo-text"
                 className="text-xl sm:text-2xl font-semibold text-gray-100 group-hover:text-white tracking-tight"
-                transition={{ type: "spring", stiffness: 120, damping: 20, mass: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 25 }}
               >
                 Rohith's Portfolio
               </motion.h1>
             </motion.a>
 
-            {/* Hamburger / Nav Links fade in gently */}
+            {/* Hamburger / Nav Links fade in separately */}
             <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.2, duration: 0.8 }}
+                transition={{ delay: 0.8, duration: 0.5 }}
             > 
               <button
                 onClick={toggleMainMenu}
@@ -274,18 +258,18 @@ const Landing = () => {
         </motion.header>
       )}
 
-      {/* --- 3. MAIN PAGE CONTENT (Slow reveal) --- */}
+      {/* --- 3. MAIN PAGE CONTENT (Fades in after logo movement) --- */}
       <main className="flex-grow isolate">
         <section ref={heroRef} id="home" className="relative bg-black text-white py-28 md:py-36 min-h-[90vh] flex items-center bg-center bg-cover bg-fixed"
           style={{ backgroundImage: "url('/img_9.webp')" }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-sm" />
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
-            {/* Extended delays to ensure the page is calm until the logo lands */}
+            {/* Delay animations until after the logo has flown to the corner */}
             <motion.div 
               initial={{ opacity: 0, y: 30 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 1, delay: isLoading ? 0 : 1.2, ease: "easeOut" }} 
+              transition={{ duration: 1, delay: isLoading ? 0 : 1.0, ease: "easeOut" }} 
             >
               <div className="hero-text-anim"> 
                 <SplitText text="Embark on a New Journey"
@@ -300,7 +284,7 @@ const Landing = () => {
             <motion.div 
               initial={{ opacity: 0, y: 30 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.8, delay: isLoading ? 0 : 1.5, ease: "easeOut" }} 
+              transition={{ duration: 0.8, delay: isLoading ? 0 : 1.3, ease: "easeOut" }} 
               className="mt-5 mb-3 h-12" 
             >
               <InteractiveText className="cursor-pointer-interactive"/>
@@ -309,7 +293,7 @@ const Landing = () => {
             <motion.p 
               initial={{ opacity: 0, y: 30 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.8, delay: isLoading ? 0 : 1.7, ease: "easeOut" }}
+              transition={{ duration: 0.8, delay: isLoading ? 0 : 1.5, ease: "easeOut" }}
               className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-gray-200/90 leading-relaxed" 
             >
               Crafting cutting-edge digital solutions that bring ideas to life.
@@ -318,7 +302,7 @@ const Landing = () => {
             <motion.div 
               initial={{ opacity: 0, y: 30, scale: 0.9 }} 
               animate={{ opacity: 1, y: 0, scale: 1 }} 
-              transition={{ duration: 0.8, delay: isLoading ? 0 : 1.9, type: "spring" }}
+              transition={{ duration: 0.8, delay: isLoading ? 0 : 1.7, type: "spring" }}
               className="mt-10 flex justify-center gap-4" 
             >
               <a href="#projects" onClick={(e) => handleNavClick(e, "#projects")}
