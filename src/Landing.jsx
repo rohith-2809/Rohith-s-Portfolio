@@ -116,10 +116,10 @@ const Landing = () => {
     { name: "Python", icon: "/Python.webp" },
     { name: "React", icon: "/React.webp" },
     { name: "Tailwind CSS", icon: "/Tailwind_CSS_Logo.webp" },
-    {name : "Grafana", icon:  "/Grafana.webp",}
-    {name : "HuggingFace", icon:  "/HuggingFace.webp",}
-    {name : "gcp", icon:  "/gcp.webp",}
-    {name : "Docker", icon:  "Docker.webp",}
+    {name : "Grafana", icon:  "/Grafana.webp"},
+    {name : "HuggingFace", icon:  "/HuggingFace.webp"},
+    {name : "gcp", icon:  "/gcp.webp"},
+    {name : "Docker", icon:  "Docker.webp"},
   ];
 
   const sendEmail = (e) => {
