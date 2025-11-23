@@ -12,79 +12,132 @@ import CustomCursor from "./Effects/CustomCursor";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// --- COMPONENT: Intro Animation Loader ---
-const TechStackLoader = ({ techStack, onComplete }) => {
+// --- COMPONENT: Intro Animation Loader (Handles Shuffle & Fly) ---
+const IntroOverlay = ({ techStack, onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [phase, setPhase] = useState("shuffle"); // 'shuffle' | 'logo-reveal'
+  const [isShuffling, setIsShuffling] = useState(true);
+  const [isFlying, setIsFlying] = useState(false);
 
   useEffect(() => {
-    // Phase 1: Shuffle Icons
-    if (currentIndex < techStack.length) {
-      const timeout = setTimeout(() => {
-        setCurrentIndex((prev) => prev + 1);
-      }, 150);
-      return () => clearTimeout(timeout);
-    } else {
-      // Shuffle done, show main logo
-      setPhase("logo-reveal");
-      
-      // Keep main logo in center for 1.2s, then trigger the fly-to-nav
-      const timeout = setTimeout(() => {
-        onComplete();
-      }, 1200); 
-      return () => clearTimeout(timeout);
-    }
-  }, [currentIndex, techStack.length, onComplete]);
+    // 1. Force body scroll lock
+    document.body.style.overflow = "hidden";
+
+    // 2. Strict Sequencing for Logos
+    // We use a recursive timeout to ensure every logo gets its time
+    let timer;
+    const showNextLogo = (index) => {
+      if (index < techStack.length) {
+        setCurrentIndex(index);
+        // Duration per logo (Slowed down for visibility)
+        timer = setTimeout(() => showNextLogo(index + 1), 280); 
+      } else {
+        // 3. Shuffle Complete -> Show Main Logo Center
+        setIsShuffling(false);
+        
+        // Hold the main logo in center for 1.2 seconds
+        timer = setTimeout(() => {
+          setIsFlying(true); // Trigger "Fly to corner"
+          
+          // Wait for fly animation (1s) + fade out (0.5s)
+          setTimeout(() => {
+            onComplete(); // Tell parent we are done
+            document.body.style.overflow = "auto"; // Unlock scroll
+          }, 1500);
+          
+        }, 1200); 
+      }
+    };
+
+    // Start the sequence
+    showNextLogo(0);
+
+    return () => clearTimeout(timer);
+  }, [techStack, onComplete]);
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
-      // We animate the background opacity out when the component unmounts
-      exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
+      className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none"
+      initial={{ backgroundColor: "#000000" }}
+      animate={{ 
+        // Fade out background ONLY when flying starts
+        backgroundColor: isFlying ? "rgba(0,0,0,0)" : "#000000" 
+      }}
+      transition={{ duration: 1, ease: "easeInOut", delay: 0.2 }}
     >
-      {/* Container for the centered content */}
-      <div className="relative flex flex-col items-center justify-center w-full h-full">
-        
-        <AnimatePresence mode="wait">
-          {phase === "shuffle" ? (
-            // --- Phase 1: Tech Stack Shuffle ---
-            <motion.div
-              key="shuffle"
-              initial={{ opacity: 0, scale: 0.5, filter: "blur(10px)" }}
+      {/* --- Phase 1: Tech Stack Shuffle --- */}
+      <AnimatePresence mode="wait">
+        {isShuffling && (
+          <motion.div
+            key="shuffle-container"
+            className="absolute inset-0 flex flex-col items-center justify-center z-50"
+            exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.3 } }}
+          >
+            <motion.img
+              key={`tech-${currentIndex}`}
+              src={techStack[currentIndex]?.icon}
+              alt="Tech"
+              initial={{ opacity: 0, scale: 0.8, filter: "blur(4px)" }}
               animate={{ opacity: 1, scale: 1.2, filter: "blur(0px)" }}
-              exit={{ opacity: 0, scale: 0.5, filter: "blur(10px)", transition:{duration: 0.3} }}
-              className="flex flex-col items-center"
+              exit={{ opacity: 0, scale: 1.2, filter: "blur(4px)" }}
+              transition={{ duration: 0.25 }} // smooth entry/exit
+              className="w-24 h-24 sm:w-32 sm:h-32 object-contain"
+            />
+            <motion.p
+              key={`text-${currentIndex}`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="mt-4 text-indigo-400 font-mono tracking-widest uppercase text-sm"
             >
-              {techStack[currentIndex] && (
-                <img
-                  src={techStack[currentIndex].icon}
-                  alt="Tech Icon"
-                  className="w-24 h-24 sm:w-32 sm:h-32 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                />
-              )}
-            </motion.div>
-          ) : (
-            // --- Phase 2: Main Logo & Text (Centered) ---
-            // NOTICE: The layoutId props here match the ones in the Navbar
-            <motion.div className="flex items-center gap-4 z-50">
-                <motion.img
-                  layoutId="main-logo-img"
-                  src="/logo.webp"
-                  alt="Rohith's Logo"
-                  className="w-24 h-24 sm:w-32 sm:h-32 object-contain rounded-full border-4 border-indigo-500/50 shadow-[0_0_50px_rgba(99,102,241,0.5)]"
-                  transition={{ type: "spring", stiffness: 200, damping: 25 }}
-                />
-                <motion.h1
-                  layoutId="main-logo-text"
-                  className="text-3xl sm:text-5xl font-bold text-gray-100 whitespace-nowrap"
-                  transition={{ type: "spring", stiffness: 200, damping: 25 }}
-                >
-                  Rohith's Portfolio
-                </motion.h1>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+              {techStack[currentIndex]?.name}
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* --- Phase 2 & 3: Main Logo Reveal & Fly --- */}
+      {!isShuffling && (
+        <motion.div
+          className="absolute z-50 flex items-center gap-3"
+          // Initial State: Centered in screen
+          initial={{ 
+            top: "50%", 
+            left: "50%", 
+            x: "-50%", 
+            y: "-50%", 
+            scale: 1.5 
+          }}
+          // Animate to: Top Left (Matching Navbar Position)
+          animate={isFlying ? { 
+            top: "24px",  // Approx 1.5rem (py-3.5 + padding)
+            left: "8%",   // Approx responsive container padding
+            x: "0%", 
+            y: "0%", 
+            scale: 1 
+          } : { 
+            top: "50%", 
+            left: "50%", 
+            x: "-50%", 
+            y: "-50%", 
+            scale: 1.5 
+          }}
+          // Transition Physics
+          transition={{ 
+            duration: 1.2, 
+            ease: [0.16, 1, 0.3, 1], // Custom bezier for "Smooth landing"
+            delay: 0.1 // Small delay to let background fade start
+          }}
+        >
+          <img
+            src="/logo.webp"
+            alt="Rohith's Logo"
+            className="w-10 h-10 sm:w-11 sm:h-11 object-contain rounded-full border-2 border-indigo-500/60 shadow-[0_0_30px_rgba(99,102,241,0.5)]"
+          />
+          <h1 className="text-xl sm:text-2xl font-semibold text-white tracking-tight whitespace-nowrap">
+            Rohith's Portfolio
+          </h1>
+        </motion.div>
+      )}
     </motion.div>
   );
 };
@@ -95,8 +148,10 @@ const Landing = () => {
   const [isContactModalOpen, setContactModalOpen] = useState(false);
   const [mainMenuOpen, setMainMenuOpen] = useState(false);
   
-  // isLoading controls whether we see the Loader or the actual Page
+  // Master state for loading process
   const [isLoading, setIsLoading] = useState(true);
+  // State to trigger the page content fade-in (slightly after logo lands)
+  const [showContent, setShowContent] = useState(false);
 
   const navItems = [
     { label: "Home", href: "#home" },
@@ -118,6 +173,27 @@ const Landing = () => {
     { name: "Tailwind CSS", icon: "/Tailwind_CSS_Logo.webp" },
   ];
 
+  const handleAnimationComplete = () => {
+    setIsLoading(false);
+    // Ensure GSAP triggers refresh after layout settles
+    setTimeout(() => ScrollTrigger.refresh(), 100);
+  };
+
+  // Trigger content reveal slightly before the loader unmounts for smoothness
+  useEffect(() => {
+    if (!isLoading) {
+      setShowContent(true);
+    } else {
+        // If we are loading, calculate when the logo starts flying (approx 3.5s total)
+        // Shuffle (8 * 280ms = 2.2s) + Hold (1.2s) = ~3.4s
+        const totalDuration = (techStack.length * 280) + 1200;
+        const timer = setTimeout(() => {
+            setShowContent(true); // Fade in content BEHIND the flying logo
+        }, totalDuration);
+        return () => clearTimeout(timer);
+    }
+  }, [isLoading, techStack.length]);
+
   const sendEmail = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -126,35 +202,34 @@ const Landing = () => {
       (error) => { alert(`Failed: ${error.text}`); });
   };
   
+  // GSAP Scroll Animations
   useEffect(() => {
-    // Only initialize GSAP after loading is complete and layout is settled
-    if (isLoading) return;
+    if (!showContent) return; // Don't attach scroll triggers until content is visible
 
     const hero = heroRef.current;
-    // Small delay to ensure the shared element transition finishes before scroll triggers attach
-    const timer = setTimeout(() => {
+    const ctx = gsap.context(() => {
         if (hero) {
-          gsap.fromTo( hero, { opacity: 1 }, { opacity: 0.7, ease: "power2.out",
-            scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.5, },
+          gsap.fromTo(hero, { opacity: 1 }, { opacity: 0.7, ease: "power2.out",
+            scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.5 },
           });
           
           const heroTextElements = hero.querySelectorAll(".hero-text-anim > div > span > span");
           if (heroTextElements.length > 0) {
-            gsap.fromTo( heroTextElements,
+            gsap.fromTo(heroTextElements,
               { opacity: 0, y: 40 },
               { opacity: 1, y: 0, ease: "power3.out", stagger: 0.1, duration: 0.8,
-                scrollTrigger: { trigger: hero, start: "top 70%", end: "top 40%", scrub: 1, },
+                scrollTrigger: { trigger: hero, start: "top 70%", end: "top 40%", scrub: 1 },
               }
             );
           }
         }
-    }, 1000); 
+    });
 
     return () => {
-      clearTimeout(timer);
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        ctx.revert();
+        ScrollTrigger.getAll().forEach(t => t.kill());
     };
-  }, [isLoading]); 
+  }, [showContent]); 
 
   const toggleMainMenu = () => setMainMenuOpen((prev) => !prev);
 
@@ -171,105 +246,97 @@ const Landing = () => {
     <div className="min-h-screen flex flex-col bg-black text-white relative selection:bg-indigo-500 selection:text-white antialiased overflow-x-hidden">
       <CustomCursor />
 
-      {/* --- 1. THE LOADER --- */}
-      {/* We use AnimatePresence to allow the loader's black background to fade out */}
+      {/* --- 1. INTRO OVERLAY (Handles the animation completely) --- */}
       <AnimatePresence>
         {isLoading && (
-          <TechStackLoader 
+          <IntroOverlay 
             techStack={techStack} 
-            onComplete={() => setIsLoading(false)} 
+            onComplete={handleAnimationComplete} 
           />
         )}
       </AnimatePresence>
 
-      {/* --- 2. THE NAVBAR (Revealed immediately when loading stops) --- */}
-      {/* By using layoutId, the Logo and Text will 'fly' from the Loader position to here */}
-      {!isLoading && (
-        <motion.header 
-          // Animate the background glass effect fading in, NOT the logo (it flies in)
-          initial={{ backgroundColor: "rgba(0,0,0,0)", borderBottomColor: "rgba(0,0,0,0)" }}
-          animate={{ backgroundColor: "rgba(0,0,0,0.75)", borderBottomColor: "rgba(38,38,38,0.6)" }}
-          transition={{ duration: 1, delay: 0.5 }} // Background fades in slowly after logo arrives
-          className="sticky top-0 z-[1000] backdrop-blur-lg shadow-2xl shadow-black/20 border-b border-neutral-800/60"
-        >
-          <div className="max-w-7xl mx-auto flex justify-between items-center py-3.5 px-4 sm:px-6 lg:px-8">
-            <motion.a 
-              href="#home"
-              onClick={(e) => handleNavClick(e, "#home")}
-              className="flex items-center space-x-3.5 cursor-pointer-interactive group"
+      {/* --- 2. HEADER (Hidden until animation finishes) --- */}
+      {/* We use opacity 0 initially so it occupies space but is invisible while the 'fake' logo flies in */}
+      <motion.header 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: !isLoading ? 1 : 0 }}
+        transition={{ duration: 0.1 }} // Instant swap when loader unmounts
+        className="sticky top-0 z-[1000] backdrop-blur-lg shadow-2xl shadow-black/20 border-b border-neutral-800/60 bg-black/75"
+      >
+        <div className="max-w-7xl mx-auto flex justify-between items-center py-3.5 px-4 sm:px-6 lg:px-8">
+          <a 
+            href="#home"
+            onClick={(e) => handleNavClick(e, "#home")}
+            className="flex items-center space-x-3.5 cursor-pointer-interactive group"
+          >
+            <img 
+              src="/logo.webp" 
+              alt="Rohith's Logo"
+              className="w-10 h-10 sm:w-11 sm:h-11 object-contain rounded-full border-2 border-indigo-500/60 group-hover:border-indigo-400 transition-all duration-300"
+            />
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-100 group-hover:text-white tracking-tight">
+              Rohith's Portfolio
+            </h1>
+          </a>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: !isLoading ? 1 : 0, x: !isLoading ? 0 : 20 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          > 
+            <button
+              onClick={toggleMainMenu}
+              className="text-gray-300 hover:text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200 cursor-pointer-interactive"
             >
-              {/* TARGET: The Logo lands here */}
-              <motion.img 
-                layoutId="main-logo-img"
-                src="/logo.webp" 
-                alt="Rohith's Logo"
-                className="w-10 h-10 sm:w-11 sm:h-11 object-contain rounded-full border-2 border-indigo-500/60 group-hover:border-indigo-400"
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
-              />
-              {/* TARGET: The Text lands here */}
-              <motion.h1 
-                layoutId="main-logo-text"
-                className="text-xl sm:text-2xl font-semibold text-gray-100 group-hover:text-white tracking-tight"
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
-              >
-                Rohith's Portfolio
-              </motion.h1>
-            </motion.a>
+              {mainMenuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
+            </button>
+          </motion.div>
+        </div>
 
-            {/* Hamburger / Nav Links fade in separately */}
+        <AnimatePresence>
+          {mainMenuOpen && (
             <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-            > 
-              <button
-                onClick={toggleMainMenu}
-                className="text-gray-300 hover:text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200 cursor-pointer-interactive"
-              >
-                {mainMenuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
-              </button>
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="absolute top-full left-0 right-0 bg-black/90 backdrop-blur-md border-t border-b border-neutral-800/70 shadow-2xl md:rounded-b-lg md:mx-4 lg:mx-auto lg:max-w-md md:right-4 md:left-auto"
+            >
+              <nav className="px-4 py-4 space-y-2">
+                {navItems.map((item, index) => (
+                  <motion.a
+                    key={index} href={item.href} onClick={(e) => handleNavClick(e, item.href)}
+                    className="block text-gray-200 hover:text-white px-4 py-2.5 rounded-lg hover:bg-indigo-600/40 transition-all duration-200"
+                    initial={{ opacity: 0, x: -15 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.07 }}
+                  >
+                    {item.label}
+                  </motion.a>
+                ))}
+              </nav>
             </motion.div>
-          </div>
+          )}
+        </AnimatePresence>
+      </motion.header>
 
-          <AnimatePresence>
-            {mainMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="absolute top-full left-0 right-0 bg-black/90 backdrop-blur-md border-t border-b border-neutral-800/70 shadow-2xl md:rounded-b-lg md:mx-4 lg:mx-auto lg:max-w-md md:right-4 md:left-auto"
-              >
-                <nav className="px-4 py-4 space-y-2">
-                  {navItems.map((item, index) => (
-                    <motion.a
-                      key={index} href={item.href} onClick={(e) => handleNavClick(e, item.href)}
-                      className="block text-gray-200 hover:text-white px-4 py-2.5 rounded-lg hover:bg-indigo-600/40 transition-all duration-200"
-                      initial={{ opacity: 0, x: -15 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.07 }}
-                    >
-                      {item.label}
-                    </motion.a>
-                  ))}
-                </nav>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.header>
-      )}
-
-      {/* --- 3. MAIN PAGE CONTENT (Fades in after logo movement) --- */}
-      <main className="flex-grow isolate">
+      {/* --- 3. MAIN CONTENT (Fades in underneath the overlay) --- */}
+      <motion.main 
+        className="flex-grow isolate"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showContent ? 1 : 0 }}
+        transition={{ duration: 1.5, ease: "easeOut" }} // Slow fade in for content
+      >
         <section ref={heroRef} id="home" className="relative bg-black text-white py-28 md:py-36 min-h-[90vh] flex items-center bg-center bg-cover bg-fixed"
           style={{ backgroundImage: "url('/img_9.webp')" }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-sm" />
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
-            {/* Delay animations until after the logo has flown to the corner */}
+            {/* Elements animate in slightly after page reveal */}
             <motion.div 
               initial={{ opacity: 0, y: 30 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 1, delay: isLoading ? 0 : 1.0, ease: "easeOut" }} 
+              animate={{ opacity: showContent ? 1 : 0, y: showContent ? 0 : 30 }} 
+              transition={{ duration: 1, delay: 0.2, ease: "easeOut" }} 
             >
               <div className="hero-text-anim"> 
                 <SplitText text="Embark on a New Journey"
@@ -283,8 +350,8 @@ const Landing = () => {
 
             <motion.div 
               initial={{ opacity: 0, y: 30 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.8, delay: isLoading ? 0 : 1.3, ease: "easeOut" }} 
+              animate={{ opacity: showContent ? 1 : 0, y: showContent ? 0 : 30 }} 
+              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }} 
               className="mt-5 mb-3 h-12" 
             >
               <InteractiveText className="cursor-pointer-interactive"/>
@@ -292,8 +359,8 @@ const Landing = () => {
 
             <motion.p 
               initial={{ opacity: 0, y: 30 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.8, delay: isLoading ? 0 : 1.5, ease: "easeOut" }}
+              animate={{ opacity: showContent ? 1 : 0, y: showContent ? 0 : 30 }} 
+              transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
               className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-gray-200/90 leading-relaxed" 
             >
               Crafting cutting-edge digital solutions that bring ideas to life.
@@ -301,8 +368,8 @@ const Landing = () => {
 
             <motion.div 
               initial={{ opacity: 0, y: 30, scale: 0.9 }} 
-              animate={{ opacity: 1, y: 0, scale: 1 }} 
-              transition={{ duration: 0.8, delay: isLoading ? 0 : 1.7, type: "spring" }}
+              animate={{ opacity: showContent ? 1 : 0, y: showContent ? 0 : 30, scale: showContent ? 1 : 0.9 }} 
+              transition={{ duration: 0.8, delay: 0.8, type: "spring" }}
               className="mt-10 flex justify-center gap-4" 
             >
               <a href="#projects" onClick={(e) => handleNavClick(e, "#projects")}
@@ -784,7 +851,7 @@ const Landing = () => {
             </AnimatePresence>
           </div>
         </section>
-      </main>
+      </motion.main>
 
       <footer className="bg-black border-t border-neutral-800/60">
         <div className="max-w-7xl mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-8">
