@@ -1,120 +1,33 @@
 import emailjs from "@emailjs/browser";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
+import CustomCursor from "./Effects/CustomCursor";
 import InteractiveText from "./Effects/InteractiveText";
 import SplitText from "./Effects/SplitText";
 import SpotlightCard from "./Effects/SpotlightCard";
 import TiltedCard from "./Effects/TiltedCard";
-import CustomCursor from "./Effects/CustomCursor";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// --- NEW COMPONENT: Intro Animation Loader ---
-const TechStackLoader = ({ techStack, onComplete }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [showMainLogo, setShowMainLogo] = useState(false);
-
-  useEffect(() => {
-    // 1. Cycle through the tech stack icons
-    if (currentIndex < techStack.length) {
-      const timeout = setTimeout(() => {
-        setCurrentIndex((prev) => prev + 1);
-      }, 150); // Speed of the shuffle (150ms per icon)
-      return () => clearTimeout(timeout);
-    } else {
-      // 2. Once cycled through all, show main logo
-      setTimeout(() => {
-        setShowMainLogo(true);
-      }, 200);
-    }
-  }, [currentIndex, techStack.length]);
-
-  useEffect(() => {
-    // 3. Keep main logo on screen for a moment, then finish
-    if (showMainLogo) {
-      const timeout = setTimeout(() => {
-        onComplete();
-      }, 1800); // Duration main logo stays visible
-      return () => clearTimeout(timeout);
-    }
-  }, [showMainLogo, onComplete]);
-
-  return (
-    <motion.div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
-      exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
-    >
-      <AnimatePresence mode="wait">
-        {!showMainLogo ? (
-          // --- Phase 1: Tech Stack Shuffle ---
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, scale: 0.5, filter: "blur(10px)" }}
-            animate={{ opacity: 1, scale: 1.2, filter: "blur(0px)" }}
-            exit={{ opacity: 0, scale: 1.5, filter: "blur(5px)" }}
-            transition={{ duration: 0.15 }} // Matches the interval speed
-            className="flex flex-col items-center"
-          >
-            {techStack[currentIndex] && (
-              <>
-                <img
-                  src={techStack[currentIndex].icon}
-                  alt="Tech Icon"
-                  className="w-24 h-24 sm:w-32 sm:h-32 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                />
-                <p className="mt-4 text-gray-400 font-mono text-sm tracking-widest uppercase">
-                  Loading {techStack[currentIndex].name}...
-                </p>
-              </>
-            )}
-          </motion.div>
-        ) : (
-          // --- Phase 2: Main Logo Reveal ---
-          <motion.div
-            key="final-logo"
-            initial={{ scale: 0.1, opacity: 0, rotate: -180 }}
-            animate={{ scale: 1, opacity: 1, rotate: 0 }}
-            transition={{ type: "spring", stiffness: 150, damping: 15 }}
-            className="relative flex flex-col items-center"
-          >
-            {/* Glowing background effect */}
-            <div className="absolute inset-0 bg-indigo-500/30 blur-[60px] rounded-full animate-pulse" />
-            
-            <img
-              src="/logo.webp"
-              alt="Rohith's Logo"
-              className="relative w-32 h-32 sm:w-40 sm:h-40 object-contain rounded-full border-4 border-indigo-500/50 shadow-[0_0_50px_rgba(99,102,241,0.5)] z-10"
-            />
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="mt-8 text-center z-10"
-            >
-              <h1 className="text-3xl font-bold text-white tracking-tight">
-                Rohith<span className="text-indigo-500">.dev</span>
-              </h1>
-              <div className="h-1 w-24 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto mt-2 rounded-full" />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  );
-};
-
-// --- MAIN LANDING COMPONENT ---
+/**
+ * The main landing page component for the portfolio.
+ * It includes sections for Home, About, Tech Stack, Projects, Experience, and Certifications.
+ * It features a hamburger navigation menu, smooth scrolling, and various animations using GSAP and Framer Motion.
+ * @returns {JSX.Element} The rendered Landing component.
+ */
 const Landing = () => {
   const heroRef = useRef(null);
+  /**
+   * @state {boolean} isContactModalOpen - Controls the visibility of the contact form modal.
+   */
   const [isContactModalOpen, setContactModalOpen] = useState(false);
+  /**
+   * @state {boolean} mainMenuOpen - Controls the visibility of the main navigation dropdown for mobile/smaller screens.
+   */
   const [mainMenuOpen, setMainMenuOpen] = useState(false);
-  
-  // State to handle the loading screen
-  const [isLoading, setIsLoading] = useState(true);
 
   const navItems = [
     { label: "Home", href: "#home" },
@@ -125,7 +38,50 @@ const Landing = () => {
     { label: "Certifications", href: "#certifications" },
   ];
 
-  // Included Tech Stack array here so it can be passed to the loader
+  const certifications = [
+  {
+    text: "Google Machine Learning",
+    link: "https://coursera.org/share/27665abf668c0479e649f09c01ce75b9",
+    image: "/MachineLearningPreview.webp",
+    description: "Mastering predictive algorithms and data-driven model development",
+  },
+  {
+    text: "Google AI Essentials",
+    link: "https://coursera.org/share/e76522223bd36da3f4a8feeb93d2d2f7",
+    image: "/AiPreview.webp",
+    description: "Foundational knowledge in neural networks and AI system implementation",
+  },
+  {
+    text: "Google User Experience Design",
+    link: "https://coursera.org/share/c617189e47b33926082172340be87f71",
+    image: "/PreviewUX.webp",
+    description: "User-centered design principles and interaction research methodologies",
+  },
+  {
+    text: "Google Advanced Data Analytics",
+    link: "https://coursera.org/share/09e30d48b4d38a664c30b12795d8b144",
+    image: "/Google Advanced Data Analytics Capstone.webp",
+    description:
+      "Examine data to identify patterns and trends, build models using machine learning techniques, and create data visualizations.",
+  },
+
+  {
+    text: "Automate Cybersecurity Tasks with Python",
+    link: "https://coursera.org/share/b00ad7de4b6962060b8d47800927b352",
+    image: "/Google Python.webp",
+    description:
+      "Enhancing cybersecurity workflows through Python scripting and automated threat detection.",
+  },
+  {
+    text: "Connect and Protect: Networks and Network Security",
+    link: "https://coursera.org/share/9bd3492f4984a22b035647ca0e151226",
+    image: "/Google networking.webp",
+    description:
+      "Mastering network architecture, intrusion prevention, and system hardening for secure digital environments.",
+  },
+];
+
+
   const techStack = [
     { name: "Deep Learning", icon: "/DeepLearning.webp", description: "Neural network architectures" },
     { name: "Express.js", icon: "/express-js.webp", description: "High-performance backend" },
@@ -137,6 +93,10 @@ const Landing = () => {
     { name: "Tailwind CSS", icon: "/Tailwind_CSS_Logo.webp", description: "Modern utility-first styling" },
   ];
 
+  /**
+   * Handles the submission of the contact form using EmailJS.
+   * @param {React.FormEvent<HTMLFormElement>} e - The form submission event.
+   */
   const sendEmail = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -161,19 +121,16 @@ const Landing = () => {
         }
       );
   };
-  
+
   // Sets up GSAP scroll-triggered animations for the hero section.
   useEffect(() => {
-    // Only run GSAP setup once loading is finished to ensure DOM elements are ready/sized correctly
-    if (isLoading) return;
-
     const hero = heroRef.current;
     if (hero) {
       // Fades out the hero section slightly on scroll
       gsap.fromTo( hero, { opacity: 1 }, { opacity: 0.7, ease: "power2.out",
         scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.5, },
       });
-      
+
       // Animates the hero text words into view on scroll
       const heroTextElements = hero.querySelectorAll(".hero-text-anim > div > span > span");
       if (heroTextElements.length > 0) {
@@ -189,10 +146,18 @@ const Landing = () => {
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, [isLoading]); // Added isLoading as dependency
+  }, []);
 
+  /**
+   * Toggles the state of the main navigation menu.
+   */
   const toggleMainMenu = () => setMainMenuOpen((prev) => !prev);
 
+  /**
+   * Handles smooth scrolling to a section when a navigation link is clicked.
+   * @param {React.MouseEvent<HTMLAnchorElement>} e - The click event.
+   * @param {string} href - The ID of the target element to scroll to (e.g., "#about").
+   */
   const handleNavClick = (e, href) => {
     e.preventDefault();
     const targetElement = document.querySelector(href);
@@ -206,92 +171,71 @@ const Landing = () => {
     <div className="min-h-screen flex flex-col bg-black text-white relative selection:bg-indigo-500 selection:text-white antialiased">
       <CustomCursor />
 
-      {/* --- RENDER LOADER --- */}
-      <AnimatePresence>
-        {isLoading && (
-          <TechStackLoader 
-            techStack={techStack} 
-            onComplete={() => setIsLoading(false)} 
-          />
-        )}
-      </AnimatePresence>
+      <header className="sticky top-0 z-[1000] bg-black/75 backdrop-blur-lg shadow-2xl shadow-black/20">
+        <div className="max-w-7xl mx-auto flex justify-between items-center py-3.5 px-4 sm:px-6 lg:px-8">
+          <motion.a
+            href="#home"
+            onClick={(e) => handleNavClick(e, "#home")}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: "circOut" }}
+            className="flex items-center space-x-3.5 cursor-pointer-interactive group"
+          >
+            <img src="/logo.webp" alt="Rohith's Logo"
+              className="w-10 h-10 sm:w-11 sm:h-11 object-contain rounded-full border-2 border-indigo-500/60 group-hover:border-indigo-400 transition-all duration-300 transform group-hover:scale-105"
+            />
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-100 group-hover:text-white transition-colors duration-300 tracking-tight">
+              Rohith's Portfolio
+            </h1>
+          </motion.a>
 
-      {/* --- HEADER (Hidden while loading, or animate it in) --- */}
-      {!isLoading && (
-        <motion.header 
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, ease: "circOut" }}
-          className="sticky top-0 z-[1000] bg-black/75 backdrop-blur-lg shadow-2xl shadow-black/20"
-        >
-          <div className="max-w-7xl mx-auto flex justify-between items-center py-3.5 px-4 sm:px-6 lg:px-8">
-            <motion.a 
-              href="#home"
-              onClick={(e) => handleNavClick(e, "#home")}
-              className="flex items-center space-x-3.5 cursor-pointer-interactive group"
+          <div>
+            <button
+              onClick={toggleMainMenu}
+              className="text-gray-300 hover:text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-indigo-500 transition-colors duration-200 cursor-pointer-interactive"
+              aria-label="Toggle Navigation Menu"
+              aria-expanded={mainMenuOpen}
             >
-              <img src="/logo.webp" alt="Rohith's Logo"
-                className="w-10 h-10 sm:w-11 sm:h-11 object-contain rounded-full border-2 border-indigo-500/60 group-hover:border-indigo-400 transition-all duration-300 transform group-hover:scale-105"
-              />
-              <h1 className="text-xl sm:text-2xl font-semibold text-gray-100 group-hover:text-white transition-colors duration-300 tracking-tight">
-                Rohith's Portfolio
-              </h1>
-            </motion.a>
-
-            <div> 
-              <button
-                onClick={toggleMainMenu}
-                className="text-gray-300 hover:text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-indigo-500 transition-colors duration-200 cursor-pointer-interactive"
-                aria-label="Toggle Navigation Menu"
-                aria-expanded={mainMenuOpen}
-              >
-                {mainMenuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
-              </button>
-            </div>
+              {mainMenuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
+            </button>
           </div>
+        </div>
 
-          <AnimatePresence>
-            {mainMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20, transition: {duration: 0.2, ease: "easeIn"} }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="absolute top-full left-0 right-0 bg-black/90 backdrop-blur-md border-t border-b border-neutral-800/70 shadow-2xl md:rounded-b-lg md:mx-4 lg:mx-auto lg:max-w-md md:right-4 md:left-auto"
-              >
-                <nav className="px-4 py-4 space-y-2">
-                  {navItems.map((item, index) => (
-                    <motion.a
-                      key={index} href={item.href} onClick={(e) => handleNavClick(e, item.href)}
-                      className="block text-gray-200 hover:text-white text-base tracking-wide px-4 py-2.5 rounded-lg hover:bg-indigo-600/40 transition-all duration-200 ease-out cursor-pointer-interactive"
-                      initial={{ opacity: 0, x: -15 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.07, duration: 0.25, ease: "circOut" }}
-                    >
-                      {item.label}
-                    </motion.a>
-                  ))}
-                </nav>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.header>
-      )}
+        <AnimatePresence>
+          {mainMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20, transition: {duration: 0.2, ease: "easeIn"} }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="absolute top-full left-0 right-0 bg-black/90 backdrop-blur-md border-t border-b border-neutral-800/70 shadow-2xl md:rounded-b-lg md:mx-4 lg:mx-auto lg:max-w-md md:right-4 md:left-auto"
+            >
+              <nav className="px-4 py-4 space-y-2">
+                {navItems.map((item, index) => (
+                  <motion.a
+                    key={index} href={item.href} onClick={(e) => handleNavClick(e, item.href)}
+                    className="block text-gray-200 hover:text-white text-base tracking-wide px-4 py-2.5 rounded-lg hover:bg-indigo-600/40 transition-all duration-200 ease-out cursor-pointer-interactive"
+                    initial={{ opacity: 0, x: -15 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.07, duration: 0.25, ease: "circOut" }}
+                  >
+                    {item.label}
+                  </motion.a>
+                ))}
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
 
-      {/* --- MAIN CONTENT (Revealed after loading) --- */}
       <main className="flex-grow isolate">
         <section ref={heroRef} id="home" className="relative bg-black text-white py-28 md:py-36 min-h-[90vh] flex items-center bg-center bg-cover bg-fixed"
           style={{ backgroundImage: "url('/img_9.webp')" }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-sm" />
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
-            {/* Added delay to Hero animations so they start after the loader finishes */}
-            <motion.div 
-              initial={{ opacity: 0, y: -20 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.8, delay: isLoading ? 0 : 0.5, ease: "circOut" }} 
-            >
-              <div className="hero-text-anim"> 
+            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3, ease: "circOut" }} >
+              <div className="hero-text-anim"> {/* This class is used by GSAP for word animation */}
                 <SplitText text="Embark on a New Journey"
                   className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white text-center !leading-tight"
                   delay={30} animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0) rotateX(-20deg)", }}
@@ -301,30 +245,17 @@ const Landing = () => {
               </div>
             </motion.div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.7, delay: isLoading ? 0 : 0.8, ease: "circOut" }} 
-              className="mt-5 mb-3 h-12" 
-            >
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.8, ease: "circOut" }} className="mt-5 mb-3 h-12" >
               <InteractiveText className="cursor-pointer-interactive"/>
             </motion.div>
 
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.7, delay: isLoading ? 0 : 1.0, ease: "circOut" }}
-              className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-gray-200/90 leading-relaxed" 
-            >
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 1.0, ease: "circOut" }}
+              className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-gray-200/90 leading-relaxed" >
               Crafting cutting-edge digital solutions that bring ideas to life.
             </motion.p>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20, scale: 0.9 }} 
-              animate={{ opacity: 1, y: 0, scale: 1 }} 
-              transition={{ duration: 0.7, delay: isLoading ? 0 : 1.2, type: "spring", stiffness:150, damping: 20 }}
-              className="mt-10 flex justify-center gap-4" 
-            >
+            <motion.div initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.7, delay: 1.2, type: "spring", stiffness:150, damping: 20 }}
+              className="mt-10 flex justify-center gap-4" >
               <a href="#projects" onClick={(e) => handleNavClick(e, "#projects")}
                 className="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3.5 rounded-lg text-base font-semibold hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/40 focus:outline-none focus:ring-4 focus:ring-indigo-500/50" >
                 Explore My Work ✨
@@ -432,7 +363,7 @@ const Landing = () => {
           </div>
         </section>
 
-        {/* Projects Section - KEPT AS IS */}
+        {/* Projects Section */}
         <section id="projects" className="py-20 md:py-24 bg-black">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease:"easeOut" }} viewport={{ once: true, amount: 0.3 }} >
