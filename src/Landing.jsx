@@ -22,7 +22,7 @@ const TechStackLoader = ({ techStack, onComplete }) => {
     if (currentIndex < techStack.length) {
       const timeout = setTimeout(() => {
         setCurrentIndex((prev) => prev + 1);
-      }, 150);
+      }, 200);
       return () => clearTimeout(timeout);
     } else {
       // Shuffle done, show main logo
@@ -31,7 +31,7 @@ const TechStackLoader = ({ techStack, onComplete }) => {
       // Keep main logo in center for 1.2s, then trigger the fly-to-nav
       const timeout = setTimeout(() => {
         onComplete();
-      }, 1200); 
+      }, 1400); 
       return () => clearTimeout(timeout);
     }
   }, [currentIndex, techStack.length, onComplete]);
