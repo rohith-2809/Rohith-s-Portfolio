@@ -40,7 +40,7 @@ const TechStackLoader = ({ techStack, onComplete }) => {
     <motion.div
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
       // We animate the background opacity out when the component unmounts
-      exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
+      exit={{ opacity: 0, transition: { duration: 0.30, ease: "easeInOut" } }}
     >
       {/* Container for the centered content */}
       <div className="relative flex flex-col items-center justify-center w-full h-full">
@@ -52,7 +52,7 @@ const TechStackLoader = ({ techStack, onComplete }) => {
               key="shuffle"
               initial={{ opacity: 0, scale: 0.5, filter: "blur(10px)" }}
               animate={{ opacity: 1, scale: 1.2, filter: "blur(0px)" }}
-              exit={{ opacity: 0, scale: 0.5, filter: "blur(10px)", transition:{duration: 0.3} }}
+              exit={{ opacity: 0, scale: 0.5, filter: "blur(10px)", transition:{duration: 0.5} }}
               className="flex flex-col items-center"
             >
               {techStack[currentIndex] && (
