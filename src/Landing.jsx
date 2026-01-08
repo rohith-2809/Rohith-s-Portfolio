@@ -19,27 +19,53 @@ const TechStackLoader = ({ techStack, onComplete }) => {
   const [shuffledStack, setShuffledStack] = useState([]);
 
   useEffect(() => {
+    if (!techStack || techStack.length === 0) {
+      onComplete();
+      return;
+    }
+    
     // Create shuffled array for more dynamic animation
     const shuffled = [...techStack].sort(() => Math.random() - 0.5);
     setShuffledStack(shuffled);
-  }, [techStack]);
+  }, [techStack, onComplete]);
 
   useEffect(() => {
     if (phase === "shuffle") {
+      if (shuffledStack.length === 0) {
+        setPhase("logo-reveal");
+        return;
+      }
+      
       if (currentIndex < shuffledStack.length) {
         const timeout = setTimeout(() => {
           setCurrentIndex((prev) => prev + 1);
         }, 100);
         return () => clearTimeout(timeout);
       } else {
+        // Switch to logo reveal phase
         setPhase("logo-reveal");
-        const timeout = setTimeout(() => {
-          onComplete();
-        }, 1200);
-        return () => clearTimeout(timeout);
       }
     }
-  }, [currentIndex, shuffledStack.length, phase, onComplete]);
+  }, [currentIndex, shuffledStack.length, phase]);
+
+  useEffect(() => {
+    if (phase === "logo-reveal") {
+      // Wait for logo reveal animation then call onComplete
+      const timeout = setTimeout(() => {
+        onComplete();
+      }, 1200);
+      return () => clearTimeout(timeout);
+    }
+  }, [phase, onComplete]);
+
+  // Safety fallback - if something goes wrong, complete after 5 seconds
+  useEffect(() => {
+    const safetyTimeout = setTimeout(() => {
+      onComplete();
+    }, 5000);
+    
+    return () => clearTimeout(safetyTimeout);
+  }, [onComplete]);
 
   return (
     <motion.div
@@ -60,8 +86,8 @@ const TechStackLoader = ({ techStack, onComplete }) => {
             key={i}
             className="absolute w-1 h-1 bg-indigo-500/20 rounded-full"
             initial={{ 
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
+              y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1000),
               scale: 0 
             }}
             animate={{ 
@@ -112,7 +138,7 @@ const TechStackLoader = ({ techStack, onComplete }) => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                Loading {shuffledStack[currentIndex]?.name}...
+                {shuffledStack[currentIndex] ? `Loading ${shuffledStack[currentIndex]?.name}...` : "Initializing..."}
               </motion.p>
             </motion.div>
           ) : (
@@ -137,7 +163,6 @@ const TechStackLoader = ({ techStack, onComplete }) => {
               <motion.h1
                 layoutId="main-logo-text"
                 className="text-4xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-100 via-indigo-200 to-purple-200 whitespace-nowrap tracking-tight"
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
                 initial={{ letterSpacing: "0.5em" }}
                 animate={{ letterSpacing: "normal" }}
                 transition={{ duration: 1, ease: "easeOut" }}
@@ -259,6 +284,55 @@ const Landing = () => {
       color: "from-blue-500 to-blue-700"
     },
   ];
+
+  // Image preloading
+  useEffect(() => {
+    const preloadImages = () => {
+      const imageUrls = [
+        '/logo.webp',
+        '/img_9.webp',
+        '/Intern.webp',
+        '/project-demo.webm',
+        '/DocuAgent-demo.webm',
+        '/MachineLearningPreview.webp',
+        '/AiPreview.webp',
+        '/PreviewUX.webp',
+        '/Google Advanced Data Analytics Capstone.webp',
+        '/Google Python.webp',
+        '/Google networking.webp',
+        // Tech stack images
+        '/DeepLearning.webp',
+        '/express-js.webp',
+        '/Figma-logo.webp',
+        '/Mongodb.webp',
+        '/Node.js_logo.svg.webp',
+        '/Python.webp',
+        '/React.webp',
+        '/Tailwind_CSS_Logo.webp',
+        '/Grafana.webp',
+        '/HuggingFace.webp',
+        '/gcp.webp',
+        '/Docker.webp',
+      ];
+      
+      imageUrls.forEach(url => {
+        const img = new Image();
+        img.src = url;
+      });
+    };
+    
+    preloadImages();
+    
+    // Auto-complete loading after 3 seconds as safety fallback
+    const timeout = setTimeout(() => {
+      if (isLoading) {
+        console.log('Safety timeout triggered');
+        setIsLoading(false);
+      }
+    }, 3000);
+    
+    return () => clearTimeout(timeout);
+  }, [isLoading]);
 
   const sendEmail = useCallback((e) => {
     e.preventDefault();
