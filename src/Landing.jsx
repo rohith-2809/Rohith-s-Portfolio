@@ -992,9 +992,7 @@ const Landing = () => {
               viewport={{ once: true, amount: 0.3 }}
               className="text-gray-300/95 text-lg md:text-xl max-w-3xl mx-auto mb-12 leading-relaxed"
             >
-              At BuildFlow Technologies Pvt. Ltd., I improved the overall user experience,
-              built high-quality web applications, and implemented seamless end-to-end
-              connections between the frontend and backend using the MERN stack.
+              “During my time at BuildFlow Technologies Pvt. Ltd., I designed user-centric digital experiences and engineered scalable, production-ready web applications using the MERN stack. I focused on crafting clean, responsive interfaces, optimizing performance, and building seamless API integrations that connected every layer of the system effortlessly. My work helped deliver fast, intuitive, and reliable products that enhanced the overall experience for end users.”
             </motion.p>
             <motion.div
               className="flex justify-center mt-10"
