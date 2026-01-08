@@ -616,14 +616,9 @@ const Landing = () => {
               <span className="absolute bottom-0 left-1/2 w-36 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform -translate-x-1/2 translate-y-2.5 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full group-hover:w-40 ease-out"></span>
             </motion.h2>
             <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15, ease:"easeOut" }} viewport={{ once: true, amount: 0.3 }} className="text-gray-300/95 text-lg md:text-xl max-w-3xl mx-auto mb-12 leading-relaxed">
-              I helped enhance the user experience on{" "}
-              <a href="https://triventotrade.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-indigo-400 hover:text-indigo-300 underline decoration-indigo-500/60 hover:decoration-indigo-400/80 transition-colors duration-200" >
-                triventotrade.com
-              </a>{" "}
-              by improving crucial UI/UX elements, resulting in a significant
-              increase in traffic. During my internship at Buildflow Pvt, I also
-              contributed to app design improvements, further boosting
-              engagement and user satisfaction.
+              During my time at BuildFlow Technologies, I designed user-centric digital experiences and engineered scalable, production-ready web applications using the MERN stack. I focused on crafting clean, responsive interfaces, optimizing performance, and building seamless API integrations that connected every layer of the system effortlessly. My work helped deliver fast, intuitive, and reliable products that enhanced the overall experience for end users.
+
+
             </motion.p>
             <motion.div className="flex justify-center mt-10" initial={{ opacity: 0, y: 50, scale: 0.9 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.7, ease: "circOut", delay: 0.2, type: "spring", stiffness: 120 }} >
               <a href="https://drive.google.com/file/d/1G8Xkw0S_TF99Bz3gbyvjwFU70QEIsE0g/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="group" >
