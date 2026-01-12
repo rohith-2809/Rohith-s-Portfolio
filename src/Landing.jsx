@@ -542,7 +542,7 @@ const Landing = () => {
           </div>
         </section>
 
-        {/* Experience Section - FIXED */}
+        {/* Experience Section  */}
         <section id="experience" className="py-20 md:py-24 bg-black text-white relative overflow-hidden">
           {/* Background gradient elements */}
           <div className="absolute inset-0 opacity-10">
@@ -620,7 +620,7 @@ const Landing = () => {
                       transition={{ duration: 0.5, delay: 0.5 }}
                       viewport={{ once: true }}
                     >
-                      Full Stack Developer Intern • June 2024 - Aug 2024
+                      Full Stack Developer Intern • October 2024 - December 2024
                     </motion.p>
                     <motion.p 
                       className="text-gray-400"
