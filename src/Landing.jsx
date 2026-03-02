@@ -1,4 +1,3 @@
-
 import emailjs from "@emailjs/browser";
 import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "gsap";
@@ -457,9 +456,111 @@ const Landing = () => {
       </h2>
     </motion.div>
 
-    {/* --- Project Grid --- */}
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 place-items-stretch">
-      {/* Project 1: Plant Disease Detection */}
+      {/* ---------- NEW: ORION (Featured) ---------- */}
+      <motion.div
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+        viewport={{ once: true, amount: 0.2 }}
+        className="h-full flex relative"
+      >
+        {/* Featured badge */}
+        <div className="absolute -top-3 -right-3 z-10 bg-gradient-to-r from-amber-500 to-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg transform rotate-6">
+          🚀 Featured
+        </div>
+        <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-amber-500/60 rounded-xl shadow-xl hover:shadow-amber-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center border border-amber-500/30">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-100 group-hover:text-amber-300 transition-colors">ORION</h3>
+            </div>
+            <div className="mb-5 rounded-lg overflow-hidden border border-neutral-700/80 group-hover:border-amber-500/50 transition-all duration-300 shadow-md aspect-video bg-neutral-800 flex items-center justify-center">
+              <span className="text-amber-400/50 text-sm">AI Agent Core</span>
+            </div>
+            <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
+              A sovereign, offline‑first cognitive agent for secure, system‑aware execution. Features kernel‑aware defense, dynamic execution loops, and autonomous task orchestration.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
+            <a
+              href="https://github.com/rohith-2809/ORION"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center text-gray-400 hover:text-amber-400 transition-colors duration-200 group/link"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-1.5 transition-transform group-hover/link:scale-110">
+                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z" clipRule="evenodd" />
+              </svg>
+              <span className="font-medium text-sm">Source Code</span>
+            </a>
+            <a
+              href="https://github.com/rohith-2809/ORION"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-sm rounded-md font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg hover:shadow-amber-500/40"
+            >
+              <span className="mr-2">Learn More</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </SpotlightCard>
+      </motion.div>
+
+      {/* ---------- NEW: ORION-USB ---------- */}
+      <motion.div
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
+        viewport={{ once: true, amount: 0.2 }}
+        className="h-full flex"
+      >
+        <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-cyan-500/60 rounded-xl shadow-xl hover:shadow-cyan-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-cyan-500/10 rounded-lg flex items-center justify-center border border-cyan-500/30">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 9l3 3m0 0l-3 3m3-3H6" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-100 group-hover:text-cyan-300 transition-colors">ORION‑USB</h3>
+            </div>
+            <div className="mb-5 rounded-lg overflow-hidden border border-neutral-700/80 group-hover:border-cyan-500/50 transition-all duration-300 shadow-md aspect-video bg-neutral-800 flex items-center justify-center">
+              <span className="text-cyan-400/50 text-sm">Portable • Stateless</span>
+            </div>
+            <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
+              Run the entire ORION agent directly from a USB drive – no installation, no trace left on the host machine. Isolates all caches and runtime to the external drive.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
+            <a
+              href="https://github.com/rohith-2809/ORION_USB"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center text-gray-400 hover:text-cyan-400 transition-colors duration-200 group/link"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-1.5 transition-transform group-hover/link:scale-110">
+                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z" clipRule="evenodd" />
+              </svg>
+              <span className="font-medium text-sm">Source Code</span>
+            </a>
+            <span className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-cyan-600/50 text-white/70 text-sm rounded-md font-medium cursor-not-allowed border border-cyan-700/30">
+              <span className="mr-2">Live Demo</span>
+              <span className="text-xs">(USB‑only)</span>
+            </span>
+          </div>
+        </SpotlightCard>
+      </motion.div>
+
+      {/* ---------- EXISTING PROJECTS (unchanged) ---------- */}
+      {/* Plant Disease Detection */}
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -514,7 +615,7 @@ const Landing = () => {
         </SpotlightCard>
       </motion.div>
 
-      {/* Project 2: DocuAgent AI (Updated Repo) */}
+      {/* DocuAgent AI */}
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -570,7 +671,7 @@ const Landing = () => {
         </SpotlightCard>
       </motion.div>
 
-      {/* Project 3: AI Model Deployment */}
+      {/* AI Model Deployment */}
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -626,7 +727,7 @@ const Landing = () => {
         </SpotlightCard>
       </motion.div>
 
-      {/* Project 4: Employee Management (Updated Repo) */}
+      {/* Employee Management */}
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -681,7 +782,7 @@ const Landing = () => {
         </SpotlightCard>
       </motion.div>
 
-      {/* NEW PROJECT 5: Mediscope */}
+      {/* Mediscope */}
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -740,7 +841,7 @@ const Landing = () => {
         </SpotlightCard>
       </motion.div>
 
-      {/* NEW PROJECT 6: Financial Sentiment Classifier */}
+      {/* Financial Sentiment Classifier */}
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
