@@ -380,7 +380,7 @@ const Landing = () => {
               viewport={{ once: true, amount: 0.5 }}
             >
               <a
-                href="https://drive.google.com/file/d/1vkktLZHuWRCZxLb4MrxuXu77Kc-vMSAb/view?usp=sharing"
+                href="https://drive.google.com/file/d/1vkktLZHuWRCZxLb4MrxuXu77Kc-vMSAb/view?usp=drive_link"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/30 focus:outline-none focus:ring-4 focus:ring-indigo-500/50"
