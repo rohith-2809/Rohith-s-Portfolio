@@ -110,7 +110,6 @@ const Landing = () => {
     { name: "Docker", icon: "/opt_Docker.webp" },
   ];
 
-
  const [toast, setToast] = useState(null);
 
   const showToast = (message, type = "success") => {
