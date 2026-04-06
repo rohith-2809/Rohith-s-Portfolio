@@ -78,7 +78,6 @@ const TechStackLoader = ({ techStack, onComplete }) => {
     </motion.div>
   );
 };
-
 // --- MAIN LANDING COMPONENT ---
 const Landing = () => {
   const heroRef = useRef(null);
