@@ -95,6 +95,7 @@ const Landing = () => {
     { label: "Publications", href: "#publications" },
   ];
 
+  
   const techStack = [
     { name: "Deep Learning", icon: "/DeepLearning.webp" },
     { name: "Express.js", icon: "/opt_express-js.webp" },
