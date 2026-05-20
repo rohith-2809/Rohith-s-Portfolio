@@ -1617,6 +1617,290 @@ const Landing = () => {
                 </motion.div>
               </div>
             </motion.div>
+
+            {/* Hyderabadi Dawat */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.3 }}
+              className="mb-16"
+            >
+              <div className="max-w-4xl mx-auto p-8 bg-gradient-to-br from-neutral-900/50 to-black/70 backdrop-blur-sm rounded-2xl border border-neutral-800/60 hover:border-amber-500/40 transition-all duration-500 shadow-2xl hover:shadow-amber-500/10">
+                <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
+                  <motion.div
+                    className="flex-shrink-0"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 flex items-center justify-center p-3">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-10 h-10 text-amber-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={1.5}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                        />
+                      </svg>
+                    </div>
+                  </motion.div>
+
+                  <div className="text-left">
+                    <motion.h3
+                      className="text-2xl font-bold text-white mb-2"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                      viewport={{ once: true }}
+                    >
+                      Hyderabadi Dawat
+                    </motion.h3>
+                    <motion.p
+                      className="text-lg text-amber-400 font-medium mb-1"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.5 }}
+                      viewport={{ once: true }}
+                    >
+                      Freelance Web Developer
+                    </motion.p>
+                    <motion.p
+                      className="text-gray-400"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.6 }}
+                      viewport={{ once: true }}
+                    >
+                      Remote • Freelance
+                    </motion.p>
+                  </div>
+                </div>
+
+                <motion.div
+                  className="space-y-4 text-left"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.7 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {[
+                      "Designed and developed a responsive web application for Hyderabadi Dawat.",
+                      "Ensured high performance and a modern, appealing user interface.",
+                      "Implemented seamless navigation for an enhanced customer experience.",
+                      "Optimized the website to significantly increase online user engagement.",
+                    ].map((item, idx) => (
+                      <motion.div
+                        key={idx}
+                        className="flex items-start gap-3 group"
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.8 + idx * 0.1 }}
+                        viewport={{ once: true }}
+                        whileHover={{ x: 5 }}
+                      >
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 flex items-center justify-center mt-0.5 group-hover:scale-110 transition-transform duration-200">
+                          <svg
+                            className="w-3 h-3 text-amber-400"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                        <p className="text-gray-300/90 group-hover:text-white transition-colors duration-200">
+                          {item}
+                        </p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+                <motion.div
+                  className="mt-8 flex justify-start w-full border-t border-neutral-700/60 pt-6"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1 }}
+                  viewport={{ once: true }}
+                >
+                  <a
+                    href="https://www.hyderabadidawat.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-5 py-2 bg-amber-600/10 hover:bg-amber-600/20 text-amber-400 text-sm font-semibold rounded-lg border border-amber-500/30 hover:border-amber-500/50 transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group"
+                  >
+                    <span className="mr-2">Visit Website</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </a>
+                </motion.div>
+              </div>
+            </motion.div>
+
+            {/* The Park Mandi */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.45, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.3 }}
+              className="mb-16"
+            >
+              <div className="max-w-4xl mx-auto p-8 bg-gradient-to-br from-neutral-900/50 to-black/70 backdrop-blur-sm rounded-2xl border border-neutral-800/60 hover:border-rose-500/40 transition-all duration-500 shadow-2xl hover:shadow-rose-500/10">
+                <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
+                  <motion.div
+                    className="flex-shrink-0"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-rose-500/20 to-pink-500/20 border border-rose-500/30 flex items-center justify-center p-3">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-10 h-10 text-rose-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={1.5}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                        />
+                      </svg>
+                    </div>
+                  </motion.div>
+
+                  <div className="text-left">
+                    <motion.h3
+                      className="text-2xl font-bold text-white mb-2"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                      viewport={{ once: true }}
+                    >
+                      The Park Mandi
+                    </motion.h3>
+                    <motion.p
+                      className="text-lg text-rose-400 font-medium mb-1"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.5 }}
+                      viewport={{ once: true }}
+                    >
+                      Freelance Web Developer
+                    </motion.p>
+                    <motion.p
+                      className="text-gray-400"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.6 }}
+                      viewport={{ once: true }}
+                    >
+                      Remote • Freelance
+                    </motion.p>
+                  </div>
+                </div>
+
+                <motion.div
+                  className="space-y-4 text-left"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.7 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {[
+                      "Designed and implemented a high-performance web platform for The Park Mandi.",
+                      "Focused on pixel-perfect responsiveness and robust architecture.",
+                      "Delivered an engaging user interface to highlight brand value.",
+                      "Ensured cross-device compatibility and optimized loading speeds.",
+                    ].map((item, idx) => (
+                      <motion.div
+                        key={idx}
+                        className="flex items-start gap-3 group"
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.8 + idx * 0.1 }}
+                        viewport={{ once: true }}
+                        whileHover={{ x: 5 }}
+                      >
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-r from-rose-500/20 to-pink-500/20 flex items-center justify-center mt-0.5 group-hover:scale-110 transition-transform duration-200">
+                          <svg
+                            className="w-3 h-3 text-rose-400"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                        <p className="text-gray-300/90 group-hover:text-white transition-colors duration-200">
+                          {item}
+                        </p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+                <motion.div
+                  className="mt-8 flex justify-start w-full border-t border-neutral-700/60 pt-6"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1 }}
+                  viewport={{ once: true }}
+                >
+                  <a
+                    href="https://theparkmandi.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-5 py-2 bg-rose-600/10 hover:bg-rose-600/20 text-rose-400 text-sm font-semibold rounded-lg border border-rose-500/30 hover:border-rose-500/50 transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_15px_rgba(244,63,94,0.2)] group"
+                  >
+                    <span className="mr-2">Visit Website</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </a>
+                </motion.div>
+              </div>
+            </motion.div>
           </div>
         </section>
 
