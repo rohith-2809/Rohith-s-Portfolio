@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 
-const phrases = ["Web Developer", "UX Designer", "Machine Learning Enthusiast"];
+const phrases = ["Full-Stack Software Engineer", "AI & ML Specialist", "Problem Solver & Team Player"];
 
 const InteractiveText = () => {
   const [index, setIndex] = useState(0);

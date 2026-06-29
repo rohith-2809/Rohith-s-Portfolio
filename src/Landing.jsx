@@ -84,6 +84,19 @@ const Landing = () => {
   const [isContactModalOpen, setContactModalOpen] = useState(false);
   const [mainMenuOpen, setMainMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const navItems = [
     { label: "Home", href: "#home" },
@@ -97,18 +110,23 @@ const Landing = () => {
 
   
   const techStack = [
-    { name: "Deep Learning", icon: "/DeepLearning.webp" },
-    { name: "Express.js", icon: "/opt_express-js.webp" },
-    { name: "Figma", icon: "/opt_Figma-logo.webp" },
-    { name: "MongoDB", icon: "/Mongodb.webp" },
-    { name: "Node.js", icon: "/opt_Node.js_logo.svg.webp" },
-    { name: "Python", icon: "/Python.webp" },
-    { name: "React", icon: "/opt_React.webp" },
-    { name: "Tailwind CSS", icon: "/opt_Tailwind_CSS_Logo.webp" },
-    { name: "Grafana", icon: "/Grafana.webp" },
-    { name: "HuggingFace", icon: "/opt_HuggingFace.webp" },
-    { name: "gcp", icon: "/opt_gcp.webp" },
-    { name: "Docker", icon: "/opt_Docker.webp" },
+    { name: "JavaScript", icon: "/JS.png", description: "Web Logic" },
+    { name: "Python", icon: "/Python.webp", description: "Scripting & Data" },
+    { name: "MySQL", icon: "/MySql.png", description: "Relational DB" },
+    { name: "MongoDB", icon: "/Mongodb.webp", description: "NoSQL DB" },
+    { name: "Redis", icon: "/redis.png", description: "In-Memory DB" },
+    { name: "React", icon: "/opt_React.webp", description: "Frontend UI" },
+    { name: "Node.js", icon: "/opt_Node.js_logo.svg.webp", description: "Runtime" },
+    { name: "Express.js", icon: "/opt_express-js.webp", description: "Web Framework" },
+    { name: "Tailwind CSS", icon: "/opt_Tailwind_CSS_Logo.webp", description: "Styling" },
+    { name: "TensorFlow", icon: "/TensorFlow.png", description: "ML Framework" },
+    { name: "PyTorch", icon: "/Pytourch.png", description: "Deep Learning" },
+    { name: "Deep Learning", icon: "/DeepLearning.webp", description: "Neural Networks" },
+    { name: "HuggingFace", icon: "/opt_HuggingFace.webp", description: "AI Models" },
+    { name: "Docker", icon: "/opt_Docker.webp", description: "Containerization" },
+    { name: "GCP", icon: "/opt_gcp.webp", description: "Cloud Platform" },
+    { name: "Grafana", icon: "/Grafana.webp", description: "Observability" },
+    { name: "Git", icon: "/git.png", description: "Version Control" }
   ];
 
  const [toast, setToast] = useState(null);
@@ -184,7 +202,7 @@ const Landing = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-black text-white relative selection:bg-indigo-500 selection:text-white antialiased overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-200 font-inter relative selection:bg-indigo-500 selection:text-white antialiased overflow-x-hidden">
       <CustomCursor />
 
       <AnimatePresence>
@@ -275,10 +293,10 @@ const Landing = () => {
         <section
           ref={heroRef}
           id="home"
-          className="relative bg-black text-white py-28 md:py-36 min-h-[90vh] flex items-center bg-center bg-cover bg-fixed"
+          className="relative bg-slate-950 text-slate-100 py-28 md:py-36 min-h-[90vh] flex items-center bg-center bg-cover bg-fixed"
           style={{ backgroundImage: "url('/img_9.webp')" }}
         >
-          <div className="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" />
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -287,8 +305,8 @@ const Landing = () => {
             >
               <div className="hero-text-anim">
                 <SplitText
-                  text="Embark on a New Journey"
-                  className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white text-center !leading-tight"
+                  text="Hi, I'm Rohith"
+                  className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-outfit text-white text-center !leading-tight tracking-tight"
                   delay={30}
                   animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0) rotateX(-20deg)" }}
                   animationTo={{ opacity: 1, transform: "translate3d(0,0,0) rotateX(0deg)" }}
@@ -313,7 +331,7 @@ const Landing = () => {
               transition={{ duration: 0.8, delay: isLoading ? 0 : 1.5, ease: "easeOut" }}
               className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-gray-200/90 leading-relaxed"
             >
-              Crafting cutting-edge digital solutions that bring ideas to life.
+              Passionate about building scalable systems, AI-driven applications, and contributing to impactful engineering teams.
             </motion.p>
 
             <motion.div
@@ -334,7 +352,7 @@ const Landing = () => {
         </section>
 
         {/* About Me Section */}
-        <section id="about" className="py-20 md:py-24 bg-black relative overflow-hidden">
+        <section id="about" className="py-20 md:py-24 bg-slate-950 relative overflow-hidden">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -342,7 +360,7 @@ const Landing = () => {
               transition={{ duration: 0.6, ease: "easeOut" }}
               viewport={{ once: true, amount: 0.3 }}
             >
-              <h2 className="text-4xl md:text-5xl font-bold mb-10 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent relative group">
+              <h2 className="text-4xl md:text-5xl font-bold font-outfit mb-10 text-slate-100 relative group tracking-tight">
                 About Me
                 <span className="absolute bottom-0 left-1/2 w-36 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform -translate-x-1/2 translate-y-2.5 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full group-hover:w-40 ease-out"></span>
               </h2>
@@ -356,19 +374,19 @@ const Landing = () => {
               className="p-8 bg-neutral-900/70 backdrop-blur-sm rounded-xl border border-neutral-800/80 hover:border-indigo-500/50 transition-all duration-300 mb-12 shadow-xl hover:shadow-indigo-500/10 will-change-[transform,opacity]"
             >
               <p className="text-lg md:text-xl text-gray-200/95 leading-relaxed">
-                I build intelligent infrastructure.
+                I am a dedicated <span className="font-semibold text-indigo-400">Software Engineer</span> actively seeking full-time opportunities to build impactful applications.
                 <br />
                 <br />
-                As a <span className="font-semibold text-indigo-400">Full Stack and AI-focused engineer</span>, I specialize in architecting systems that combine machine learning, backend orchestration, and seamless frontend experiences.
+                As a Full Stack and AI-focused engineer, I specialize in architecting systems that combine machine learning, robust backend orchestration, and seamless frontend experiences.
                 <br />
                 <br />
-                My work includes <span className="font-semibold text-cyan-400">regression-based medical AI systems</span>, <span className="font-semibold text-purple-400">agentic retrieval architectures</span>, and autonomous workflow engines designed for real-world deployment.
+                My experience includes developing <span className="font-semibold text-cyan-400">regression-based medical AI systems</span>, <span className="font-semibold text-purple-400">agentic retrieval architectures</span>, and scalable web platforms. I thrive in collaborative team environments where I can tackle complex problems.
                 <br />
                 <br />
-                I approach software engineering with a systems mindset — prioritizing scalability, security, and long-term maintainability over shortcuts.
+                I approach software engineering with a systems mindset—prioritizing scalability, security, and maintainability, to deliver lasting value to the organization.
                 <br />
                 <br />
-                Engineering, for me, is not about writing code. It’s about designing intelligence.
+                I am eager to bring my diverse skill set and proactive mindset to a forward-thinking engineering team!
               </p>
             </motion.div>
 
@@ -379,7 +397,7 @@ const Landing = () => {
               viewport={{ once: true, amount: 0.5 }}
             >
               <a
-                href="https://drive.google.com/file/d/1vkktLZHuWRCZxLb4MrxuXu77Kc-vMSAb/view?usp=drive_link"
+                href="https://drive.google.com/file/d/1hRrlvA0nnKueRpO-wAWF6M2SduXxSHvG/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/30 focus:outline-none focus:ring-4 focus:ring-indigo-500/50"
@@ -401,11 +419,70 @@ const Landing = () => {
                 View My Resume
               </a>
             </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.3 }}
+              className="mt-16 text-left"
+            >
+              <h3 className="text-2xl md:text-3xl font-bold font-outfit mb-8 text-slate-100 relative inline-block tracking-tight text-center md:text-left w-full">
+                Education
+                <motion.div
+                  className="absolute bottom-0 left-0 right-auto h-0.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 md:w-32 w-24"
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  transition={{ duration: 0.8, delay: 0.2, ease: "circOut" }}
+                  viewport={{ once: true }}
+                />
+              </h3>
+              <div className="max-w-4xl mx-auto p-8 bg-gradient-to-br from-neutral-900/50 to-black/70 backdrop-blur-sm rounded-2xl border border-neutral-800/60 hover:border-blue-500/40 transition-all duration-500 shadow-xl hover:shadow-blue-500/10">
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+                  <motion.div
+                    className="flex-shrink-0"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center justify-center p-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                      </svg>
+                    </div>
+                  </motion.div>
+
+                  <div className="text-center md:text-left flex-1">
+                    <motion.h3
+                      className="text-2xl font-bold text-white mb-2"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                      viewport={{ once: true }}
+                    >
+                      B.Tech Computer Science (AI and ML)
+                    </motion.h3>
+                    <motion.p
+                      className="text-lg text-blue-400 font-medium mb-1"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.5 }}
+                      viewport={{ once: true }}
+                    >
+                      Undergraduate Degree • 2022 - 2026
+                    </motion.p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 
         {/* Tech Stack Section */}
-        <section id="tech-stack" className="relative py-20 md:py-28 bg-black overflow-hidden">
+        <section id="tech-stack" className="relative py-20 md:py-28 bg-slate-950 overflow-hidden">
           <div className="absolute inset-0 opacity-20">
             <div className="absolute w-[500px] h-[500px] bg-gradient-to-r from-cyan-600/25 to-blue-600/25 rounded-full blur-3xl -top-32 -left-32 animate-pulse"></div>
             <div className="absolute w-[400px] h-[400px] bg-gradient-to-r from-purple-600/25 to-pink-600/25 rounded-full blur-3xl -bottom-32 -right-32 animate-pulse delay-700"></div>
@@ -418,8 +495,8 @@ const Landing = () => {
               viewport={{ once: true, amount: 0.3 }}
             >
               <div className="mb-16 md:mb-20">
-                <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 mb-5">
-                  Powering Innovation
+                <h2 className="text-4xl md:text-5xl font-bold font-outfit text-slate-100 mb-5 tracking-tight">
+                  Tech Stack
                 </h2>
                 <p className="text-gray-300/90 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
                   Combining cutting-edge technologies with modern development practices to create
@@ -429,7 +506,7 @@ const Landing = () => {
                 </p>
               </div>
             </motion.div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 md:gap-6 place-items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 md:gap-6 place-items-center w-full">
               {techStack.map((tech, index) => (
                 <motion.div
                   key={tech.name}
@@ -441,7 +518,7 @@ const Landing = () => {
                     y: -4,
                     transition: { type: "spring", stiffness: 300, damping: 10 },
                   }}
-                  transition={{ duration: 0.4, delay: index * 0.06, type: "spring", stiffness: 180, damping: 15 }}
+                  transition={{ duration: 0.4, delay: (index % 5) * 0.06, type: "spring", stiffness: 180, damping: 15 }}
                   viewport={{ once: true, amount: 0.2 }}
                 >
                   <motion.img
@@ -449,7 +526,7 @@ const Landing = () => {
                     alt={tech.name}
                     className="h-12 w-12 sm:h-14 sm:w-14 object-contain mb-2.5 group-hover:scale-110 group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.45)] transition-all duration-300"
                   />
-                  <h3 className="text-base sm:text-lg font-semibold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-blue-300 transition-all duration-300">
+                  <h3 className="text-base sm:text-lg font-semibold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-blue-300 transition-all duration-300 text-center">
                     {tech.name}
                   </h3>
                   <p className="text-gray-400/90 text-[11px] sm:text-xs mt-1.5 group-hover:text-gray-300 transition-colors font-medium text-center px-1">
@@ -491,7 +568,7 @@ const Landing = () => {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="py-20 md:py-24 bg-black">
+        <section id="projects" className="py-20 md:py-24 bg-slate-950">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -499,7 +576,7 @@ const Landing = () => {
               transition={{ duration: 0.6, ease: "easeOut" }}
               viewport={{ once: true, amount: 0.3 }}
             >
-              <h2 className="text-4xl sm:text-5xl md:text-6xl text-center font-extrabold mb-12 md:mb-16 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent relative group">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl text-center font-extrabold font-outfit text-slate-100 mb-12 md:mb-16 tracking-tight relative group">
                 Projects
                 <span className="absolute bottom-0 left-1/2 w-28 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform -translate-x-1/2 translate-y-3 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full group-hover:w-32 ease-out"></span>
               </h2>
@@ -550,6 +627,11 @@ const Landing = () => {
                         <source src="/orion-demo.webm" type="video/webm" />
                         Your browser does not support the video tag.
                       </video>
+                    </div>
+                    <div className="mb-3">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                        Dec 2025 – Feb 2026
+                      </span>
                     </div>
                     <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
                       A sovereign, offline‑first cognitive agent for secure, system‑aware execution. Features kernel‑level defense and autonomous task orchestration.
@@ -652,6 +734,11 @@ const Landing = () => {
                         Your browser does not support the video tag.
                       </video>
                     </div>
+                    <div className="mb-3">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                        Feb 2026 – Apr 2026
+                      </span>
+                    </div>
                     <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
                       Run the entire ORION agent directly from a USB drive – no installation, no trace left on the host machine.
                     </p>
@@ -729,6 +816,11 @@ const Landing = () => {
                         <source src="/project-demo.webm" type="video/webm" />
                         Your browser does not support the video tag.
                       </video>
+                    </div>
+                    <div className="mb-3">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                        Feb 2025 – May 2025
+                      </span>
                     </div>
                     <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
                       AI‑powered web app that identifies plant diseases from images using CNN models. Provides detailed analysis and preventive measures.
@@ -831,6 +923,11 @@ const Landing = () => {
                         Your browser does not support the video tag.
                       </video>
                     </div>
+                    <div className="mb-3">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        June 2025 – Aug 2025
+                      </span>
+                    </div>
                     <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
                       An intelligent agent that automates software documentation by generating UML diagrams and code explanations directly from a given codebase.
                     </p>
@@ -932,6 +1029,11 @@ const Landing = () => {
                         Your browser does not support the video tag.
                       </video>
                     </div>
+                    <div className="mb-3">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-teal-500/10 text-teal-400 border border-teal-500/20">
+                        Sep 2025 – Oct 2025
+                      </span>
+                    </div>
                     <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
                       End‑to‑end MLOps solution deploying machine learning models via Hugging Face and Flask APIs. Real‑time predictions.
                     </p>
@@ -1027,6 +1129,11 @@ const Landing = () => {
                         <source src="/EMS.webm" type="video/webm" />
                         Your browser does not support the video tag.
                       </video>
+                    </div>
+                    <div className="mb-3">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                        Nov 2024 – Dec 2024
+                      </span>
                     </div>
                     <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
                       Fast, responsive app built with React, Tailwind, and Vite to manage employee data using local storage — no backend needed.
@@ -1124,6 +1231,11 @@ const Landing = () => {
                         Your browser does not support the video tag.
                       </video>
                     </div>
+                    <div className="mb-3">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                        Dec 2024 – Jan 2025
+                      </span>
+                    </div>
                     <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
                       AI‑powered platform for instant X‑ray analysis, lab report simplification, and a health assistant chat. Secure, JWT‑authenticated, real‑time updates.
                     </p>
@@ -1220,6 +1332,11 @@ const Landing = () => {
                         Your browser does not support the video tag.
                       </video>
                     </div>
+                    <div className="mb-3">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                        Oct 2025 – Nov 2025
+                      </span>
+                    </div>
                     <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
                       XLM‑R model fine‑tuned on 14k financial sentences for market news analytics, stock tweet sentiment, and trading signal enrichment.
                     </p>
@@ -1256,8 +1373,10 @@ const Landing = () => {
           </div>
         </section>
 
+
+
         {/* Experience Section */}
-        <section id="experience" className="py-20 md:py-24 bg-black text-white relative overflow-hidden">
+        <section id="experience" className="py-20 md:py-24 bg-slate-950 text-slate-100 relative overflow-hidden">
           {/* Background gradient elements */}
           <div className="absolute inset-0 opacity-10">
             <motion.div
@@ -1282,7 +1401,7 @@ const Landing = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
               viewport={{ once: true, amount: 0.3 }}
-              className="text-4xl md:text-5xl font-bold mb-10 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent relative inline-block"
+              className="text-4xl md:text-5xl font-bold font-outfit mb-10 text-slate-100 relative inline-block tracking-tight"
             >
               Professional Journey
               <motion.div
@@ -2411,6 +2530,36 @@ const Landing = () => {
           onClose={() => setToast(null)}
         />
       )}
+
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, y: 20, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.8 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={scrollToTop}
+            className="fixed bottom-6 right-6 z-50 p-3 md:p-4 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 text-white shadow-lg hover:shadow-indigo-500/50 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 cursor-pointer-interactive"
+            aria-label="Scroll to top"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+              stroke="currentColor"
+              className="w-5 h-5 md:w-6 md:h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"
+              />
+            </svg>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

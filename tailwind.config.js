@@ -5,6 +5,9 @@ export default {
     extend: {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
+        outfit: ["Outfit", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
+        playfair: ["Playfair Display", "serif"],
       },
       keyframes: {
         shine: {
