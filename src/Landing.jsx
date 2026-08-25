@@ -1,479 +1,462 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef, useState } from "react";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from "framer-motion";
+import { useEffect, useState } from "react";
+import { FaGithub, FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
+import {
+  FiArrowUpRight,
+  FiAward,
+  FiBookOpen,
+  FiBriefcase,
+  FiCheck,
+  FiChevronUp,
+  FiDownload,
+  FiExternalLink,
+  FiGithub,
+  FiLayers,
+  FiMail,
+  FiMenu,
+  FiMessageCircle,
+  FiMonitor,
+  FiSend,
+  FiTerminal,
+  FiUser,
+  FiX,
+} from "react-icons/fi";
 import CustomCursor from "./Effects/CustomCursor";
 import CustomToast from "./Effects/CustomToast";
-import InteractiveText from "./Effects/InteractiveText";
-import SplitText from "./Effects/SplitText";
-import SpotlightCard from "./Effects/SpotlightCard";
-import TiltedCard from "./Effects/TiltedCard";
+import GradientWaves from "./ReactBits/GradientWaves";
+import OptionWheel from "./ReactBits/OptionWheel";
 
-gsap.registerPlugin(ScrollTrigger);
+const navItems = [
+  { label: "Work", href: "#projects" },
+  { label: "Stack", href: "#tech-stack" },
+  { label: "Experience", href: "#experience" },
+  { label: "Proof", href: "#certifications" },
+  { label: "Contact", href: "#contact" },
+];
 
-// --- Intro Animation Loader ---
-const TechStackLoader = ({ techStack, onComplete }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [phase, setPhase] = useState("shuffle");
+const focusRoles = [
+  "Full-stack software engineer",
+  "AI product builder",
+  "MERN systems developer",
+  "UX-minded problem solver",
+];
 
-  useEffect(() => {
-    if (currentIndex < techStack.length) {
-      const timeout = setTimeout(() => {
-        setCurrentIndex((prev) => prev + 1);
-      }, 200);
-      return () => clearTimeout(timeout);
-    } else {
-      setPhase("logo-reveal");
-      const timeout = setTimeout(() => {
-        onComplete();
-      }, 1400);
-      return () => clearTimeout(timeout);
-    }
-  }, [currentIndex, techStack.length, onComplete]);
+const stats = [
+  { value: "9+", label: "Product builds" },
+  { value: "17", label: "Core technologies" },
+  { value: "6", label: "Google credentials" },
+  { value: "2", label: "Research artifacts" },
+];
 
+const techStack = [
+  { name: "JavaScript", icon: "/JS.png", group: "Frontend" },
+  { name: "React", icon: "/opt_React.webp", group: "Frontend" },
+  { name: "Tailwind CSS", icon: "/opt_Tailwind_CSS_Logo.webp", group: "Frontend" },
+  { name: "Node.js", icon: "/opt_Node.js_logo.svg.webp", group: "Backend" },
+  { name: "Express.js", icon: "/opt_express-js.webp", group: "Backend" },
+  { name: "MongoDB", icon: "/Mongodb.webp", group: "Data" },
+  { name: "MySQL", icon: "/MySql.png", group: "Data" },
+  { name: "Redis", icon: "/redis.png", group: "Data" },
+  { name: "Python", icon: "/Python.webp", group: "AI" },
+  { name: "TensorFlow", icon: "/TensorFlow.png", group: "AI" },
+  { name: "PyTorch", icon: "/Pytourch.png", group: "AI" },
+  { name: "Hugging Face", icon: "/opt_HuggingFace.webp", group: "AI" },
+  { name: "Docker", icon: "/opt_Docker.webp", group: "Cloud" },
+  { name: "GCP", icon: "/opt_gcp.webp", group: "Cloud" },
+  { name: "Grafana", icon: "/Grafana.webp", group: "Cloud" },
+  { name: "Git", icon: "/git.png", group: "Workflow" },
+  { name: "Figma", icon: "/opt_Figma-logo.webp", group: "Design" },
+];
+
+const projects = [
+  {
+    title: "ORION",
+    category: "Autonomous agent",
+    period: "Dec 2025 - Feb 2026",
+    media: "/orion-demo.webm",
+    repo: "https://github.com/rohith-2809/ORION",
+    live: "https://github.com/rohith-2809/ORION",
+    cta: "Explore architecture",
+    summary:
+      "A sovereign, offline-first cognitive agent for secure, system-aware execution with task orchestration and defensive runtime behavior.",
+    impact: ["Offline-first runtime", "System-aware execution", "Security-focused orchestration"],
+    stack: ["Python", "Agents", "Security", "Automation"],
+  },
+  {
+    title: "DocuAgent AI",
+    category: "Retrieval assistant",
+    period: "2025",
+    media: "/DocuAgent-demo.webm",
+    repo: "https://github.com/rohith-2809/DocuAgent",
+    live: "https://github.com/rohith-2809/DocuAgent",
+    cta: "View repository",
+    summary:
+      "Agentic document intelligence workflow that turns unstructured files into searchable answers and task-ready context.",
+    impact: ["Document retrieval", "Context-aware responses", "Reusable agent workflow"],
+    stack: ["React", "Node", "RAG", "AI"],
+  },
+  {
+    title: "Plant Disease Detection",
+    category: "Computer vision",
+    period: "Feb 2025 - May 2025",
+    media: "/project-demo.webm",
+    repo: "https://github.com/rohith-2809/mern-test",
+    live: "https://mern-test-client.onrender.com/",
+    cta: "Launch demo",
+    summary:
+      "AI-powered MERN application that identifies plant diseases from images and returns practical preventive guidance.",
+    impact: ["CNN classification", "Image upload workflow", "Actionable guidance"],
+    stack: ["MERN", "CNN", "TensorFlow", "Tailwind"],
+  },
+  {
+    title: "Employee Management System",
+    category: "Operations app",
+    period: "Nov 2024 - Dec 2024",
+    media: "/EMS.webm",
+    repo: "https://github.com/rohith-2809/Employee-Management-System",
+    live: "https://employee-management-system-jdxe.onrender.com",
+    cta: "Open product",
+    summary:
+      "Fast, responsive employee management interface built with React, Tailwind, Vite, and local persistence.",
+    impact: ["Responsive CRUD flows", "Zero-backend persistence", "Clean employee records"],
+    stack: ["React", "Vite", "Tailwind", "LocalStorage"],
+  },
+];
+
+const experience = [
+  {
+    company: "BuildFlow Technologies Pvt. Ltd.",
+    role: "Full Stack Developer Intern",
+    meta: "Remote full-time internship",
+    period: "Oct 2024 - Dec 2024",
+    link: "https://drive.google.com/file/d/1G8Xkw0S_TF99Bz3gbyvjwFU70QEIsE0g/view",
+    proof: "Internship certificate",
+    points: [
+      "Enhanced user experience across multiple web applications.",
+      "Built responsive MERN stack interfaces and API-connected workflows.",
+      "Implemented frontend to backend integrations for production-ready features.",
+      "Collaborated with team members to deliver scalable application improvements.",
+    ],
+  },
+  {
+    company: "Trivento Trade LLP",
+    role: "Freelance Web Developer",
+    meta: "Remote freelance",
+    period: "2025",
+    link: "https://www.triventotrade.com/",
+    proof: "Visit website",
+    points: [
+      "Designed and deployed a modern company web presence.",
+      "Integrated an AI chatbot to support customer interactions.",
+      "Improved site responsiveness, navigation clarity, and user flow.",
+      "Delivered a professional interface aligned to business credibility.",
+    ],
+  },
+  {
+    company: "Hyderabadi Dawat",
+    role: "Freelance Web Developer",
+    meta: "Remote freelance",
+    period: "2025",
+    link: "#contact",
+    proof: "Discuss similar work",
+    points: [
+      "Built a responsive restaurant web experience for discovery and engagement.",
+      "Created clear navigation and content hierarchy for customers.",
+      "Optimized presentation for mobile browsing and fast decision-making.",
+      "Improved brand impression with a clean, modern visual structure.",
+    ],
+  },
+];
+
+const certifications = [
+  {
+    title: "Google Machine Learning",
+    image: "/MachineLearningPreview.webp",
+    link: "https://coursera.org/share/27665abf668c0479e649f09c01ce75b9",
+    copy: "Predictive modeling, supervised learning, and practical ML workflows.",
+  },
+  {
+    title: "Google AI Essentials",
+    image: "/AiPreview.webp",
+    link: "https://coursera.org/share/e76522223bd36da3f4a8feeb93d2d2f7",
+    copy: "AI fundamentals, prompt workflows, and applied productivity patterns.",
+  },
+  {
+    title: "Google UX Design",
+    image: "/PreviewUX.webp",
+    link: "https://coursera.org/share/c617189e47b33926082172340be87f71",
+    copy: "Research, wireframing, prototyping, usability testing, and interaction design.",
+  },
+  {
+    title: "Advanced Data Analytics",
+    image: "/Google Advanced Data Analytics Capstone.webp",
+    link: "https://coursera.org/share/09e30d48b4d38a664c30b12795d8b144",
+    copy: "Data storytelling, analysis, visualization, and model-backed decisions.",
+  },
+  {
+    title: "Python for Cybersecurity",
+    image: "/Google Python.webp",
+    link: "https://coursera.org/share/b00ad7de4b6962060b8d47800927b352",
+    copy: "Automating security tasks, investigation workflows, and Python scripting.",
+  },
+  {
+    title: "Network Security",
+    image: "/Google networking.webp",
+    link: "https://coursera.org/share/9bd3492f4984a22b035647ca0e151226",
+    copy: "Network architecture, protection strategies, and secure system foundations.",
+  },
+];
+
+const socials = [
+  { label: "GitHub", href: "https://github.com/rohith-2809", icon: FaGithub },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/rohith-vittamraj-0ab76a313", icon: FaLinkedinIn },
+  { label: "X", href: "https://x.com/rohithofficial5?s=21&t=cVo-4UEJaqOqaL-meqeikQ", icon: FaXTwitter },
+  { label: "Instagram", href: "https://www.instagram.com/_rohtzz_", icon: FaInstagram },
+];
+
+const projectNames = projects.map((project) => project.title);
+
+const sectionVariant = {
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+};
+
+function scrollToId(href) {
+  const target = document.querySelector(href);
+  if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function SectionIntro({ icon: Icon, title, copy, align = "left" }) {
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
-      exit={{ opacity: 0, transition: { duration: 0.3, ease: "easeInOut" } }}
+      variants={sectionVariant}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.25 }}
+      className={`mb-10 ${align === "center" ? "mx-auto text-center" : ""}`}
     >
-      <div className="relative flex flex-col items-center justify-center w-full h-full">
-        <AnimatePresence mode="wait">
-          {phase === "shuffle" ? (
+      <div className={`mb-4 flex items-center gap-3 ${align === "center" ? "justify-center" : ""}`}>
+        <span className="grid h-10 w-10 place-items-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+          <Icon size={18} />
+        </span>
+        <span className="h-px w-16 bg-cyan-300/35" />
+      </div>
+      <h2 className="max-w-3xl text-3xl font-semibold tracking-[-0.03em] text-white sm:text-5xl">
+        {title}
+      </h2>
+      {copy && (
+        <p className={`mt-5 max-w-2xl text-base leading-7 text-slate-300 ${align === "center" ? "mx-auto" : ""}`}>
+          {copy}
+        </p>
+      )}
+    </motion.div>
+  );
+}
+
+function MagneticButton({ children, href, onClick, variant = "primary", className = "", external = false }) {
+  const Comp = href ? "a" : "button";
+  const styles =
+    variant === "primary"
+      ? "border-cyan-300 bg-cyan-300 text-[#031317] shadow-[0_18px_50px_rgba(103,232,249,0.18)] hover:bg-white"
+      : "border-white/15 bg-white/[0.04] text-white hover:border-cyan-300/50 hover:bg-cyan-300/10";
+  return (
+    <motion.div whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }} className={className}>
+      <Comp
+        href={href}
+        onClick={onClick}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        className={`inline-flex items-center justify-center gap-2 rounded-2xl border px-5 py-3 text-sm font-bold transition ${styles}`}
+      >
+        {children}
+      </Comp>
+    </motion.div>
+  );
+}
+
+function Landing() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [activeProject, setActiveProject] = useState(0);
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [showTop, setShowTop] = useState(false);
+  const { scrollYProgress, scrollY } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 24, restDelta: 0.001 });
+
+  useMotionValueEvent(scrollY, "change", (latest) => setShowTop(latest > 700));
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setRoleIndex((current) => (current + 1) % focusRoles.length);
+    }, 2600);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const handleNav = (event, href) => {
+    event.preventDefault();
+    scrollToId(href);
+    setMenuOpen(false);
+  };
+
+  const handleSubmit = () => {
+    setContactOpen(false);
+    setToast({ message: "Message is opening through the contact form flow.", type: "info", id: Date.now() });
+  };
+
+  const active = projects[activeProject];
+
+  return (
+    <div className="min-h-screen overflow-x-hidden bg-[#060a0f] font-poppins text-white selection:bg-cyan-300 selection:text-[#031317]">
+      <CustomCursor />
+      <motion.div className="fixed left-0 right-0 top-0 z-[2000] h-1 origin-left bg-cyan-300" style={{ scaleX: progress }} />
+
+      <header className="fixed inset-x-0 top-4 z-[1500] px-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between rounded-3xl border border-white/10 bg-[#071018]/80 px-4 py-3 shadow-[0_18px_70px_rgba(0,0,0,0.32)] backdrop-blur-xl">
+          <a href="#home" onClick={(event) => handleNav(event, "#home")} className="group flex items-center gap-3">
+            <img src="/opt_logo.webp" alt="Rohith logo" className="h-10 w-10 rounded-2xl border border-cyan-300/30 bg-white/5 object-cover transition group-hover:rotate-3" />
+            <span className="hidden text-sm font-bold tracking-[-0.02em] text-white sm:block">Rohith Vittamraj</span>
+          </a>
+
+          <nav className="hidden items-center gap-1 md:flex">
+            {navItems.map((item) => (
+              <a key={item.href} href={item.href} onClick={(event) => handleNav(event, item.href)} className="rounded-2xl px-4 py-2 text-sm font-semibold text-slate-300 transition hover:bg-white/[0.07] hover:text-white">
+                {item.label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="hidden items-center gap-2 md:flex">
+            <MagneticButton href="https://drive.google.com/file/d/1hRrlvA0nnKueRpO-wAWF6M2SduXxSHvG/view?usp=sharing" external variant="secondary">
+              <FiDownload /> Resume
+            </MagneticButton>
+            <MagneticButton onClick={() => setContactOpen(true)}>
+              <FiMessageCircle /> Hire me
+            </MagneticButton>
+          </div>
+
+          <button
+            className="grid h-11 w-11 place-items-center rounded-2xl border border-white/10 bg-white/5 text-white md:hidden"
+            onClick={() => setMenuOpen((current) => !current)}
+            aria-label="Toggle navigation"
+          >
+            {menuOpen ? <FiX /> : <FiMenu />}
+          </button>
+        </div>
+
+        <AnimatePresence>
+          {menuOpen && (
             <motion.div
-              key="shuffle"
-              initial={{ opacity: 0, scale: 0.5, filter: "blur(10px)" }}
-              animate={{ opacity: 1, scale: 1.2, filter: "blur(0px)" }}
-              exit={{ opacity: 0, scale: 0.5, filter: "blur(10px)", transition: { duration: 0.5 } }}
-              className="flex flex-col items-center"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="mx-auto mt-3 max-w-7xl rounded-3xl border border-white/10 bg-[#071018]/95 p-3 shadow-2xl backdrop-blur-xl md:hidden"
             >
-              {techStack[currentIndex] && (
-                <img
-                  src={techStack[currentIndex].icon}
-                  alt="Tech Icon"
-                  className="w-24 h-24 sm:w-32 sm:h-32 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                />
-              )}
-            </motion.div>
-          ) : (
-            <motion.div className="flex items-center gap-4 z-50">
-              <motion.img
-                layoutId="main-logo-img"
-                src="/opt_logo.webp"
-                alt="Rohith's Logo"
-                className="w-24 h-24 sm:w-32 sm:h-32 object-contain rounded-full border-4 border-indigo-500/50 shadow-[0_0_50px_rgba(99,102,241,0.5)]"
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
-              />
-              <motion.h1
-                layoutId="main-logo-text"
-                className="text-3xl sm:text-5xl font-bold text-gray-100 whitespace-nowrap"
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
-              >
-                Rohith's Portfolio
-              </motion.h1>
+              {navItems.map((item) => (
+                <a key={item.href} href={item.href} onClick={(event) => handleNav(event, item.href)} className="block rounded-2xl px-4 py-3 text-sm font-semibold text-white hover:bg-cyan-300/10">
+                  {item.label}
+                </a>
+              ))}
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-    </motion.div>
-  );
-};
-// --- MAIN LANDING COMPONENT ---
-const Landing = () => {
-  const heroRef = useRef(null);
-  const [isContactModalOpen, setContactModalOpen] = useState(false);
-  const [mainMenuOpen, setMainMenuOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [showScrollTop, setShowScrollTop] = useState(false);
+      </header>
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 400);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const navItems = [
-    { label: "Home", href: "#home" },
-    { label: "About Me", href: "#about" },
-    { label: "Tech Stack", href: "#tech-stack" },
-    { label: "Projects", href: "#projects" },
-    { label: "Experience", href: "#experience" },
-    { label: "Certifications", href: "#certifications" },
-    { label: "Publications", href: "#publications" },
-  ];
-
-  
-  const techStack = [
-    { name: "JavaScript", icon: "/JS.png", description: "Web Logic" },
-    { name: "Python", icon: "/Python.webp", description: "Scripting & Data" },
-    { name: "MySQL", icon: "/MySql.png", description: "Relational DB" },
-    { name: "MongoDB", icon: "/Mongodb.webp", description: "NoSQL DB" },
-    { name: "Redis", icon: "/redis.png", description: "In-Memory DB" },
-    { name: "React", icon: "/opt_React.webp", description: "Frontend UI" },
-    { name: "Node.js", icon: "/opt_Node.js_logo.svg.webp", description: "Runtime" },
-    { name: "Express.js", icon: "/opt_express-js.webp", description: "Web Framework" },
-    { name: "Tailwind CSS", icon: "/opt_Tailwind_CSS_Logo.webp", description: "Styling" },
-    { name: "TensorFlow", icon: "/TensorFlow.png", description: "ML Framework" },
-    { name: "PyTorch", icon: "/Pytourch.png", description: "Deep Learning" },
-    { name: "Deep Learning", icon: "/DeepLearning.webp", description: "Neural Networks" },
-    { name: "HuggingFace", icon: "/opt_HuggingFace.webp", description: "AI Models" },
-    { name: "Docker", icon: "/opt_Docker.webp", description: "Containerization" },
-    { name: "GCP", icon: "/opt_gcp.webp", description: "Cloud Platform" },
-    { name: "Grafana", icon: "/Grafana.webp", description: "Observability" },
-    { name: "Git", icon: "/git.png", description: "Version Control" }
-  ];
-
- const [toast, setToast] = useState(null);
-
-  const showToast = (message, type = "success") => {
-    setToast({ message, type, id: Date.now() });
-  };
-
-  const handleSubmit = (e) => {
-    showToast("Sending message... Redirecting to confirmation.", "info");
-    setContactModalOpen(false);
-  };
-
-  useEffect(() => {
-    if (isLoading) return;
-
-    const hero = heroRef.current;
-    const timer = setTimeout(() => {
-      if (hero) {
-        gsap.fromTo(
-          hero,
-          { opacity: 1 },
-          {
-            opacity: 0.7,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: hero,
-              start: "top top",
-              end: "bottom top",
-              scrub: 0.5,
-            },
-          }
-        );
-
-        const heroTextElements = hero.querySelectorAll(".hero-text-anim > div > span > span");
-        if (heroTextElements.length > 0) {
-          gsap.fromTo(
-            heroTextElements,
-            { opacity: 0, y: 40 },
-            {
-              opacity: 1,
-              y: 0,
-              ease: "power3.out",
-              stagger: 0.1,
-              duration: 0.8,
-              scrollTrigger: {
-                trigger: hero,
-                start: "top 70%",
-                end: "top 40%",
-                scrub: 1,
-              },
-            }
-          );
-        }
-      }
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer);
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, [isLoading]);
-
-  const toggleMainMenu = () => setMainMenuOpen((prev) => !prev);
-
-  const handleNavClick = (e, href) => {
-    e.preventDefault();
-    const targetElement = document.querySelector(href);
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    setMainMenuOpen(false);
-  };
-
-  return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-200 font-inter relative selection:bg-indigo-500 selection:text-white antialiased overflow-x-hidden">
-      <CustomCursor />
-
-      <AnimatePresence>
-        {isLoading && (
-          <TechStackLoader
-            techStack={techStack}
-            onComplete={() => setIsLoading(false)}
-          />
-        )}
-      </AnimatePresence>
-
-      {!isLoading && (
-        <motion.header
-          initial={{ backgroundColor: "rgba(0,0,0,0)", borderBottomColor: "rgba(0,0,0,0)" }}
-          animate={{
-            backgroundColor: "rgba(0,0,0,0.75)",
-            borderBottomColor: "rgba(38,38,38,0.6)",
-          }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="sticky top-0 z-[1000] backdrop-blur-lg shadow-2xl shadow-black/20 border-b border-neutral-800/60"
-        >
-          <div className="max-w-7xl mx-auto flex justify-between items-center py-3.5 px-4 sm:px-6 lg:px-8">
-            <motion.a
-              href="#home"
-              onClick={(e) => handleNavClick(e, "#home")}
-              className="flex items-center space-x-3.5 cursor-pointer-interactive group"
-            >
-              <motion.img
-                layoutId="main-logo-img"
-                src="/opt_logo.webp"
-                alt="Rohith's Logo"
-                className="w-10 h-10 sm:w-11 sm:h-11 object-contain rounded-full border-2 border-indigo-500/60 group-hover:border-indigo-400"
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
-              />
-              <motion.h1
-                layoutId="main-logo-text"
-                className="text-xl sm:text-2xl font-semibold text-gray-100 group-hover:text-white tracking-tight"
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
-              >
-                Rohith's Portfolio
-              </motion.h1>
-            </motion.a>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
-            >
-              <button
-                onClick={toggleMainMenu}
-                className="text-gray-300 hover:text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200 cursor-pointer-interactive"
-              >
-                {mainMenuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
-              </button>
-            </motion.div>
+      <main>
+        <section id="home" className="relative min-h-[100dvh] overflow-hidden pt-32">
+          <div className="absolute inset-0">
+            <GradientWaves
+              horizonColor="#061118"
+              waveColor="#0f766e"
+              crestColor="#e6fffb"
+              speed={0.28}
+              amplitude={2.15}
+              waveScale={0.72}
+              waveRatio={0.82}
+              swell={28}
+              turbulence={14}
+              tilt={1.04}
+              zoom={0.92}
+              height={5.8}
+              fogDepth={18}
+              detail="medium"
+              brightness={0.92}
+              opacity={0.92}
+              mouseInteraction
+              parallaxStrength={0.38}
+              grain
+              grainIntensity={0.025}
+            />
+            <img src="/img_9.webp" alt="" className="absolute inset-0 h-full w-full object-cover opacity-[0.09] mix-blend-screen" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_16%,rgba(103,232,249,0.2),transparent_30rem),linear-gradient(120deg,#060a0f_18%,rgba(6,10,15,0.72)_54%,#060a0f_100%)]" />
+            <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#060a0f] to-transparent" />
           </div>
-
-          <AnimatePresence>
-            {mainMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="absolute top-full left-0 right-0 bg-black/90 backdrop-blur-md border-t border-b border-neutral-800/70 shadow-2xl md:rounded-b-lg md:mx-4 lg:mx-auto lg:max-w-md md:right-4 md:left-auto"
-              >
-                <nav className="px-4 py-4 space-y-2">
-                  {navItems.map((item, index) => (
-                    <motion.a
-                      key={index}
-                      href={item.href}
-                      onClick={(e) => handleNavClick(e, item.href)}
-                      className="block text-gray-200 hover:text-white px-4 py-2.5 rounded-lg hover:bg-indigo-600/40 transition-all duration-200"
-                      initial={{ opacity: 0, x: -15 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.07 }}
-                    >
-                      {item.label}
-                    </motion.a>
-                  ))}
-                </nav>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.header>
-      )}
-
-      <main className="flex-grow isolate">
-        <section
-          ref={heroRef}
-          id="home"
-          className="relative bg-slate-950 text-slate-100 py-28 md:py-36 min-h-[90vh] flex items-center bg-center bg-cover bg-fixed"
-          style={{ backgroundImage: "url('/img_9.webp')" }}
-        >
-          <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" />
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: isLoading ? 0 : 1.0, ease: "easeOut" }}
-            >
-              <div className="hero-text-anim">
-                <SplitText
-                  text="Hi, I'm Rohith"
-                  className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-outfit text-white text-center !leading-tight tracking-tight"
-                  delay={30}
-                  animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0) rotateX(-20deg)" }}
-                  animationTo={{ opacity: 1, transform: "translate3d(0,0,0) rotateX(0deg)" }}
-                  easing="circOut"
-                  textAlign="center"
-                />
+          <div className="relative mx-auto grid min-h-[calc(100dvh-8rem)] max-w-7xl items-center gap-12 px-4 pb-16 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-8">
+            <motion.div initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}>
+              <div className="mb-7 inline-flex items-center gap-3 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm font-bold text-cyan-100">
+                <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(103,232,249,0.9)]" />
+                Available for full-time software engineering roles
+              </div>
+              <h1 className="max-w-5xl text-5xl font-semibold leading-[0.96] tracking-[-0.055em] text-white sm:text-7xl lg:text-8xl">
+                Building AI-backed products with full-stack precision.
+              </h1>
+              <div className="mt-6 h-9 overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={focusRoles[roleIndex]}
+                    initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, y: -18, filter: "blur(8px)" }}
+                    className="text-xl font-semibold text-cyan-200"
+                  >
+                    {focusRoles[roleIndex]}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
+              <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">
+                I design, engineer, and ship web systems that combine robust MERN architecture, AI workflows, clear interfaces, and production-minded execution.
+              </p>
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                <MagneticButton href="#projects" onClick={(event) => handleNav(event, "#projects")}>
+                  View selected work <FiArrowUpRight />
+                </MagneticButton>
+                <MagneticButton variant="secondary" onClick={() => setContactOpen(true)}>
+                  Start a conversation <FiMail />
+                </MagneticButton>
               </div>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: isLoading ? 0 : 1.3, ease: "easeOut" }}
-              className="mt-5 mb-3 h-12 will-change-[transform,opacity]"
-            >
-              <InteractiveText className="cursor-pointer-interactive" />
-            </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: isLoading ? 0 : 1.5, ease: "easeOut" }}
-              className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-gray-200/90 leading-relaxed"
-            >
-              Passionate about building scalable systems, AI-driven applications, and contributing to impactful engineering teams.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.8, delay: isLoading ? 0 : 1.7, type: "spring" }}
-              className="mt-10 flex justify-center gap-4"
-            >
-              <a
-                href="#projects"
-                onClick={(e) => handleNavClick(e, "#projects")}
-                className="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3.5 rounded-lg text-base font-semibold hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 transform hover:scale-105"
-              >
-                Explore My Work ✨
-              </a>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* About Me Section */}
-        <section id="about" className="py-20 md:py-24 bg-slate-950 relative overflow-hidden">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold font-outfit mb-10 text-slate-100 relative group tracking-tight">
-                About Me
-                <span className="absolute bottom-0 left-1/2 w-36 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform -translate-x-1/2 translate-y-2.5 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full group-hover:w-40 ease-out"></span>
-              </h2>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="p-8 bg-neutral-900/70 backdrop-blur-sm rounded-xl border border-neutral-800/80 hover:border-indigo-500/50 transition-all duration-300 mb-12 shadow-xl hover:shadow-indigo-500/10 will-change-[transform,opacity]"
-            >
-              <p className="text-lg md:text-xl text-gray-200/95 leading-relaxed">
-                I am a dedicated <span className="font-semibold text-indigo-400">Software Engineer</span> actively seeking full-time opportunities to build impactful applications.
-                <br />
-                <br />
-                As a Full Stack and AI-focused engineer, I specialize in architecting systems that combine machine learning, robust backend orchestration, and seamless frontend experiences.
-                <br />
-                <br />
-                My experience includes developing <span className="font-semibold text-cyan-400">regression-based medical AI systems</span>, <span className="font-semibold text-purple-400">agentic retrieval architectures</span>, and scalable web platforms. I thrive in collaborative team environments where I can tackle complex problems.
-                <br />
-                <br />
-                I approach software engineering with a systems mindset—prioritizing scalability, security, and maintainability, to deliver lasting value to the organization.
-                <br />
-                <br />
-                I am eager to bring my diverse skill set and proactive mindset to a forward-thinking engineering team!
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3, type: "spring", stiffness: 150 }}
-              viewport={{ once: true, amount: 0.5 }}
-            >
-              <a
-                href="https://drive.google.com/file/d/1hRrlvA0nnKueRpO-wAWF6M2SduXxSHvG/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/30 focus:outline-none focus:ring-4 focus:ring-indigo-500/50"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 mr-2.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-                View My Resume
-              </a>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="mt-16 text-left"
-            >
-              <h3 className="text-2xl md:text-3xl font-bold font-outfit mb-8 text-slate-100 relative inline-block tracking-tight text-center md:text-left w-full">
-                Education
-                <motion.div
-                  className="absolute bottom-0 left-0 right-auto h-0.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 md:w-32 w-24"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  transition={{ duration: 0.8, delay: 0.2, ease: "circOut" }}
-                  viewport={{ once: true }}
-                />
-              </h3>
-              <div className="max-w-4xl mx-auto p-8 bg-gradient-to-br from-neutral-900/50 to-black/70 backdrop-blur-sm rounded-2xl border border-neutral-800/60 hover:border-blue-500/40 transition-all duration-500 shadow-xl hover:shadow-blue-500/10">
-                <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                  <motion.div
-                    className="flex-shrink-0"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center justify-center p-3">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-                      </svg>
+            <motion.div initial={{ opacity: 0, scale: 0.94, y: 24 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.15 }} className="relative">
+              <div className="absolute -inset-6 rounded-[2.5rem] bg-cyan-300/10 blur-3xl" />
+              <div className="relative overflow-hidden rounded-[2rem] bg-white/[0.055] p-4 shadow-[0_30px_100px_rgba(0,0,0,0.35)] backdrop-blur">
+                <div className="rounded-[1.5rem] bg-[#09131d]/90 p-5">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                    <div>
+                      <p className="text-sm font-bold text-white">Engineering console</p>
+                      <p className="mt-1 text-xs text-slate-400">Live portfolio snapshot</p>
                     </div>
-                  </motion.div>
-
-                  <div className="text-center md:text-left flex-1">
-                    <motion.h3
-                      className="text-2xl font-bold text-white mb-2"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                      viewport={{ once: true }}
-                    >
-                      B.Tech Computer Science (AI and ML)
-                    </motion.h3>
-                    <motion.p
-                      className="text-lg text-blue-400 font-medium mb-1"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                      viewport={{ once: true }}
-                    >
-                      Undergraduate Degree • 2022 - 2026
-                    </motion.p>
+                    <FiTerminal className="text-cyan-200" size={24} />
+                  </div>
+                  <div className="grid gap-3 py-5 sm:grid-cols-2">
+                    {stats.map((stat) => (
+                      <motion.div key={stat.label} whileHover={{ y: -4 }} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
+                        <p className="text-3xl font-semibold text-white">{stat.value}</p>
+                        <p className="mt-1 text-sm text-slate-400">{stat.label}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                  <div className="rounded-2xl border border-cyan-300/20 bg-cyan-300/10 p-4">
+                    <p className="text-sm font-bold text-cyan-100">Current build focus</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-300">
+                      AI tools, secure agent workflows, ML-backed applications, and polished product interfaces.
+                    </p>
+                  </div>
+                  <div className="mt-4 flex items-center justify-between rounded-2xl bg-white/[0.04] p-4">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-200">Interaction layer</p>
+                      <p className="mt-1 text-sm text-slate-300">Shader motion, scroll reveals, tactile selectors.</p>
+                    </div>
+                    <span className="h-3 w-3 rounded-full bg-cyan-300 shadow-[0_0_22px_rgba(103,232,249,0.85)]" />
                   </div>
                 </div>
               </div>
@@ -481,2087 +464,353 @@ const Landing = () => {
           </div>
         </section>
 
-        {/* Tech Stack Section */}
-        <section id="tech-stack" className="relative py-20 md:py-28 bg-slate-950 overflow-hidden">
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute w-[500px] h-[500px] bg-gradient-to-r from-cyan-600/25 to-blue-600/25 rounded-full blur-3xl -top-32 -left-32 animate-pulse"></div>
-            <div className="absolute w-[400px] h-[400px] bg-gradient-to-r from-purple-600/25 to-pink-600/25 rounded-full blur-3xl -bottom-32 -right-32 animate-pulse delay-700"></div>
-          </div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-            >
-              <div className="mb-16 md:mb-20">
-                <h2 className="text-4xl md:text-5xl font-bold font-outfit text-slate-100 mb-5 tracking-tight">
-                  Tech Stack
-                </h2>
-                <p className="text-gray-300/90 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-                  Combining cutting-edge technologies with modern development practices to create
-                  <span className="text-cyan-400 font-semibold"> performant</span>,
-                  <span className="text-blue-400 font-semibold"> scalable</span>, and
-                  <span className="text-purple-400 font-semibold"> intuitive</span> solutions.
+        <section id="about" className="px-4 py-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <SectionIntro icon={FiUser} title="A software engineer with a systems mindset and a product eye." copy="I work across frontend, backend, AI workflows, and UX details. The thread through my work is practical engineering: understand the problem, build the right system, and make it usable enough for real people." />
+            <div className="grid gap-5 lg:grid-cols-[1fr_0.8fr]">
+              <motion.div variants={sectionVariant} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }} className="rounded-[2rem] border border-white/10 bg-white/[0.045] p-7 shadow-[0_20px_80px_rgba(0,0,0,0.22)]">
+                <p className="text-xl leading-9 text-slate-200">
+                  I am actively seeking full-time opportunities where I can help teams ship useful software. My projects span medical AI concepts, agentic retrieval systems, plant disease detection, internal operations apps, and freelance business websites.
                 </p>
-              </div>
-            </motion.div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 md:gap-6 place-items-center w-full">
+                <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                  {["Scalable architecture", "Readable user flows", "AI-assisted systems"].map((item) => (
+                    <div key={item} className="rounded-2xl border border-white/10 bg-[#09131d] p-4 text-sm font-bold text-slate-200">
+                      <FiCheck className="mb-3 text-cyan-200" /> {item}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+              <motion.div variants={sectionVariant} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }} className="rounded-[2rem] border border-white/10 bg-[#09131d] p-7">
+                <p className="text-sm font-bold uppercase tracking-[0.18em] text-cyan-200">Education</p>
+                <h3 className="mt-5 text-2xl font-semibold text-white">Bachelor of Technology</h3>
+                <p className="mt-2 text-slate-300">Computer Science and engineering foundation with hands-on work in full-stack systems, ML, analytics, and interface design.</p>
+                <div className="mt-7 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 p-4">
+                  <p className="text-sm font-semibold text-cyan-100">Working style</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">Prototype quickly, validate behavior, tighten UX, then harden the system for maintainability.</p>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section id="tech-stack" className="px-4 py-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <SectionIntro icon={FiLayers} title="Tooling that connects interface craft with intelligent systems." copy="The stack is organized around what each tool helps me ship: responsive interfaces, reliable APIs, data workflows, AI models, deployment, and observability." />
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {techStack.map((tech, index) => (
                 <motion.div
                   key={tech.name}
-                  className="group relative p-5 w-full h-52 md:h-56 rounded-xl bg-neutral-900/80 hover:bg-neutral-800/60 border border-neutral-800/70 hover:border-cyan-500/60 transition-all duration-300 ease-out flex flex-col items-center justify-center cursor-pointer-interactive shadow-lg hover:shadow-cyan-500/10 will-change-transform"
-                  initial={{ opacity: 0, scale: 0.85, y: 10 }}
-                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                  whileHover={{
-                    scale: 1.04,
-                    y: -4,
-                    transition: { type: "spring", stiffness: 300, damping: 10 },
-                  }}
-                  transition={{ duration: 0.4, delay: (index % 5) * 0.06, type: "spring", stiffness: 180, damping: 15 }}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.025, duration: 0.45 }}
                   viewport={{ once: true, amount: 0.2 }}
+                  whileHover={{ y: -5, rotate: index % 2 ? 0.6 : -0.6 }}
+                  className="group rounded-3xl border border-white/10 bg-white/[0.04] p-4 transition hover:border-cyan-300/40 hover:bg-cyan-300/10"
                 >
-                  <motion.img
-                    src={tech.icon}
-                    alt={tech.name}
-                    className="h-12 w-12 sm:h-14 sm:w-14 object-contain mb-2.5 group-hover:scale-110 group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.45)] transition-all duration-300"
-                  />
-                  <h3 className="text-base sm:text-lg font-semibold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-blue-300 transition-all duration-300 text-center">
-                    {tech.name}
-                  </h3>
-                  <p className="text-gray-400/90 text-[11px] sm:text-xs mt-1.5 group-hover:text-gray-300 transition-colors font-medium text-center px-1">
-                    {tech.description}
-                  </p>
+                  <div className="flex items-center gap-4">
+                    <img src={tech.icon} alt={`${tech.name} logo`} className="h-11 w-11 rounded-2xl bg-white p-2 object-contain" loading="lazy" />
+                    <div>
+                      <p className="font-bold text-white">{tech.name}</p>
+                      <p className="mt-1 text-sm text-slate-400 group-hover:text-cyan-100">{tech.group}</p>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
-            <motion.div
-              className="mt-20 md:mt-24 mx-auto w-2/5 h-px bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent"
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              transition={{ duration: 1.2, delay: 0.3, ease: "circOut" }}
-              viewport={{ once: true }}
-            />
-            <motion.div
-              className="mt-12 md:mt-16"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true }}
-            >
-              <p className="text-gray-300/90 text-lg max-w-3xl mx-auto leading-relaxed">
-                Every tool in my arsenal is carefully selected for its performance, ecosystem, and maintainability. I specialize in creating full-stack solutions that leverage AI capabilities while maintaining{" "}
-                <span className="text-cyan-400 font-semibold">peak performance</span> and{" "}
-                <span className="text-blue-400 font-semibold">developer-friendly</span> architectures.
-              </p>
-              <div className="mt-8 flex justify-center">
-                <a
-                  href="#projects"
-                  onClick={(e) => handleNavClick(e, "#projects")}
-                  className="px-7 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold text-white hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-400/30 focus:outline-none focus:ring-4 focus:ring-cyan-500/50"
-                >
-                  See Projects
-                </a>
-              </div>
-            </motion.div>
           </div>
         </section>
 
-        {/* Projects Section */}
-        <section id="projects" className="py-20 md:py-24 bg-slate-950">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-            >
-              <h2 className="text-4xl sm:text-5xl md:text-6xl text-center font-extrabold font-outfit text-slate-100 mb-12 md:mb-16 tracking-tight relative group">
-                Projects
-                <span className="absolute bottom-0 left-1/2 w-28 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform -translate-x-1/2 translate-y-3 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full group-hover:w-32 ease-out"></span>
-              </h2>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 place-items-stretch">
-              {/* ORION */}
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                className="h-full flex"
-              >
-                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-amber-500/60 rounded-xl shadow-xl hover:shadow-amber-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
-                  <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center border border-amber-500/30">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 text-amber-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"
-                          />
-                        </svg>
+        <section id="projects" className="px-4 py-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <SectionIntro icon={FiMonitor} title="Selected work, shown through the problems each build solves." copy="The project section works like a product lab: choose a build, inspect the live media, then review the outcome, stack, and next action." />
+            <div className="grid gap-6 lg:grid-cols-[0.82fr_1.18fr]">
+              <div>
+                <motion.div
+                  variants={sectionVariant}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, amount: 0.25 }}
+                  className="relative hidden h-[440px] overflow-hidden rounded-[2rem] bg-[#09131d] p-6 shadow-[0_28px_90px_rgba(0,0,0,0.28)] lg:block"
+                >
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_50%,rgba(20,184,166,0.2),transparent_22rem)]" />
+                  <div className="relative flex h-full flex-col">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-bold text-cyan-200">Project wheel</p>
+                        <p className="mt-2 max-w-xs text-sm leading-6 text-slate-300">Scroll, drag, or use arrow keys to move through the portfolio narrative.</p>
                       </div>
-                      <h3 className="text-xl font-bold text-gray-100 group-hover:text-amber-300 transition-colors">
-                        ORION
-                      </h3>
+                      <span className="rounded-full bg-cyan-300 px-3 py-1 text-xs font-bold text-[#031317]">{activeProject + 1} / {projects.length}</span>
                     </div>
-                    <div className="mb-5 rounded-lg overflow-hidden border border-neutral-700/80 group-hover:border-amber-500/50 transition-all duration-300 shadow-md aspect-video">
-                      <video
-                        loading="lazy"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                        preload="metadata"
-                      >
-                        <source src="/orion-demo.webm" type="video/webm" />
-                        Your browser does not support the video tag.
-                      </video>
+                    <div className="relative mt-6 min-h-0 flex-1">
+                      <OptionWheel
+                        items={projectNames}
+                        defaultSelected={activeProject}
+                        onChange={(index) => setActiveProject(index)}
+                        textColor="#6b7b82"
+                        activeColor="#ffffff"
+                        side="left"
+                        fontSize={2.05}
+                        spacing={1.38}
+                        curve={0.92}
+                        tilt={8}
+                        blur={1.25}
+                        fade={0.28}
+                        minOpacity={0.12}
+                        smoothing={170}
+                        inset={18}
+                        loop={false}
+                        draggable
+                      />
                     </div>
-                    <div className="mb-3">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                        Dec 2025 – Feb 2026
-                      </span>
+                    <div className="rounded-2xl bg-white/[0.045] p-4">
+                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-200">{active.category}</p>
+                      <p className="mt-2 text-sm leading-6 text-slate-300">{active.summary}</p>
                     </div>
-                    <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
-                      A sovereign, offline‑first cognitive agent for secure, system‑aware execution. Features kernel‑level defense and autonomous task orchestration.
-                    </p>
                   </div>
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
-                    <a
-                      href="https://github.com/rohith-2809/ORION"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center text-gray-400 hover:text-amber-400 transition-colors duration-200 group/link"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-5 h-5 mr-1.5 transition-transform group-hover/link:scale-110"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="font-medium text-sm">Source Code</span>
-                    </a>
-                    <a
-                      href="https://github.com/rohith-2809/ORION"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-sm rounded-md font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg hover:shadow-amber-500/40"
-                    >
-                      <span className="mr-2">Learn More</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </SpotlightCard>
-              </motion.div>
-
-              {/* ORION‑USB */}
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
-                viewport={{ once: true, amount: 0.2 }}
-                className="h-full flex"
-              >
-                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-cyan-500/60 rounded-xl shadow-xl hover:shadow-cyan-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
-                  <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-cyan-500/10 rounded-lg flex items-center justify-center border border-cyan-500/30">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 text-cyan-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M15 9l3 3m0 0l-3 3m3-3H6"
-                          />
-                        </svg>
+                </motion.div>
+                <div className="space-y-3 lg:hidden">
+                {projects.map((project, index) => (
+                  <motion.button
+                    key={project.title}
+                    type="button"
+                    onClick={() => setActiveProject(index)}
+                    whileHover={{ x: 6 }}
+                    className={`w-full rounded-3xl border p-5 text-left transition ${activeProject === index ? "border-cyan-300/50 bg-cyan-300/10" : "border-white/10 bg-white/[0.035] hover:border-white/20"}`}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-semibold text-cyan-200">{project.category}</p>
+                        <h3 className="mt-2 text-2xl font-semibold text-white">{project.title}</h3>
                       </div>
-                      <h3 className="text-xl font-bold text-gray-100 group-hover:text-cyan-300 transition-colors">
-                        ORION‑USB
-                      </h3>
+                      <span className="rounded-full border border-white/10 px-3 py-1 text-xs font-bold text-slate-300">{project.period}</span>
                     </div>
-                    <div className="mb-5 rounded-lg overflow-hidden border border-neutral-700/80 group-hover:border-cyan-500/50 transition-all duration-300 shadow-md aspect-video">
-                      <video
-                        loading="lazy"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                        preload="metadata"
-                      >
-                        <source src="/orion-usb-demo.webm" type="video/webm" />
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                    <div className="mb-3">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                        Feb 2026 – Apr 2026
-                      </span>
-                    </div>
-                    <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
-                      Run the entire ORION agent directly from a USB drive – no installation, no trace left on the host machine.
-                    </p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
-                    <a
-                      href="https://github.com/rohith-2809/ORION_USB"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center text-gray-400 hover:text-cyan-400 transition-colors duration-200 group/link"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-5 h-5 mr-1.5 transition-transform group-hover/link:scale-110"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="font-medium text-sm">Source Code</span>
-                    </a>
-                    <span className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-cyan-600/50 text-white/70 text-sm rounded-md font-medium cursor-not-allowed border border-cyan-700/30">
-                      <span className="mr-2">Live Demo</span>
-                      <span className="text-xs">(USB‑only)</span>
-                    </span>
-                  </div>
-                </SpotlightCard>
-              </motion.div>
+                    <p className="mt-4 text-sm leading-6 text-slate-300">{project.summary}</p>
+                  </motion.button>
+                ))}
+                </div>
+              </div>
 
-              {/* Plant Disease Detection */}
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                className="h-full flex"
-              >
-                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-indigo-500/60 rounded-xl shadow-xl hover:shadow-indigo-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
-                  <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center border border-indigo-500/30">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-6 h-6 text-indigo-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                          />
-                        </svg>
+              <AnimatePresence mode="wait">
+                <motion.article
+                  key={active.title}
+                  initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, y: -18, filter: "blur(8px)" }}
+                  transition={{ duration: 0.35 }}
+                  className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#09131d] shadow-[0_24px_90px_rgba(0,0,0,0.28)]"
+                >
+                  <video autoPlay loop muted playsInline preload="metadata" className="aspect-video w-full border-b border-white/10 object-cover">
+                    <source src={active.media} type="video/webm" />
+                  </video>
+                  <div className="p-6">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                      <div>
+                        <p className="text-sm font-bold text-cyan-200">{active.period}</p>
+                        <h3 className="mt-2 text-3xl font-semibold text-white">{active.title}</h3>
                       </div>
-                      <h3 className="text-xl font-bold text-gray-100 group-hover:text-indigo-300 transition-colors">
-                        Plant Disease Detection
-                      </h3>
-                    </div>
-                    <div className="mb-5 rounded-lg overflow-hidden border border-neutral-700/80 group-hover:border-indigo-500/50 transition-all duration-300 shadow-md aspect-video">
-                      <video
-                        loading="lazy"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                        preload="metadata"
-                      >
-                        <source src="/project-demo.webm" type="video/webm" />
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                    <div className="mb-3">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                        Feb 2025 – May 2025
-                      </span>
-                    </div>
-                    <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
-                      AI‑powered web app that identifies plant diseases from images using CNN models. Provides detailed analysis and preventive measures.
-                    </p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
-                    <a
-                      href="https://github.com/rohith-2809/mern-test"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center text-gray-400 hover:text-indigo-400 transition-colors duration-200 group/link"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-5 h-5 mr-1.5 transition-transform group-hover/link:scale-110"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="font-medium text-sm">Source Code</span>
-                    </a>
-                    <a
-                      href="https://mern-test-client.onrender.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm rounded-md font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/40"
-                    >
-                      <span className="mr-2">Live Demo</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </SpotlightCard>
-              </motion.div>
-
-              {/* DocuAgent AI */}
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-                viewport={{ once: true, amount: 0.2 }}
-                className="h-full flex"
-              >
-                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-emerald-500/60 rounded-xl shadow-xl hover:shadow-emerald-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
-                  <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center border border-emerald-500/30">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 text-emerald-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3M5.636 5.636l-1.414-1.414M19.778 19.778l-1.414-1.414M18.364 5.636l1.414-1.414M4.222 19.778l1.414-1.414M12 12a3 3 0 100-6 3 3 0 000 6z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 12a6 6 0 01-6 6H4.5a2.25 2.25 0 01-2.25-2.25V15M12 12a6 6 0 006 6h1.5a2.25 2.25 0 002.25-2.25V15M12 12a6 6 0 01-6-6V4.5a2.25 2.25 0 012.25-2.25H9M12 12a6 6 0 006-6V4.5a2.25 2.25 0 00-2.25-2.25H15"
-                          />
-                        </svg>
+                      <div className="flex flex-wrap gap-2">
+                        <MagneticButton href={active.repo} external variant="secondary"><FiGithub /> Code</MagneticButton>
+                        <MagneticButton href={active.live} external>{active.cta} <FiExternalLink /></MagneticButton>
                       </div>
-                      <h3 className="text-xl font-bold text-gray-100 group-hover:text-emerald-300 transition-colors">
-                        DocuAgent AI
-                      </h3>
                     </div>
-                    <div className="mb-5 rounded-lg overflow-hidden border border-neutral-700/80 group-hover:border-emerald-500/50 transition-all duration-300 shadow-md aspect-video">
-                      <video
-                        loading="lazy"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                        preload="metadata"
-                      >
-                        <source src="/DocuAgent-demo.webm" type="video/webm" />
-                        Your browser does not support the video tag.
-                      </video>
+                    <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                      {active.impact.map((item) => (
+                        <div key={item} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 text-sm font-semibold leading-6 text-slate-200">{item}</div>
+                      ))}
                     </div>
-                    <div className="mb-3">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                        June 2025 – Aug 2025
-                      </span>
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {active.stack.map((item) => <span key={item} className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-xs font-bold text-cyan-100">{item}</span>)}
                     </div>
-                    <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
-                      An intelligent agent that automates software documentation by generating UML diagrams and code explanations directly from a given codebase.
-                    </p>
                   </div>
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
-                    <a
-                      href="https://github.com/rohith-2809/DocuAgent"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center text-gray-400 hover:text-emerald-400 transition-colors duration-200 group/link"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-5 h-5 mr-1.5 transition-transform group-hover/link:scale-110"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="font-medium text-sm">Source Code</span>
-                    </a>
-                    <a
-                      href="https://docuagent-2vp4.onrender.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm rounded-md font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/40"
-                    >
-                      <span className="mr-2">Live Demo</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </SpotlightCard>
-              </motion.div>
-
-              {/* AI Model Deployment */}
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-                viewport={{ once: true, amount: 0.2 }}
-                className="h-full flex"
-              >
-                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-teal-500/60 rounded-xl shadow-xl hover:shadow-teal-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
-                  <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-teal-500/10 rounded-lg flex items-center justify-center border border-teal-500/30">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 text-teal-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7.014A7.962 7.962 0 0112 2c2.497 0 4.792.995 6.486 2.628C21.5 6.914 22 9.828 22 12c0 2.172-.5 5-2.343 6.657z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 18a6 6 0 00-6-6c0 1.931.786 3.673 2.056 4.944A6.005 6.005 0 0012 18z"
-                          />
-                        </svg>
-                      </div>
-                      <h3 className="text-xl font-bold text-gray-100 group-hover:text-teal-300 transition-colors">
-                        AI Model Deployment
-                      </h3>
-                    </div>
-                    <div className="mb-5 rounded-lg overflow-hidden border border-neutral-700/80 group-hover:border-teal-500/50 transition-all duration-300 shadow-md aspect-video">
-                      <video
-                        loading="lazy"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                        preload="metadata"
-                      >
-                        <source src="/ai-deployment-demo.webm" type="video/webm" />
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                    <div className="mb-3">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-teal-500/10 text-teal-400 border border-teal-500/20">
-                        Sep 2025 – Oct 2025
-                      </span>
-                    </div>
-                    <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
-                      End‑to‑end MLOps solution deploying machine learning models via Hugging Face and Flask APIs. Real‑time predictions.
-                    </p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
-                    <a
-                      href="https://github.com/rohith-2809"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center text-gray-400 hover:text-teal-400 transition-colors duration-200 group/link"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-5 h-5 mr-1.5 transition-transform group-hover/link:scale-110"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="font-medium text-sm">Source Code</span>
-                    </a>
-                    <a
-                      href="https://huggingface.co/vittamraj"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white text-sm rounded-md font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg hover:shadow-teal-500/40"
-                    >
-                      <span className="mr-2">Explore Models</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </SpotlightCard>
-              </motion.div>
-
-              {/* Employee Management */}
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
-                viewport={{ once: true, amount: 0.2 }}
-                className="h-full flex"
-              >
-                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-purple-500/60 rounded-xl shadow-xl hover:shadow-purple-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
-                  <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center border border-purple-500/30">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-6 h-6 text-purple-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                          />
-                        </svg>
-                      </div>
-                      <h3 className="text-xl font-bold text-gray-100 group-hover:text-purple-300 transition-colors">
-                        Employee Management
-                      </h3>
-                    </div>
-                    <div className="mb-5 rounded-lg overflow-hidden border border-neutral-700/80 group-hover:border-purple-500/50 transition-all duration-300 shadow-md aspect-video">
-                      <video
-                        loading="lazy"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                        preload="metadata"
-                      >
-                        <source src="/EMS.webm" type="video/webm" />
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                    <div className="mb-3">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-purple-500/10 text-purple-400 border border-purple-500/20">
-                        Nov 2024 – Dec 2024
-                      </span>
-                    </div>
-                    <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
-                      Fast, responsive app built with React, Tailwind, and Vite to manage employee data using local storage — no backend needed.
-                    </p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
-                    <a
-                      href="https://github.com/rohith-2809/Employee-Management-System"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center text-gray-400 hover:text-purple-400 transition-colors duration-200 group/link"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-5 h-5 mr-1.5 transition-transform group-hover/link:scale-110"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="font-medium text-sm">Source Code</span>
-                    </a>
-                    <a
-                      href="https://employee-management-system-jdxe.onrender.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-sm rounded-md font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/40"
-                    >
-                      <span className="mr-2">Live Demo</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </SpotlightCard>
-              </motion.div>
-
-              {/* Mediscope */}
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut", delay: 0.5 }}
-                viewport={{ once: true, amount: 0.2 }}
-                className="h-full flex"
-              >
-                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-blue-500/60 rounded-xl shadow-xl hover:shadow-blue-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
-                  <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center border border-blue-500/30">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 text-blue-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
-                          />
-                        </svg>
-                      </div>
-                      <h3 className="text-xl font-bold text-gray-100 group-hover:text-blue-300 transition-colors">
-                        Mediscope
-                      </h3>
-                    </div>
-                    <div className="mb-5 rounded-lg overflow-hidden border border-neutral-700/80 group-hover:border-blue-500/50 transition-all duration-300 shadow-md aspect-video">
-                      <video
-                        loading="lazy"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                        preload="metadata"
-                      >
-                        <source src="/mediscope-demo.webm" type="video/webm" />
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                    <div className="mb-3">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                        Dec 2024 – Jan 2025
-                      </span>
-                    </div>
-                    <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
-                      AI‑powered platform for instant X‑ray analysis, lab report simplification, and a health assistant chat. Secure, JWT‑authenticated, real‑time updates.
-                    </p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
-                    <a
-                      href="https://github.com/rohith-2809/MEDISCOPE"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center text-gray-400 hover:text-blue-400 transition-colors duration-200 group/link"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-5 h-5 mr-1.5 transition-transform group-hover/link:scale-110"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="font-medium text-sm">Source Code</span>
-                    </a>
-                    <a
-                      href="https://mediscope-frontend-lxwd.onrender.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded-md font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/40"
-                    >
-                      <span className="mr-2">Live Demo</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </SpotlightCard>
-              </motion.div>
-
-              {/* Financial Sentiment Classifier */}
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut", delay: 0.6 }}
-                viewport={{ once: true, amount: 0.2 }}
-                className="h-full flex"
-              >
-                <SpotlightCard className="p-6 flex flex-col justify-between h-full bg-neutral-900/80 hover:bg-neutral-800/70 border border-neutral-800/80 hover:border-amber-500/60 rounded-xl shadow-xl hover:shadow-amber-500/20 transition-all duration-300 ease-in-out group cursor-pointer-interactive w-full">
-                  <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center border border-amber-500/30">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 text-amber-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
-                          />
-                        </svg>
-                      </div>
-                      <h3 className="text-xl font-bold text-gray-100 group-hover:text-amber-300 transition-colors">
-                        Financial Sentiment Classifier
-                      </h3>
-                    </div>
-                    <div className="mb-5 rounded-lg overflow-hidden border border-neutral-700/80 group-hover:border-amber-500/50 transition-all duration-300 shadow-md aspect-video">
-                      <video
-                        loading="lazy"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                        preload="metadata"
-                      >
-                        <source src="/financial-sentiment-demo.webm" type="video/webm" />
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                    <div className="mb-3">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                        Oct 2025 – Nov 2025
-                      </span>
-                    </div>
-                    <p className="text-gray-300/90 leading-relaxed mb-6 text-sm">
-                      XLM‑R model fine‑tuned on 14k financial sentences for market news analytics, stock tweet sentiment, and trading signal enrichment.
-                    </p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-neutral-700/60 pt-4 mt-auto">
-                    <a
-                      href="https://github.com/rohith-2809/financial_sentiment_trainer"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center text-gray-400 hover:text-amber-400 transition-colors duration-200 group/link"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-5 h-5 mr-1.5 transition-transform group-hover/link:scale-110"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="font-medium text-sm">Source Code</span>
-                    </a>
-                    <span className="flex items-center w-full sm:w-auto justify-center px-4 py-2 bg-amber-600/50 text-white/70 text-sm rounded-md font-medium cursor-not-allowed border border-amber-700/30">
-                      <span className="mr-2">Live Demo</span>
-                      <span className="text-xs">(Hugging Face)</span>
-                    </span>
-                  </div>
-                </SpotlightCard>
-              </motion.div>
+                </motion.article>
+              </AnimatePresence>
             </div>
           </div>
         </section>
 
-
-
-        {/* Experience Section */}
-        <section id="experience" className="py-20 md:py-24 bg-slate-950 text-slate-100 relative overflow-hidden">
-          {/* Background gradient elements */}
-          <div className="absolute inset-0 opacity-10">
-            <motion.div
-              className="absolute w-[600px] h-[600px] bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-full blur-3xl -top-48 -left-48 will-change-transform"
-              initial={{ scale: 0.8, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-              viewport={{ once: true }}
-            />
-            <motion.div
-              className="absolute w-[500px] h-[500px] bg-gradient-to-r from-purple-600/15 to-pink-600/15 rounded-full blur-3xl -bottom-40 -right-40"
-              initial={{ scale: 0.8, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" }}
-              viewport={{ once: true }}
-            />
-          </div>
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="text-4xl md:text-5xl font-bold font-outfit mb-10 text-slate-100 relative inline-block tracking-tight"
-            >
-              Professional Journey
-              <motion.div
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                transition={{ duration: 0.8, delay: 0.2, ease: "circOut" }}
-                viewport={{ once: true }}
-              />
-            </motion.h2>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="mb-16"
-            >
-              <div className="max-w-4xl mx-auto p-8 bg-gradient-to-br from-neutral-900/50 to-black/70 backdrop-blur-sm rounded-2xl border border-neutral-800/60 hover:border-indigo-500/40 transition-all duration-500 shadow-2xl hover:shadow-indigo-500/10">
-                <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
-                  <motion.div
-                    className="flex-shrink-0"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 flex items-center justify-center p-3">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-10 h-10 text-indigo-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </div>
-                  </motion.div>
-
-                  <div className="text-left">
-                    <motion.h3
-                      className="text-2xl font-bold text-white mb-2"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                      viewport={{ once: true }}
-                    >
-                      BuildFlow Technologies Pvt. Ltd.
-                    </motion.h3>
-                    <motion.p
-                      className="text-lg text-cyan-400 font-medium mb-1"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                      viewport={{ once: true }}
-                    >
-                      Full Stack Developer Intern • October 2024 - December 2024
-                    </motion.p>
-                    <motion.p
-                      className="text-gray-400"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.6 }}
-                      viewport={{ once: true }}
-                    >
-                      Remote • Full-time Internship
-                    </motion.p>
-                  </div>
-                </div>
-
-                <motion.div
-                  className="space-y-4 text-left"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 0.7 }}
-                  viewport={{ once: true }}
+        <section id="experience" className="px-4 py-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <SectionIntro icon={FiBriefcase} title="Experience shaped by shipping, integration, and client delivery." copy="This timeline emphasizes the work behind the visuals: system connections, practical delivery, responsive UI, and communication with real stakeholders." />
+            <div className="space-y-5">
+              {experience.map((item, index) => (
+                <motion.article
+                  key={item.company}
+                  variants={sectionVariant}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, amount: 0.25 }}
+                  className="group grid gap-6 rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07] lg:grid-cols-[0.55fr_1fr]"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {[
-                      "Enhanced user experience across multiple web applications",
-                      "Built high-quality, responsive web applications using MERN stack",
-                      "Implemented seamless end-to-end connections between frontend and backend",
-                      "Collaborated with teams to deliver scalable solutions",
-                    ].map((item, idx) => (
-                      <motion.div
-                        key={idx}
-                        className="flex items-start gap-3 group"
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: 0.8 + idx * 0.1 }}
-                        viewport={{ once: true }}
-                        whileHover={{ x: 5 }}
-                      >
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 flex items-center justify-center mt-0.5 group-hover:scale-110 transition-transform duration-200">
-                          <svg
-                            className="w-3 h-3 text-indigo-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                        <p className="text-gray-300/90 group-hover:text-white transition-colors duration-200">
-                          {item}
-                        </p>
-                      </motion.div>
+                  <div>
+                    <div className="mb-5 flex items-center gap-3">
+                      <span className="grid h-12 w-12 place-items-center rounded-2xl bg-cyan-300/10 text-cyan-200">{String(index + 1).padStart(2, "0")}</span>
+                      <span className="text-sm font-bold text-slate-400">{item.period}</span>
+                    </div>
+                    <h3 className="text-2xl font-semibold text-white">{item.company}</h3>
+                    <p className="mt-2 font-semibold text-cyan-200">{item.role}</p>
+                    <p className="mt-1 text-sm text-slate-400">{item.meta}</p>
+                    <a href={item.link} target={item.link.startsWith("#") ? undefined : "_blank"} rel={item.link.startsWith("#") ? undefined : "noopener noreferrer"} onClick={item.link.startsWith("#") ? (event) => handleNav(event, item.link) : undefined} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-white transition hover:text-cyan-200">
+                      {item.proof} <FiArrowUpRight />
+                    </a>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {item.points.map((point) => (
+                      <div key={point} className="rounded-2xl border border-white/10 bg-[#09131d] p-4 text-sm leading-6 text-slate-300">
+                        <FiCheck className="mb-3 text-cyan-200" /> {point}
+                      </div>
                     ))}
                   </div>
-                </motion.div>
-              </div>
-            </motion.div>
-  <motion.div
-              className="mt-12 mb-20 md:mb-28 will-change-[transform,opacity]"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.9 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-2xl font-bold text-white mb-6">Internship Certificate</h3>
+                </motion.article>
+              ))}
+            </div>
+          </div>
+        </section>
 
-              <motion.div
-                className="relative inline-block"
-                initial={{ scale: 0.95, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.5, type: "spring", stiffness: 150 }}
-                viewport={{ once: true }}
-              >
-                <a
-                  href="https://drive.google.com/file/d/1G8Xkw0S_TF99Bz3gbyvjwFU70QEIsE0g/view"
+        <section id="certifications" className="px-4 py-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <SectionIntro icon={FiAward} title="Credentialed learning across AI, analytics, UX, Python, and security." copy="The certificates support the project work with structured learning in machine learning, human-centered design, analytics, scripting, and networks." />
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {certifications.map((cert, index) => (
+                <motion.a
+                  key={cert.title}
+                  href={cert.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group block"
-                >
-                  <TiltedCard
-                    imageSrc="/Intern.webp"
-                    altText="Internship Certificate from BuildFlow Technologies Pvt. Ltd."
-                    captionText="View Certificate"
-                    containerHeight="380px"
-                    containerWidth="300px"
-                    imageHeight="380px"
-                    imageWidth="300px"
-                    scaleOnHover={1.04}
-                    rotateAmplitude={7}
-                    showMobileWarning={true}
-                    showTooltip={true}
-                    tooltipText="Click to view full certificate"
-                    className="shadow-2xl shadow-indigo-900/30 group-hover:shadow-2xl group-hover:shadow-indigo-500/40 transition-all duration-300 cursor-pointer-interactive"
-                  />
-
-                  <motion.div
-                    className="absolute -bottom-4 left-1/2 transform -translate-x-1/2"
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.2 }}
-                    viewport={{ once: true }}
-                  >
-                    <span className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg text-sm font-semibold text-white group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-indigo-500/30">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4 mr-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                        />
-                      </svg>
-                      Click to View
-                    </span>
-                  </motion.div>
-                </a>
-              </motion.div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="mb-16"
-            >
-              <div className="max-w-4xl mx-auto p-8 bg-gradient-to-br from-neutral-900/50 to-black/70 backdrop-blur-sm rounded-2xl border border-neutral-800/60 hover:border-emerald-500/40 transition-all duration-500 shadow-2xl hover:shadow-emerald-500/10">
-                <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
-                  <motion.div
-                    className="flex-shrink-0"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 flex items-center justify-center p-3">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-10 h-10 text-emerald-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                        />
-                      </svg>
-                    </div>
-                  </motion.div>
-
-                  <div className="text-left">
-                    <motion.h3
-                      className="text-2xl font-bold text-white mb-2"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                      viewport={{ once: true }}
-                    >
-                      Trivento Trade LLP
-                    </motion.h3>
-                    <motion.p
-                      className="text-lg text-emerald-400 font-medium mb-1"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                      viewport={{ once: true }}
-                    >
-                      Freelance Web Developer
-                    </motion.p>
-                    <motion.p
-                      className="text-gray-400"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.6 }}
-                      viewport={{ once: true }}
-                    >
-                      Remote • Freelance
-                    </motion.p>
-                  </div>
-                </div>
-
-                <motion.div
-                  className="space-y-4 text-left"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 0.7 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {[
-                      "Designed, developed, and deployed a robust web application for Trivento Trade LLP.",
-                      "Ensured high performance, responsiveness, and a modern user interface.",
-                      "Integrated an AI chatbot for seamless customer support.",
-                      "Created a professional and interactive website that significantly increased user flow.",
-                    ].map((item, idx) => (
-                      <motion.div
-                        key={idx}
-                        className="flex items-start gap-3 group"
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: 0.8 + idx * 0.1 }}
-                        viewport={{ once: true }}
-                        whileHover={{ x: 5 }}
-                      >
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-r from-emerald-500/20 to-teal-500/20 flex items-center justify-center mt-0.5 group-hover:scale-110 transition-transform duration-200">
-                          <svg
-                            className="w-3 h-3 text-emerald-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                        <p className="text-gray-300/90 group-hover:text-white transition-colors duration-200">
-                          {item}
-                        </p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-                <motion.div
-                  className="mt-8 flex justify-start w-full border-t border-neutral-700/60 pt-6"
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 22 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 1 }}
-                  viewport={{ once: true }}
-                >
-                  <a
-                    href="https://www.triventotrade.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-5 py-2 bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-400 text-sm font-semibold rounded-lg border border-emerald-500/30 hover:border-emerald-500/50 transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] group"
-                  >
-                    <span className="mr-2">Visit Website</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                  </a>
-                </motion.div>
-              </div>
-            </motion.div>
-
-            {/* Hyderabadi Dawat */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="mb-16"
-            >
-              <div className="max-w-4xl mx-auto p-8 bg-gradient-to-br from-neutral-900/50 to-black/70 backdrop-blur-sm rounded-2xl border border-neutral-800/60 hover:border-amber-500/40 transition-all duration-500 shadow-2xl hover:shadow-amber-500/10">
-                <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
-                  <motion.div
-                    className="flex-shrink-0"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 flex items-center justify-center p-3">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-10 h-10 text-amber-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                        />
-                      </svg>
-                    </div>
-                  </motion.div>
-
-                  <div className="text-left">
-                    <motion.h3
-                      className="text-2xl font-bold text-white mb-2"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                      viewport={{ once: true }}
-                    >
-                      Hyderabadi Dawat
-                    </motion.h3>
-                    <motion.p
-                      className="text-lg text-amber-400 font-medium mb-1"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                      viewport={{ once: true }}
-                    >
-                      Freelance Web Developer
-                    </motion.p>
-                    <motion.p
-                      className="text-gray-400"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.6 }}
-                      viewport={{ once: true }}
-                    >
-                      Remote • Freelance
-                    </motion.p>
-                  </div>
-                </div>
-
-                <motion.div
-                  className="space-y-4 text-left"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 0.7 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {[
-                      "Designed and developed a responsive web application for Hyderabadi Dawat.",
-                      "Ensured high performance and a modern, appealing user interface.",
-                      "Implemented seamless navigation for an enhanced customer experience.",
-                      "Optimized the website to significantly increase online user engagement.",
-                    ].map((item, idx) => (
-                      <motion.div
-                        key={idx}
-                        className="flex items-start gap-3 group"
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: 0.8 + idx * 0.1 }}
-                        viewport={{ once: true }}
-                        whileHover={{ x: 5 }}
-                      >
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 flex items-center justify-center mt-0.5 group-hover:scale-110 transition-transform duration-200">
-                          <svg
-                            className="w-3 h-3 text-amber-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                        <p className="text-gray-300/90 group-hover:text-white transition-colors duration-200">
-                          {item}
-                        </p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-                <motion.div
-                  className="mt-8 flex justify-start w-full border-t border-neutral-700/60 pt-6"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 1 }}
-                  viewport={{ once: true }}
-                >
-                  <a
-                    href="https://www.hyderabadidawat.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-5 py-2 bg-amber-600/10 hover:bg-amber-600/20 text-amber-400 text-sm font-semibold rounded-lg border border-amber-500/30 hover:border-amber-500/50 transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group"
-                  >
-                    <span className="mr-2">Visit Website</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                  </a>
-                </motion.div>
-              </div>
-            </motion.div>
-
-            {/* The Park Mandi */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.45, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="mb-16"
-            >
-              <div className="max-w-4xl mx-auto p-8 bg-gradient-to-br from-neutral-900/50 to-black/70 backdrop-blur-sm rounded-2xl border border-neutral-800/60 hover:border-rose-500/40 transition-all duration-500 shadow-2xl hover:shadow-rose-500/10">
-                <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
-                  <motion.div
-                    className="flex-shrink-0"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-rose-500/20 to-pink-500/20 border border-rose-500/30 flex items-center justify-center p-3">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-10 h-10 text-rose-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                        />
-                      </svg>
-                    </div>
-                  </motion.div>
-
-                  <div className="text-left">
-                    <motion.h3
-                      className="text-2xl font-bold text-white mb-2"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                      viewport={{ once: true }}
-                    >
-                      The Park Mandi
-                    </motion.h3>
-                    <motion.p
-                      className="text-lg text-rose-400 font-medium mb-1"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                      viewport={{ once: true }}
-                    >
-                      Freelance Web Developer
-                    </motion.p>
-                    <motion.p
-                      className="text-gray-400"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.6 }}
-                      viewport={{ once: true }}
-                    >
-                      Remote • Freelance
-                    </motion.p>
-                  </div>
-                </div>
-
-                <motion.div
-                  className="space-y-4 text-left"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 0.7 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {[
-                      "Designed and implemented a high-performance web platform for The Park Mandi.",
-                      "Focused on pixel-perfect responsiveness and robust architecture.",
-                      "Delivered an engaging user interface to highlight brand value.",
-                      "Ensured cross-device compatibility and optimized loading speeds.",
-                    ].map((item, idx) => (
-                      <motion.div
-                        key={idx}
-                        className="flex items-start gap-3 group"
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: 0.8 + idx * 0.1 }}
-                        viewport={{ once: true }}
-                        whileHover={{ x: 5 }}
-                      >
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-r from-rose-500/20 to-pink-500/20 flex items-center justify-center mt-0.5 group-hover:scale-110 transition-transform duration-200">
-                          <svg
-                            className="w-3 h-3 text-rose-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                        <p className="text-gray-300/90 group-hover:text-white transition-colors duration-200">
-                          {item}
-                        </p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-                <motion.div
-                  className="mt-8 flex justify-start w-full border-t border-neutral-700/60 pt-6"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 1 }}
-                  viewport={{ once: true }}
-                >
-                  <a
-                    href="https://theparkmandi.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-5 py-2 bg-rose-600/10 hover:bg-rose-600/20 text-rose-400 text-sm font-semibold rounded-lg border border-rose-500/30 hover:border-rose-500/50 transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_15px_rgba(244,63,94,0.2)] group"
-                  >
-                    <span className="mr-2">Visit Website</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                  </a>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Certifications Section */}
-        <section id="certifications" className="py-20 md:py-24 bg-black">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="mb-12 md:mb-16 text-center"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent relative group">
-                Certifications & Expertise
-                <span className="absolute bottom-0 left-1/2 w-44 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform -translate-x-1/2 translate-y-2.5 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full group-hover:w-48 ease-out"></span>
-              </h2>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="max-w-3xl mx-auto mb-12 md:mb-16 text-center"
-            >
-              <p className="text-lg text-gray-300/90 leading-relaxed">
-                Earned through Google's rigorous professional certification programs on Coursera, these credentials validate expertise in cutting-edge technologies. Each represents 100+ hours of coursework, hands-on projects, and industry-aligned assessments.
-              </p>
-              <motion.div
-                className="mt-8 h-1.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-600 w-36 mx-auto rounded-full"
-                initial={{ scaleX: 0, originX: 0.5 }}
-                whileInView={{ scaleX: 1 }}
-                transition={{ delay: 0.3, duration: 0.8, ease: "circOut" }}
-                viewport={{ once: true }}
-              />
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-              {[
-                {
-                  text: "Google Machine Learning",
-                  link: "https://coursera.org/share/27665abf668c0479e649f09c01ce75b9",
-                  image: "/MachineLearningPreview.webp",
-                  description:
-                    "Mastering predictive algorithms and data-driven model development",
-                },
-                {
-                  text: "Google AI Essentials",
-                  link: "https://coursera.org/share/e76522223bd36da3f4a8feeb93d2d2f7",
-                  image: "/AiPreview.webp",
-                  description:
-                    "Foundational knowledge in neural networks and AI system implementation",
-                },
-                {
-                  text: "Google User Experience Design",
-                  link: "https://coursera.org/share/c617189e47b33926082172340be87f71",
-                  image: "/PreviewUX.webp",
-                  description:
-                    "User-centered design principles and interaction research methodologies",
-                },
-                {
-                  text: "Google Advanced Data Analytics",
-                  link: "https://coursera.org/share/09e30d48b4d38a664c30b12795d8b144",
-                  image: "/Google Advanced Data Analytics Capstone.webp",
-                  description:
-                    "Examine data to identify patterns and trends, build models using machine learning techniques, and create data visualizations.",
-                },
-                {
-                  text: "Automate Cybersecurity Tasks with Python",
-                  link: "https://coursera.org/share/b00ad7de4b6962060b8d47800927b352",
-                  image: "/Google Python.webp",
-                  description:
-                    "Enhancing cybersecurity workflows through Python scripting and automated threat detection.",
-                },
-                {
-                  text: "Connect and Protect: Networks and Network Security",
-                  link: "https://coursera.org/share/9bd3492f4984a22b035647ca0e151226",
-                  image: "/Google networking.webp",
-                  description:
-                    "Mastering network architecture, intrusion prevention, and system hardening for secure digital environments.",
-                },
-              ].map((cert, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ scale: 0.95, opacity: 0, y: 20 }}
-                  whileInView={{ scale: 1, opacity: 1, y: 0 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 130,
-                    damping: 18,
-                    delay: idx * 0.1 + 0.2,
-                  }}
-                  whileHover={{
-                    scale: 1.03,
-                    y: -6,
-                    transition: { type: "spring", stiffness: 300, damping: 10 },
-                  }}
                   viewport={{ once: true, amount: 0.2 }}
-                  className="relative group h-full flex will-change-[transform,opacity]"
+                  transition={{ delay: index * 0.05 }}
+                  whileHover={{ y: -7 }}
+                  className="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] transition hover:border-cyan-300/35 hover:bg-cyan-300/10"
                 >
-                  <a
-                    href={cert.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-col w-full bg-gradient-to-br from-neutral-900/90 to-black/95 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-indigo-500/25 transition-all duration-400 h-full border border-neutral-800/70 hover:border-indigo-500/60 cursor-pointer-interactive"
-                  >
-                    <div className="relative overflow-hidden aspect-video">
-                      <img
-                        src={cert.image}
-                        alt={`${cert.text} Certification`}
-                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-400 ease-out"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-                    <div className="p-6 space-y-3 flex-grow flex flex-col">
-                      <h3 className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 group-hover:from-blue-300 group-hover:to-pink-300 transition-all duration-300 leading-tight">
-                        {cert.text}
-                      </h3>
-                      <p className="text-sm text-gray-400/90 group-hover:text-gray-300/95 transition-colors duration-300 flex-grow leading-relaxed">
-                        {cert.description}
-                      </p>
-                      <div className="mt-auto pt-3">
-                        <span className="inline-flex items-center px-4 py-2 bg-indigo-600 group-hover:bg-indigo-500 rounded-md text-sm font-semibold text-white transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-indigo-500/30">
-                          <span>View Credential</span>
-                          <svg
-                            className="w-4 h-4 ml-2 transform group-hover:translate-x-0.5 transition-transform"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2.5}
-                              d="M13 7l5 5m0 0l-5 5m5-5H6"
-                            />
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                    <div className="absolute -inset-0.5 rounded-xl opacity-0 group-hover:opacity-40 transition-opacity duration-300 pointer-events-none bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 blur-xl" />
-                  </a>
-                  <div className="absolute top-0 right-0 w-12 h-12 overflow-hidden rounded-tr-xl">
-                    <div className="absolute -right-6 -top-6 w-24 h-24 bg-gradient-to-br from-blue-600 to-purple-700 opacity-10 group-hover:opacity-15 rotate-45 transition-all duration-500" />
+                  <img src={cert.image} alt={`${cert.title} certificate preview`} className="aspect-video w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+                  <div className="p-5">
+                    <h3 className="text-xl font-semibold text-white">{cert.title}</h3>
+                    <p className="mt-3 text-sm leading-6 text-slate-300">{cert.copy}</p>
+                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan-200">View credential <FiArrowUpRight /></span>
                   </div>
-                </motion.div>
+                </motion.a>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Publications Section */}
-        <section id="publications" className="py-20 md:py-24 bg-black">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent relative inline-block">
-                Publications
-                <span className="absolute bottom-0 left-1/2 w-28 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform -translate-x-1/2 translate-y-3 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full group-hover:w-32 ease-out"></span>
-              </h2>
-            </motion.div>
-
-            <div className="max-w-4xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true, amount: 0.3 }}
-                className="bg-neutral-900/80 backdrop-blur-sm rounded-xl border border-neutral-800/80 hover:border-indigo-500/50 transition-all duration-300 overflow-hidden shadow-xl hover:shadow-indigo-500/20 flex flex-col md:flex-row will-change-[transform,opacity]"
-              >
-                <div className="md:w-2/5 overflow-hidden">
-                  <img
-                    src="/orion-whitepaper.webp"
-                    alt="ORION Whitepaper"
-                    className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-8 md:w-3/5 flex flex-col justify-between">
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-100 mb-4">ORION: A Framework for Cognitive Intelligence in Autonomous Agents</h3>
-                    <p className="text-gray-300/90 leading-relaxed">
-                      This research introduces ORION, a novel architecture for building sovereign cognitive agents capable of system‑aware execution, kernel‑level defense, and autonomous task orchestration. The whitepaper explores the theoretical foundations of cognitive intelligence in AI systems and presents empirical results from deployment in secure environments.
-                    </p>
-                  </div>
-                  <div className="mt-6">
-                    <a
-                      href="https://zenodo.org/records/18831625?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjU3MmJmYzkwLTY5M2YtNDY1Ni1iOGE3LWJkZDU3MmMwZjZjOSIsImRhdGEiOnt9LCJyYW5kb20iOiJhNmZkMTJhOGQ1MzM1NjBkYzQ5NTA4MTExYjY4ZGZkMiJ9.BXtsgAUU-isnmL3pMrfIc832aVObiG515pWwZE1IhWJ2doCYe7SMmnR8gSVp3BZVOgYDa5bKt1gNsjjloHyOqA"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg font-semibold text-white hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/40"
-                    >
-                      <span className="mr-2">Read Whitepaper</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
+        <section id="publications" className="px-4 py-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <SectionIntro icon={FiBookOpen} title="Research artifact for autonomous agent architecture." copy="The publication section gives the ORION work a stronger explanation layer, connecting the demo to the reasoning behind secure autonomous agents." />
+            <motion.article variants={sectionVariant} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }} className="grid overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] lg:grid-cols-[0.8fr_1.2fr]">
+              <img src="/orion-whitepaper.webp" alt="ORION whitepaper preview" className="h-full min-h-[320px] w-full object-cover" loading="lazy" />
+              <div className="p-7 sm:p-10">
+                <p className="text-sm font-bold text-cyan-200">Whitepaper</p>
+                <h3 className="mt-4 text-3xl font-semibold tracking-[-0.03em] text-white">ORION: A Framework for Cognitive Intelligence in Autonomous Agents</h3>
+                <p className="mt-5 text-base leading-8 text-slate-300">
+                  A framework for building sovereign cognitive agents capable of system-aware execution, kernel-level defense, and autonomous task orchestration. The paper documents the architecture behind the ORION project and its secure execution model.
+                </p>
+                <MagneticButton href="https://zenodo.org/records/18831625?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjU3MmJmYzkwLTY5M2YtNDY1Ni1iOGE3LWJkZDU3MmMwZjZjOSIsImRhdGEiOnt9LCJyYW5kb20iOiJhNmZkMTJhOGQ1MzM1NjBkYzQ5NTA4MTExYjY4ZGZkMiJ9.BXtsgAUU-isnmL3pMrfIc832aVObiG515pWwZE1IhWJ2doCYe7SMmnR8gSVp3BZVOgYDa5bKt1gNsjjloHyOqA" external className="mt-7">
+                  Read whitepaper <FiExternalLink />
+                </MagneticButton>
+              </div>
+            </motion.article>
           </div>
         </section>
 
-        {/* Get Quote Section */}
-        <section
-          id="get-quote"
-          className="relative py-20 md:py-28 bg-black text-white text-center overflow-hidden"
-        >
-          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-90">
-            <motion.div
-              className="absolute -top-40 -left-40 w-96 h-96 md:w-[550px] md:h-[550px] bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-full blur-3xl will-change-transform"
-              initial={{ scale: 0.7, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 2.5, ease: "circOut" }}
-              viewport={{ once: true, amount: 0.1 }}
-            />
-            <motion.div
-              className="absolute -bottom-40 -right-40 w-96 h-96 md:w-[550px] md:h-[550px] bg-gradient-to-l from-purple-600/20 to-pink-600/20 rounded-full blur-3xl"
-              initial={{ scale: 0.7, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 2.5, ease: "circOut", delay: 0.3 }}
-              viewport={{ once: true, amount: 0.1 }}
-            />
-          </div>
-          <div className="relative z-10 max-w-2xl mx-auto px-4">
-            <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.5 }}
-            >
-              Ready to Start Your Project?
-            </motion.h2>
-            <motion.p
-              className="text-lg text-gray-300/90 mb-10 leading-relaxed"
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.5 }}
-            >
-              Let's collaborate to create something extraordinary. Reach out today!
-            </motion.p>
-            <motion.button
-              onClick={() => setContactModalOpen(true)}
-              className="relative group inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg text-lg font-semibold text-white transition-all duration-300 overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-indigo-500/40 focus:outline-none focus:ring-4 focus:ring-indigo-500/60"
-              whileHover={{
-                scale: 1.05,
-                y: -2,
-                transition: { type: "spring", stiffness: 300, damping: 10 },
-              }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span className="relative z-10">
-                Get Quote   <span className="inline-block group-hover:animate-bounce">💡</span>
-              </span>
-              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-150 blur-md group-hover:scale-100 group-hover:blur-none ease-out" />
-            </motion.button>
-            <AnimatePresence>
-              {isContactModalOpen && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                  transition={{ duration: 0.3 }}
-                  className="fixed inset-0 bg-black/85 backdrop-blur-lg flex items-center justify-center z-[9999] p-4"
-                  onClick={(e) => e.target === e.currentTarget && setContactModalOpen(false)}
-                >
-                  <motion.div
-                    initial={{ scale: 0.95, opacity: 0, y: 15 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    exit={{
-                      scale: 0.95,
-                      opacity: 0,
-                      y: 15,
-                      transition: { duration: 0.2, ease: "easeIn" },
-                    }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="bg-gradient-to-br from-neutral-900 via-black to-neutral-900 rounded-xl p-6 sm:p-8 w-full max-w-md relative border border-neutral-700/60 shadow-2xl shadow-indigo-500/20"
-                  >
-                    <button
-                      onClick={() => setContactModalOpen(false)}
-                      className="absolute top-3.5 right-3.5 p-2 rounded-full text-gray-400 hover:bg-neutral-700/50 hover:text-white transition-colors z-10"
-                      aria-label="Close"
-                    >
-                      <FaTimes size={18} />
-                    </button>
-                    <div className="space-y-6">
-                      <div className="text-center pt-2">
-                        <h3 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                          Let's Connect
-                        </h3>
-                        <p className="mt-1.5 text-gray-400/90 text-sm">
-                          Tell me about your idea, I'll respond within 24 hours.
-                        </p>
-                      </div>
-                      <form
-                        className="space-y-5"
-                        action="https://formsubmit.co/rohithvitteamraj@gmail.com"
-                        method="POST"
-                        onSubmit={handleSubmit}
-                      >
-                        {/* FormSubmit Configuration */}
-                        <input type="hidden" name="_subject" value="New Portfolio Inquiry!" />
-                        <input type="hidden" name="_template" value="table" />
-                        <input type="hidden" name="_captcha" value="false" />
-
-                        {[
-                          {
-                            name: "name",
-                            type: "text",
-                            placeholder: "Your Full Name",
-                            icon: (
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                              />
-                            ),
-                          },
-                          {
-                            name: "email",
-                            type: "email",
-                            placeholder: "your.email@example.com",
-                            icon: (
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25-2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                              />
-                            ),
-                          },
-                        ].map((field) => (
-                          <div key={field.name}>
-                            <label
-                              htmlFor={field.name}
-                              className="block text-sm font-medium text-gray-300/90 mb-1.5 text-left"
-                            >
-                              {field.name.charAt(0).toUpperCase() + field.name.slice(1)}
-                            </label>
-                            <div className="relative">
-                              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                                <svg
-                                  className="w-5 h-5 text-gray-500"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth={1.5}
-                                  viewBox="0 0 24 24"
-                                >
-                                  {field.icon}
-                                </svg>
-                              </div>
-                              <input
-                                type={field.type}
-                                name={field.name}
-                                id={field.name}
-                                required
-                                className="w-full pl-10 pr-3 py-2.5 bg-neutral-800/60 border border-neutral-700/80 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-gray-500/90 text-gray-100 transition-all duration-200 text-sm focus:bg-neutral-800"
-                                placeholder={field.placeholder}
-                              />
-                            </div>
-                          </div>
-                        ))}
-                        <div>
-                          <label
-                            htmlFor="message"
-                            className="block text-sm font-medium text-gray-300/90 mb-1.5 text-left"
-                          >
-                            Message
-                          </label>
-                          <textarea
-                            id="message"
-                            rows="4"
-                            name="message"
-                            required
-                            className="w-full px-3.5 py-2.5 bg-neutral-800/60 border border-neutral-700/80 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-gray-500/90 text-gray-100 transition-all duration-200 text-sm focus:bg-neutral-800"
-                            placeholder="Tell me about your project or inquiry..."
-                          />
-                        </div>
-                        <button
-                          type="submit"
-                          className="w-full py-3 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg font-semibold text-white hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 relative overflow-hidden group focus:outline-none focus:ring-4 focus:ring-indigo-500/60 transform hover:scale-[1.02]"
-                        >
-                          <span className="relative z-10">Send Message</span>
-                          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        </button>
-                      </form>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+        <section id="contact" className="px-4 py-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <motion.div variants={sectionVariant} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }} className="overflow-hidden rounded-[2.5rem] border border-cyan-300/20 bg-cyan-300/10 p-8 sm:p-12">
+              <div className="grid gap-8 lg:grid-cols-[1fr_0.75fr] lg:items-center">
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-[0.18em] text-cyan-100">Let us build</p>
+                  <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-6xl">Have a product, AI workflow, or engineering role in mind?</h2>
+                  <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">Send the context and I will respond with how I can help, what I would clarify first, and the fastest path to a useful build.</p>
+                </div>
+                <div className="space-y-4">
+                  <MagneticButton onClick={() => setContactOpen(true)} className="w-full">
+                    <FiSend /> Open contact form
+                  </MagneticButton>
+                  <MagneticButton href="mailto:rohithvitteamraj@gmail.com" variant="secondary" className="w-full">
+                    <FiMail /> rohithvitteamraj@gmail.com
+                  </MagneticButton>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
       </main>
 
-      <footer className="bg-black border-t border-neutral-800/60">
-        <div className="max-w-7xl mx-auto py-8 sm:py-10 px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-              viewport={{ once: true }}
-              className="text-sm text-gray-400/90 hover:text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 transition-all duration-300"
-            >
-              © {new Date().getFullYear()} Rohith Vittamraj. All rights reserved.
-            </motion.p>
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              transition={{ staggerChildren: 0.1, delayChildren: 0.2 }}
-              viewport={{ once: true }}
-              className="flex space-x-4 sm:space-x-5"
-            >
-              {[
-                {
-                  href: "https://x.com/rohithofficial5?s=21&t=cVo-4UEJaqOqaL-meqeikQ",
-                  label: "Twitter",
-                  icon: (
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  ),
-                  hoverClasses: "hover:bg-sky-500/90 hover:shadow-sky-500/30",
-                },
-                {
-                  href: "https://www.instagram.com/_rohtzz_",
-                  label: "Instagram",
-                  icon: (
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-                  ),
-                  hoverClasses: "hover:bg-pink-500/90 hover:shadow-pink-500/30",
-                },
-                {
-                  href: "https://www.linkedin.com/in/rohith-vittamraj-0ab76a313",
-                  label: "LinkedIn",
-                  icon: (
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                  ),
-                  hoverClasses: "hover:bg-blue-600/90 hover:shadow-blue-600/30",
-                },
-                {
-                  href: "https://github.com/rohith-2809",
-                  label: "GitHub",
-                  icon: (
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.699-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.748 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"
-                      clipRule="evenodd"
-                    />
-                  ),
-                  hoverClasses: "hover:bg-neutral-700/90 hover:shadow-white/10",
-                },
-              ].map((social) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${social.label} profile`}
-                  className={`group p-2.5 rounded-full bg-neutral-800/80 text-gray-400 hover:text-white transition-all duration-300 transform hover:scale-110 shadow-md hover:shadow-lg ${social.hoverClasses}`}
-                  variants={{
-                    hidden: { opacity: 0, y: 10 },
-                    visible: { opacity: 1, y: 0 },
-                  }}
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                    {social.icon}
-                  </svg>
-                </motion.a>
-              ))}
-            </motion.div>
+      <footer className="border-t border-white/10 px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-slate-400">Copyright {new Date().getFullYear()} Rohith Vittamraj. Built for useful software and thoughtful teams.</p>
+          <div className="flex gap-3">
+            {socials.map((social) => {
+              const Icon = social.icon;
+              return (
+                <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={`${social.label} profile`} className="grid h-11 w-11 place-items-center rounded-2xl border border-white/10 bg-white/[0.04] text-white transition hover:border-cyan-300/40 hover:bg-cyan-300/10 hover:text-cyan-100">
+                  <Icon />
+                </a>
+              );
+            })}
           </div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-            viewport={{ once: true }}
-            className="mt-8 text-center"
-          >
-            <p className="text-sm text-gray-500/80">
-              "🚀 Let's build something amazing together! Drop me a message! 💬"
-            </p>
-          </motion.div>
         </div>
       </footer>
-      {toast && (
-        <CustomToast
-          key={toast.id}
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
 
       <AnimatePresence>
-        {showScrollTop && (
+        {contactOpen && (
+          <motion.div className="fixed inset-0 z-[3000] grid place-items-center bg-black/75 p-4 backdrop-blur-xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={(event) => event.target === event.currentTarget && setContactOpen(false)}>
+            <motion.div initial={{ opacity: 0, y: 24, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 24, scale: 0.97 }} className="w-full max-w-lg rounded-[2rem] border border-white/10 bg-[#09131d] p-6 shadow-2xl">
+              <div className="mb-6 flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="text-2xl font-semibold text-white">Start a conversation</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">Share the project, role, or collaboration context.</p>
+                </div>
+                <button className="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-white/5 text-white" onClick={() => setContactOpen(false)} aria-label="Close contact form">
+                  <FiX />
+                </button>
+              </div>
+              <form className="space-y-4" action="https://formsubmit.co/rohithvitteamraj@gmail.com" method="POST" onSubmit={handleSubmit}>
+                <input type="hidden" name="_subject" value="New Portfolio Inquiry" />
+                <input type="hidden" name="_template" value="table" />
+                <input type="hidden" name="_captcha" value="false" />
+                <label className="block text-sm font-semibold text-slate-300">
+                  Name
+                  <input name="name" required className="mt-2 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/60 focus:ring-4 focus:ring-cyan-300/10" placeholder="Your name" />
+                </label>
+                <label className="block text-sm font-semibold text-slate-300">
+                  Email
+                  <input type="email" name="email" required className="mt-2 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/60 focus:ring-4 focus:ring-cyan-300/10" placeholder="you@example.com" />
+                </label>
+                <label className="block text-sm font-semibold text-slate-300">
+                  Message
+                  <textarea name="message" required rows="4" className="mt-2 w-full resize-none rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/60 focus:ring-4 focus:ring-cyan-300/10" placeholder="Tell me what you want to build or discuss." />
+                </label>
+                <button className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-cyan-300 bg-cyan-300 px-5 py-3 text-sm font-bold text-[#031317] transition hover:bg-white" type="submit">
+                  Send message <FiSend />
+                </button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showTop && (
           <motion.button
-            initial={{ opacity: 0, y: 20, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.8 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-50 p-3 md:p-4 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 text-white shadow-lg hover:shadow-indigo-500/50 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 cursor-pointer-interactive"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 18 }}
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.96 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="fixed bottom-6 right-6 z-[1200] grid h-12 w-12 place-items-center rounded-2xl border border-cyan-300/25 bg-cyan-300 text-[#031317] shadow-[0_20px_60px_rgba(103,232,249,0.25)]"
             aria-label="Scroll to top"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-              stroke="currentColor"
-              className="w-5 h-5 md:w-6 md:h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"
-              />
-            </svg>
+            <FiChevronUp />
           </motion.button>
         )}
       </AnimatePresence>
+
+      {toast && <CustomToast key={toast.id} message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </div>
   );
-};
+}
 
 export default Landing;

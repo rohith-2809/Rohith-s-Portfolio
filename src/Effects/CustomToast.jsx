@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useMotionValue, useTransform } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FaCheckCircle, FaExclamationCircle, FaInfoCircle, FaTimes } from "react-icons/fa";
 
 const CustomToast = ({ message, type = "success", duration = 5000, onClose }) => {
@@ -9,6 +9,11 @@ const CustomToast = ({ message, type = "success", duration = 5000, onClose }) =>
 
   const x = useMotionValue(0);
   const opacity = useTransform(x, [-100, 0, 100], [0, 1, 0]);
+
+  const handleClose = useCallback(() => {
+    setIsVisible(false);
+    setTimeout(onClose, 300);
+  }, [onClose]);
 
   useEffect(() => {
     if (isPaused) return;
@@ -28,12 +33,7 @@ const CustomToast = ({ message, type = "success", duration = 5000, onClose }) =>
     }, interval);
 
     return () => clearInterval(timer);
-  }, [isPaused, duration]);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(onClose, 300);
-  };
+  }, [isPaused, duration, handleClose]);
 
   const getIcon = () => {
     switch (type) {
